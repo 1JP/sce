@@ -43,6 +43,12 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Sets the `name` attribute and ensures it is not an integer.
+     *
+     * @param mixed $value The name value to be set
+     * @throws \InvalidArgumentException if the name is an integer
+     */
     public function setNameAttribute($value)
     {
         if (is_int($value)) {
@@ -52,6 +58,12 @@ class User extends Authenticatable
         $this->attributes['name'] = $value;
     }
 
+    /**
+     * Sets the `email` attribute and ensures it is not an integer.
+     *
+     * @param mixed $value The email value to be set
+     * @throws \InvalidArgumentException if the email is an integer
+     */
     public function setEmailAttribute($value)
     {
         if (is_int($value)) {
@@ -61,6 +73,12 @@ class User extends Authenticatable
         $this->attributes['email'] = $value;
     }
 
+    /**
+     * Sets the `street` attribute, ensuring it is not an integer and has a maximum length of 100 characters.
+     *
+     * @param mixed $value The street value to be set
+     * @throws \InvalidArgumentException if the street is an integer or exceeds 100 characters
+     */
     public function setStreetAttribute($value)
     {
         if (is_int($value)) {
@@ -74,6 +92,12 @@ class User extends Authenticatable
         $this->attributes['street'] = $value;
     }
 
+    /**
+     * Sets the `number` attribute, ensuring it is not an integer and has a maximum length of 45 characters.
+     *
+     * @param mixed $value The number value to be set
+     * @throws \InvalidArgumentException if the number is an integer or exceeds 45 characters
+     */
     public function setNumberAttribute($value)
     {
         if (is_int($value)) {
@@ -87,6 +111,12 @@ class User extends Authenticatable
         $this->attributes['number'] = $value;
     }
 
+    /**
+     * Sets the `locality` attribute, ensuring it is not an integer and has a maximum length of 45 characters.
+     *
+     * @param mixed $value The locality value to be set
+     * @throws \InvalidArgumentException if the locality is an integer or exceeds 45 characters
+     */
     public function setLocalityAttribute($value)
     {
         if (is_int($value)) {
@@ -100,6 +130,12 @@ class User extends Authenticatable
         $this->attributes['locality'] = $value;
     }
 
+    /**
+     * Sets the `city` attribute, ensuring it is not an integer and has a maximum length of 45 characters.
+     *
+     * @param mixed $value The city value to be set
+     * @throws \InvalidArgumentException if the city is an integer or exceeds 45 characters
+     */
     public function setCityAttribute($value)
     {
         if (is_int($value)) {
@@ -113,6 +149,12 @@ class User extends Authenticatable
         $this->attributes['city'] = $value;
     }
 
+    /**
+     * Sets the `region_code` attribute, ensuring it is not an integer and has a maximum length of 2 characters.
+     *
+     * @param mixed $value The region code to be set
+     * @throws \InvalidArgumentException if the region code is an integer or exceeds 2 characters
+     */
     public function setRegionCodeAttribute($value)
     {
         if (is_int($value)) {
@@ -126,6 +168,12 @@ class User extends Authenticatable
         $this->attributes['region_code'] = $value;
     }
 
+    /**
+     * Sets the `postal_code` attribute, ensuring it is not an integer and has a maximum length of 8 characters.
+     *
+     * @param mixed $value The postal code to be set
+     * @throws \InvalidArgumentException if the postal code is an integer or exceeds 8 characters
+     */
     public function setPostalCodeAttribute($value)
     {
         if (is_int($value)) {
@@ -139,6 +187,12 @@ class User extends Authenticatable
         $this->attributes['postal_code'] = $value;
     }
 
+    /**
+     * Sets the `complement` attribute, ensuring it is not an integer and has a maximum length of 45 characters.
+     *
+     * @param mixed $value The complement value to be set
+     * @throws \InvalidArgumentException if the complement is an integer or exceeds 45 characters
+     */
     public function setComplementAttribute($value)
     {
         if (is_int($value)) {
@@ -152,6 +206,12 @@ class User extends Authenticatable
         $this->attributes['complement'] = $value;
     }
 
+    /**
+     * Sets the `birth_date` attribute, ensuring it is not an integer.
+     *
+     * @param mixed $value The birth date to be set
+     * @throws \InvalidArgumentException if the birth date is an integer
+     */
     public function setBirthDateAttribute($value)
     {
         if (is_int($value)) {
@@ -161,6 +221,12 @@ class User extends Authenticatable
         $this->attributes['birth_date'] = $value;
     }
 
+    /**
+     * Sets the `cpf` attribute, ensuring it is not an integer and has a maximum length of 11 characters.
+     *
+     * @param mixed $value The CPF value to be set
+     * @throws \InvalidArgumentException if the CPF is an integer or exceeds 11 characters
+     */
     public function setCpfAttribute($value)
     {
         if (is_int($value)) {
@@ -174,6 +240,12 @@ class User extends Authenticatable
         $this->attributes['cpf'] = $value;
     }
 
+    /**
+     * Sets the `country` attribute, ensuring it is not an integer and has a maximum length of 2 characters.
+     *
+     * @param mixed $value The country code to be set
+     * @throws \InvalidArgumentException if the country code is an integer or exceeds 2 characters
+     */
     public function setCountryAttribute($value)
     {
         if (is_int($value)) {
@@ -187,6 +259,12 @@ class User extends Authenticatable
         $this->attributes['country'] = $value;
     }
 
+    /**
+     * Sets the `area` attribute, ensuring it is not an integer and has a maximum length of 2 characters.
+     *
+     * @param mixed $value The area value to be set
+     * @throws \InvalidArgumentException if the area is an integer or exceeds 2 characters
+     */
     public function setAreaAttribute($value)
     {
         if (is_int($value)) {
@@ -200,6 +278,12 @@ class User extends Authenticatable
         $this->attributes['area'] = $value;
     }
 
+    /**
+     * Sets the `phone` attribute, ensuring it is not an integer and has a maximum length of 11 characters.
+     *
+     * @param mixed $value The phone value to be set
+     * @throws \InvalidArgumentException if the phone is an integer or exceeds 11 characters
+     */
     public function setPhoneAttribute($value)
     {
         if (is_int($value)) {
