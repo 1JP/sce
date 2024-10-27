@@ -23,12 +23,31 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $faker = \Faker\Factory::create();
+
+        $areaCode = function () {
+            $ddds = ['11', '21', '31', '41', '51', '61', '71', '81', '91'];
+            return $ddds[array_rand($ddds)];
+        };
+
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'street' => $faker->streetName(),
+            'number' => $faker->buildingNumber(),
+            'locality' => $faker->streetName(),
+            'city' => $faker->city(),
+            'region_code' => 'MG',
+            'postal_code' => '99999999',
+            'complement' => $faker->secondaryAddress(),
+            'birth_date' => $faker->date(),
+            'cpf' => fake()->unique()->text(11),
+            'country' => '55',
+            'area' => $areaCode(),
+            'phone' => preg_replace('/\D/', '', $faker->phoneNumber()),
         ];
     }
 

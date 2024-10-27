@@ -55,33 +55,20 @@ class User extends Authenticatable
     public function setEmailAttribute($value)
     {
         if (is_int($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+            throw new \InvalidArgumentException('O e-mail não pode ser um número inteiro.');
         }
 
         $this->attributes['email'] = $value;
     }
 
-    public function setPasswordAttribute($value)
-    {
-        if (is_int($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
-        }
-
-        if (strlen($value) > 8) {
-            throw new \InvalidArgumentException('O nome não pode ter mais que 8 caracteres.');
-        }
-
-        $this->attributes['password'] = $value;
-    }
-
     public function setStreetAttribute($value)
     {
         if (is_int($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+            throw new \InvalidArgumentException('O endereço não pode ser um número inteiro.');
         }
 
         if (strlen($value) > 100) {
-            throw new \InvalidArgumentException('O nome não pode ter mais que 100 caracteres.');
+            throw new \InvalidArgumentException('O endereço não pode ter mais que 100 caracteres.');
         }
 
         $this->attributes['street'] = $value;
@@ -90,11 +77,11 @@ class User extends Authenticatable
     public function setNumberAttribute($value)
     {
         if (is_int($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+            throw new \InvalidArgumentException('O número não pode ser um número inteiro.');
         }
 
         if (strlen($value) > 45) {
-            throw new \InvalidArgumentException('O nome não pode ter mais que 45 caracteres.');
+            throw new \InvalidArgumentException('O número não pode ter mais que 45 caracteres.');
         }
 
         $this->attributes['number'] = $value;
@@ -103,11 +90,11 @@ class User extends Authenticatable
     public function setLocalityAttribute($value)
     {
         if (is_int($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+            throw new \InvalidArgumentException('O bairro não pode ser um número inteiro.');
         }
 
         if (strlen($value) > 45) {
-            throw new \InvalidArgumentException('O nome não pode ter mais que 45 caracteres.');
+            throw new \InvalidArgumentException('O bairro não pode ter mais que 45 caracteres.');
         }
 
         $this->attributes['locality'] = $value;
@@ -116,11 +103,11 @@ class User extends Authenticatable
     public function setCityAttribute($value)
     {
         if (is_int($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+            throw new \InvalidArgumentException('O cidade não pode ser um número inteiro.');
         }
 
         if (strlen($value) > 45) {
-            throw new \InvalidArgumentException('O nome não pode ter mais que 45 caracteres.');
+            throw new \InvalidArgumentException('O cidade não pode ter mais que 45 caracteres.');
         }
 
         $this->attributes['city'] = $value;
@@ -129,11 +116,11 @@ class User extends Authenticatable
     public function setRegionCodeAttribute($value)
     {
         if (is_int($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+            throw new \InvalidArgumentException('O estado não pode ser um número inteiro.');
         }
 
         if (strlen($value) > 2) {
-            throw new \InvalidArgumentException('O nome não pode ter mais que 2 caracteres.');
+            throw new \InvalidArgumentException('O estado não pode ter mais que 2 caracteres.');
         }
 
         $this->attributes['region_code'] = $value;
@@ -142,11 +129,11 @@ class User extends Authenticatable
     public function setPostalCodeAttribute($value)
     {
         if (is_int($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+            throw new \InvalidArgumentException('O cep não pode ser um número inteiro.');
         }
 
-        if (strlen($value) > 2) {
-            throw new \InvalidArgumentException('O nome não pode ter mais que 2 caracteres.');
+        if (strlen($value) > 8) {
+            throw new \InvalidArgumentException('O cep não pode ter mais que 8 caracteres.');
         }
 
         $this->attributes['postal_code'] = $value;
@@ -155,11 +142,11 @@ class User extends Authenticatable
     public function setComplementAttribute($value)
     {
         if (is_int($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+            throw new \InvalidArgumentException('O complemento não pode ser um número inteiro.');
         }
 
         if (strlen($value) > 45) {
-            throw new \InvalidArgumentException('O nome não pode ter mais que 45 caracteres.');
+            throw new \InvalidArgumentException('O complemento não pode ter mais que 45 caracteres.');
         }
 
         $this->attributes['complement'] = $value;
@@ -168,7 +155,7 @@ class User extends Authenticatable
     public function setBirthDateAttribute($value)
     {
         if (is_int($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+            throw new \InvalidArgumentException('O data de nascimento não pode ser um número inteiro.');
         }
 
         $this->attributes['birth_date'] = $value;
@@ -177,11 +164,11 @@ class User extends Authenticatable
     public function setCpfAttribute($value)
     {
         if (is_int($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+            throw new \InvalidArgumentException('O cpf não pode ser um número inteiro.');
         }
 
         if (strlen($value) > 11) {
-            throw new \InvalidArgumentException('O nome não pode ter mais que 11 caracteres.');
+            throw new \InvalidArgumentException('O cpf não pode ter mais que 11 caracteres.');
         }
 
         $this->attributes['cpf'] = $value;
@@ -190,11 +177,11 @@ class User extends Authenticatable
     public function setCountryAttribute($value)
     {
         if (is_int($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+            throw new \InvalidArgumentException('O código do telefone não pode ser um número inteiro.');
         }
 
         if (strlen($value) > 11) {
-            throw new \InvalidArgumentException('O nome não pode ter mais que 2 caracteres.');
+            throw new \InvalidArgumentException('O código do telefone não pode ter mais que 2 caracteres.');
         }
 
         $this->attributes['country'] = $value;
@@ -203,11 +190,11 @@ class User extends Authenticatable
     public function setAreaAttribute($value)
     {
         if (is_int($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+            throw new \InvalidArgumentException('O área não pode ser um número inteiro.');
         }
 
         if (strlen($value) > 2) {
-            throw new \InvalidArgumentException('O nome não pode ter mais que 2 caracteres.');
+            throw new \InvalidArgumentException('O área não pode ter mais que 2 caracteres.');
         }
 
         $this->attributes['area'] = $value;
@@ -216,11 +203,11 @@ class User extends Authenticatable
     public function setPhoneAttribute($value)
     {
         if (is_int($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+            throw new \InvalidArgumentException('O telefone não pode ser um número inteiro.');
         }
 
-        if (strlen($value) > 10) {
-            throw new \InvalidArgumentException('O nome não pode ter mais que 10 caracteres.');
+        if (strlen($value) > 11) {
+            throw new \InvalidArgumentException('O telefone não pode ter mais que 11 caracteres.');
         }
 
         $this->attributes['phone'] = $value;
