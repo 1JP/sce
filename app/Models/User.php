@@ -18,11 +18,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -45,5 +41,188 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function setNameAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        $this->attributes['name'] = $value;
+    }
+
+    public function setEmailAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        $this->attributes['email'] = $value;
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        if (strlen($value) > 8) {
+            throw new \InvalidArgumentException('O nome não pode ter mais que 8 caracteres.');
+        }
+
+        $this->attributes['password'] = $value;
+    }
+
+    public function setStreetAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        if (strlen($value) > 100) {
+            throw new \InvalidArgumentException('O nome não pode ter mais que 100 caracteres.');
+        }
+
+        $this->attributes['street'] = $value;
+    }
+
+    public function setNumberAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        if (strlen($value) > 45) {
+            throw new \InvalidArgumentException('O nome não pode ter mais que 45 caracteres.');
+        }
+
+        $this->attributes['number'] = $value;
+    }
+
+    public function setLocalityAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        if (strlen($value) > 45) {
+            throw new \InvalidArgumentException('O nome não pode ter mais que 45 caracteres.');
+        }
+
+        $this->attributes['locality'] = $value;
+    }
+
+    public function setCityAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        if (strlen($value) > 45) {
+            throw new \InvalidArgumentException('O nome não pode ter mais que 45 caracteres.');
+        }
+
+        $this->attributes['city'] = $value;
+    }
+
+    public function setRegionCodeAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        if (strlen($value) > 2) {
+            throw new \InvalidArgumentException('O nome não pode ter mais que 2 caracteres.');
+        }
+
+        $this->attributes['region_code'] = $value;
+    }
+
+    public function setPostalCodeAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        if (strlen($value) > 2) {
+            throw new \InvalidArgumentException('O nome não pode ter mais que 2 caracteres.');
+        }
+
+        $this->attributes['postal_code'] = $value;
+    }
+
+    public function setComplementAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        if (strlen($value) > 45) {
+            throw new \InvalidArgumentException('O nome não pode ter mais que 45 caracteres.');
+        }
+
+        $this->attributes['complement'] = $value;
+    }
+
+    public function setBirthDateAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        $this->attributes['birth_date'] = $value;
+    }
+
+    public function setCpfAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        if (strlen($value) > 11) {
+            throw new \InvalidArgumentException('O nome não pode ter mais que 11 caracteres.');
+        }
+
+        $this->attributes['cpf'] = $value;
+    }
+
+    public function setCountryAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        if (strlen($value) > 11) {
+            throw new \InvalidArgumentException('O nome não pode ter mais que 2 caracteres.');
+        }
+
+        $this->attributes['country'] = $value;
+    }
+
+    public function setAreaAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        if (strlen($value) > 2) {
+            throw new \InvalidArgumentException('O nome não pode ter mais que 2 caracteres.');
+        }
+
+        $this->attributes['area'] = $value;
+    }
+
+    public function setPhoneAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        if (strlen($value) > 10) {
+            throw new \InvalidArgumentException('O nome não pode ter mais que 10 caracteres.');
+        }
+
+        $this->attributes['phone'] = $value;
     }
 }
