@@ -45,6 +45,7 @@ class ClientTest extends TestCase
             'area' => '31',
             'phone' => '999999999',
             'customer_id' => $customer_id,
+            'cvv' => 852,
         ]);
 
         $this->assertEquals($client->user_id, $this->user->id);
@@ -62,6 +63,7 @@ class ClientTest extends TestCase
         $this->assertEquals($client->area, '31');
         $this->assertEquals($client->phone, '999999999');
         $this->assertEquals($client->customer_id, $customer_id);
+        $this->assertEquals($client->cvv, 852);
     }
 
     /**
@@ -84,7 +86,8 @@ class ClientTest extends TestCase
             'cpf' => '11111111111',
             'country' => '55',
             'area' => '31',
-            'phone' => '999999999'
+            'phone' => '999999999',
+            'cvv' => 748,
         ]);
 
         $this->assertEquals($client->name, 'Test');
@@ -100,6 +103,7 @@ class ClientTest extends TestCase
         $this->assertEquals($client->country, '55');
         $this->assertEquals($client->area, '31');
         $this->assertEquals($client->phone, '999999999');
+        $this->assertEquals($client->cvv, 748);
     }
 
     /** 
@@ -142,7 +146,8 @@ class ClientTest extends TestCase
             'country' => fake()->randomDigit(),
             'area' => fake()->randomDigit(),
             'phone' => fake()->randomDigit(),
-            'customer_id' => fake()->text(101)
+            'customer_id' => fake()->text(101),
+            'cvv' => fake()->name(),
         ]);
     }
 }

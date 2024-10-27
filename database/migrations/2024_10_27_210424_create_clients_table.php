@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->string('customer_id', 100);
+            $table->integer('cvv');
             $table->string('name');
             $table->string('street', 100);
             $table->string('number', 45);
@@ -27,7 +29,6 @@ return new class extends Migration
             $table->string('country', 2)->default('55');
             $table->string('area', 2);
             $table->string('phone', 10);
-            $table->string('customer_id', 100);
             $table->timestamps();
         });
     }
