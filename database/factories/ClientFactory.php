@@ -41,6 +41,7 @@ class ClientFactory extends Factory
             'area' => $areaCode(),
             'phone' => preg_replace('/\D/', '', $faker->phoneNumber()),
             'customer_id' => fake()->text(100),
+            'cvv' => fake()->randomDigit(),
         ];
     }
 }

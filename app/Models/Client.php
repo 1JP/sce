@@ -258,4 +258,24 @@ class Client extends Model
 
         $this->attributes['customer_id'] = $value;
     }
+
+    /**
+     * Sets the `cvv` attribute after validating its type.
+     *
+     * This mutator method checks if the provided `$value` for `cvv`
+     * is a string. If it is, an InvalidArgumentException is thrown, as this
+     * attribute must not be a string. Otherwise, it sets the `cvv`
+     * attribute with the given `$value`.
+     *
+     * @param mixed $value The value to set for the `cvv` attribute.
+     * @throws \InvalidArgumentException if the value is a string.
+     */
+    public function setCvvAttribute($value)
+    {
+        if (is_string($value)) {
+            throw new \InvalidArgumentException('O cvv não pode ser uma string.');
+        }
+
+        $this->attributes['cvv'] = $value;
+    }
 }
