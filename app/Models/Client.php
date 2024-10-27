@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CategoryType extends Model
+class Client extends Model
 {
     use HasFactory;
 
@@ -15,21 +15,6 @@ class CategoryType extends Model
      * @var array<int, string>
      */
     protected $guarded = [];
-
-    /**
-     * Sets the `name` attribute and ensures it is not an integer.
-     *
-     * @param mixed $value The name value to be set
-     * @throws \InvalidArgumentException if the name is an integer
-     */
-    public function setNameAttribute($value)
-    {
-        if (is_int($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
-        }
-
-        $this->attributes['name'] = $value;
-    }
 
     /**
      * Sets the `street` attribute, ensuring it is not an integer and has a maximum length of 100 characters.
@@ -253,5 +238,24 @@ class CategoryType extends Model
         }
 
         $this->attributes['phone'] = $value;
+    }
+
+    /**
+     * Sets the `customer_id` attribute and ensures it is not an integer.
+     *
+     * @param mixed $value The customer_id value to be set
+     * @throws \InvalidArgumentException if the customer_id is an integer
+     */
+    public function setCustomerIdAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        if (strlen($value) > 100) {
+            throw new \InvalidArgumentException('O nome não pode ter mais que 100 caracteres.');
+        }
+
+        $this->attributes['customer_id'] = $value;
     }
 }

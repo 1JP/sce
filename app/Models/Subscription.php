@@ -19,6 +19,11 @@ class Subscription extends Model
     public const PENDING = 'PENDING';
     public const PENDING_ACTION = 'PENDING_ACTION';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $guarded = [];
 
     /**
