@@ -101,10 +101,10 @@ class PlanTest extends TestCase
     }
 
     /**
-     * test function categories active true 
+     * test function plan active true 
      * 
      */
-    public function test_function_categories_active_true(): void
+    public function test_function_plan_active_true(): void
     {
         Plan::factory()
             ->count(5)
