@@ -7,6 +7,7 @@ use App\Models\Subscription;
 use App\Models\User;
 use App\Services\PaymentApi;
 use Database\Seeders\SettingSeeder;
+use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -18,6 +19,9 @@ class PagSeguroTest extends TestCase
     /** @var PaymentApi */
     protected $paymentApi;
 
+    /** @var User */
+    protected $user;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -25,7 +29,7 @@ class PagSeguroTest extends TestCase
         $this->seed(SettingSeeder::class);
 
         $this->paymentApi = new PaymentApi;
-        
+        $this->user = User::factory()->create();
     }
 
     /**
@@ -583,20 +587,41 @@ class PagSeguroTest extends TestCase
         $createCustomer = $this->paymentApi->createCustomer($body);
 
         $this->assertTrue(isset($createCustomer->id));
+
+        $client = Client::factory()->create([
+            'user_id' => $this->user->id,
+            'name' => $name,
+            'street' => $body['address']['street'],
+            'number' => $body['address']['number'],
+            'locality' => $body['address']['locality'],
+            'city' => $body['address']['city'],
+            'region_code' => $body['address']['region_code'],
+            'postal_code' => $body['address']['postal_code'],
+            'complement' => 'casa',
+            'birth_date' => $body['billing_info'][0]['card']['holder']['birth_date'],
+            'cpf' => $body['tax_id'],
+            'country' => $body['phones'][0]['country'],
+            'area' => $body['phones'][0]['area'],
+            'phone' => $body['phones'][0]['number'],
+            'customer_id' => $createCustomer->id,
+            'cvv' => 852,
+        ]);
+
+        $this->assertEquals($createCustomer->id, $client->customer_id);
         $this->assertEquals($createCustomer->name, $name);
         $this->assertEquals($createCustomer->email, $email);
-        $this->assertEquals($createCustomer->tax_id, $body['tax_id']);
-        $this->assertEquals($createCustomer->phones[0]->country, $body['phones'][0]['country']);
-        $this->assertEquals($createCustomer->phones[0]->area, $body['phones'][0]['area']);
-        $this->assertEquals($createCustomer->phones[0]->number, $body['phones'][0]['number']);
+        $this->assertEquals($createCustomer->tax_id, $client->cpf);
+        $this->assertEquals($createCustomer->phones[0]->country, $client->country);
+        $this->assertEquals($createCustomer->phones[0]->area, $client->area);
+        $this->assertEquals($createCustomer->phones[0]->number, $client->number);
 
-        $this->assertEquals($createCustomer->address->street, $body['address']['street']);
-        $this->assertEquals($createCustomer->address->number, $body['address']['number']);
-        $this->assertEquals($createCustomer->address->locality, $body['address']['locality']);
-        $this->assertEquals($createCustomer->address->city, $body['address']['city']);
-        $this->assertEquals($createCustomer->address->region_code, $body['address']['region_code']);
-        $this->assertEquals($createCustomer->address->country, $body['address']['country']);
-        $this->assertEquals($createCustomer->address->postal_code, $body['address']['postal_code']);
+        $this->assertEquals($createCustomer->address->street, $client->street);
+        $this->assertEquals($createCustomer->address->number, $client->number);
+        $this->assertEquals($createCustomer->address->locality, $client->locality);
+        $this->assertEquals($createCustomer->address->city, $client->city);
+        $this->assertEquals($createCustomer->address->region_code, $client->region_code);
+        $this->assertEquals($createCustomer->address->country, $client->country);
+        $this->assertEquals($createCustomer->address->postal_code, $client->postal_code);
 
     }
 
@@ -633,19 +658,41 @@ class PagSeguroTest extends TestCase
         $updateCustomer = $this->paymentApi->updateDataCustomer($body, $customerId);
 
         $this->assertTrue(isset($updateCustomer->id));
+
+        $client = Client::factory()->create([
+            'user_id' => $this->user->id,
+            'name' => $name,
+            'street' => $body['address']['street'],
+            'number' => $body['address']['number'],
+            'locality' => $body['address']['locality'],
+            'city' => $body['address']['city'],
+            'region_code' => $body['address']['region_code'],
+            'postal_code' => $body['address']['postal_code'],
+            'complement' => 'casa',
+            'birth_date' => $body['billing_info'][0]['card']['holder']['birth_date'],
+            'cpf' => $body['tax_id'],
+            'country' => $body['phones'][0]['country'],
+            'area' => $body['phones'][0]['area'],
+            'phone' => $body['phones'][0]['number'],
+            'customer_id' => $updateCustomer->id,
+            'cvv' => 852,
+        ]);
+        
+        $this->assertEquals($updateCustomer->id, $client->customer_id);
         $this->assertEquals($updateCustomer->name, $name);
         $this->assertEquals($updateCustomer->email, $email);
-        $this->assertEquals($updateCustomer->phones[0]->country, $body['phones'][0]['country']);
-        $this->assertEquals($updateCustomer->phones[0]->area, $body['phones'][0]['area']);
-        $this->assertEquals($updateCustomer->phones[0]->number, $body['phones'][0]['number']);
+        $this->assertEquals($updateCustomer->tax_id, $client->cpf);
+        $this->assertEquals($updateCustomer->phones[0]->country, $client->country);
+        $this->assertEquals($updateCustomer->phones[0]->area, $client->area);
+        $this->assertEquals($updateCustomer->phones[0]->number, $client->number);
 
-        $this->assertEquals($updateCustomer->address->street, $body['address']['street']);
-        $this->assertEquals($updateCustomer->address->number, $body['address']['number']);
-        $this->assertEquals($updateCustomer->address->locality, $body['address']['locality']);
-        $this->assertEquals($updateCustomer->address->city, $body['address']['city']);
-        $this->assertEquals($updateCustomer->address->region_code, $body['address']['region_code']);
-        $this->assertEquals($updateCustomer->address->country, $body['address']['country']);
-        $this->assertEquals($updateCustomer->address->postal_code, $body['address']['postal_code']);
+        $this->assertEquals($updateCustomer->address->street, $client->street);
+        $this->assertEquals($updateCustomer->address->number, $client->number);
+        $this->assertEquals($updateCustomer->address->locality, $client->locality);
+        $this->assertEquals($updateCustomer->address->city, $client->city);
+        $this->assertEquals($updateCustomer->address->region_code, $client->region_code);
+        $this->assertEquals($updateCustomer->address->country, $client->country);
+        $this->assertEquals($updateCustomer->address->postal_code, $client->postal_code);
 
     }
 
@@ -654,9 +701,26 @@ class PagSeguroTest extends TestCase
      */
     public function test_get_customer_payment_api(): void
     {
-        $customerId = 'CUST_F25B4BD7-5471-469E-9CB0-D21C904D0EFA';
+        $client = Client::factory()->create([
+            'user_id' => $this->user->id,
+            'name' => 'Test',
+            'street' => 'Rua teste',
+            'number' => '123',
+            'locality' => 'Bairro teste',
+            'city' => 'Teste City',
+            'region_code' => 'MG',
+            'postal_code' => '99999999',
+            'complement' => 'casa',
+            'birth_date' => '1995-10-10',
+            'cpf' => '11111111111',
+            'country' => '55',
+            'area' => '31',
+            'phone' => '999999999',
+            'customer_id' => 'CUST_F25B4BD7-5471-469E-9CB0-D21C904D0EFA',
+            'cvv' => 852,
+        ]);
 
-        $customer = $this->paymentApi->getCustomer($customerId);
+        $customer = $this->paymentApi->getCustomer($client->customer_id);
 
         $this->assertTrue(isset($customer->id));
 
@@ -667,7 +731,24 @@ class PagSeguroTest extends TestCase
      */
     public function test_update_customer_billing_info_payment_api(): void
     {
-        $customerId = 'CUST_F25B4BD7-5471-469E-9CB0-D21C904D0EFA';
+        $client = Client::factory()->create([
+            'user_id' => $this->user->id,
+            'name' => 'Test',
+            'street' => 'Rua teste',
+            'number' => '123',
+            'locality' => 'Bairro teste',
+            'city' => 'Teste City',
+            'region_code' => 'MG',
+            'postal_code' => '99999999',
+            'complement' => 'casa',
+            'birth_date' => '1995-10-10',
+            'cpf' => '11111111111',
+            'country' => '55',
+            'area' => '31',
+            'phone' => '999999999',
+            'customer_id' => 'CUST_F25B4BD7-5471-469E-9CB0-D21C904D0EFA',
+            'cvv' => 852,
+        ]);
 
         $body = [
             [
@@ -691,9 +772,15 @@ class PagSeguroTest extends TestCase
             ]
         ];
         
-        $updateCustomerBillingInfoPayment = $this->paymentApi->updateDataBillingInfo($body, $customerId);
+        $updateCustomerBillingInfoPayment = $this->paymentApi->updateDataBillingInfo($body, $client->customer_id);
 
         $this->assertTrue(isset($updateCustomerBillingInfoPayment->id));
+
+        $client->update([
+            'cvv' => $body[0]['card']['security_code']
+        ]);
+
+        $this->assertEquals($client->cvv, $body[0]['card']['security_code']);
     }
 
     /**
