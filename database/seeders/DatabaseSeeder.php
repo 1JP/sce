@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             RolesSeeder::class,
             CategoryTypeSeeder::class,
             SettingSeeder::class,
+            IndicateClassificationsSeeder::class,
         ]);
     }
 }
