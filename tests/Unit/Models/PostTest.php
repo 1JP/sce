@@ -87,9 +87,9 @@ class PostTest extends TestCase
     }
 
     /** 
-     * test delete client 
+     * test delete post 
      */
-    public function test_delete_client():void
+    public function test_delete_post():void
     {
         $post = Post::factory()->create();
 
