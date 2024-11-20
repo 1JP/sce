@@ -100,9 +100,9 @@ class CommentTest extends TestCase
     }
 
     /** 
-     * test not create post all wrong data
+     * test not create comment all wrong data
      */
-    public function test_not_create_all_wrong_data_post(): void
+    public function test_not_create_all_wrong_data_comment(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
