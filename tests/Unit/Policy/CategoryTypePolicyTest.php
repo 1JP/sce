@@ -74,9 +74,9 @@ class CategoryTypePolicyTest extends TestCase
     }
 
     /**
-     * test policy cannot delete post
+     * test policy cannot delete category type
      */
-    public function test_user_cannot_delete_post()
+    public function test_user_cannot_delete_category_type()
     {
         $category = CategoryType::factory()->create();
 
@@ -90,9 +90,9 @@ class CategoryTypePolicyTest extends TestCase
     }
 
     /**
-     * test policy cannot create post
+     * test policy cannot create category type
      */
-    public function test_user_cannot_create_post()
+    public function test_user_cannot_create_category_type()
     {
         $category = CategoryType::factory()->create();
 
@@ -106,9 +106,9 @@ class CategoryTypePolicyTest extends TestCase
     }
 
     /**
-     * test policy cannot update post
+     * test policy cannot update category type
      */
-    public function test_user_cannot_update_post()
+    public function test_user_cannot_update_category_type()
     {
         $category = CategoryType::factory()->create();
 
