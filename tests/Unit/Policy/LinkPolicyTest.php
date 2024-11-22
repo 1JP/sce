@@ -28,8 +28,6 @@ class LinkPolicyTest extends TestCase
      */
     public function test_user_can_delete_link()
     {
-        $comment = Comment::factory()->create();
-        dd($comment);
         $link = Link::factory()->create([
             'user_id' => $this->user
         ]);
