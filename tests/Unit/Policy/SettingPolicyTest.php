@@ -51,7 +51,7 @@ class SettingPolicyTest extends TestCase
     }
 
     /**
-     * test policy update indicative type
+     * test policy update setting
      */
     public function test_user_can_update_setting()
     {
@@ -62,18 +62,18 @@ class SettingPolicyTest extends TestCase
         ]);
 
         $this->assertTrue($this->userRoot->can('update', $setting));
-        $this->assertTrue($this->userAdmin->can('create', $setting));
+        $this->assertTrue($this->userAdmin->can('update', $setting));
     }
 
     /**
-     * test policy delete indicative type
+     * test policy delete setting
      */
     public function test_user_can_delete_setting()
     {
         $setting = Setting::factory()->create();
 
         $this->assertTrue($this->userRoot->can('delete', $setting));
-        $this->assertTrue($this->userAdmin->can('create', $setting));
+        $this->assertTrue($this->userAdmin->can('delete', $setting));
     }
 
     /**
