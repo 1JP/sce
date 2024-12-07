@@ -158,9 +158,9 @@
                 <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                     <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
-                    <li class="breadcrumb-item text-sm text-white active" aria-current="page">Cliente</li>
+                    <li class="breadcrumb-item text-sm text-white active" aria-current="page">Membros</li>
                 </ol>
-                <h6 class="font-weight-bolder text-white mb-0">Nome do cliente</h6>
+                <h6 class="font-weight-bolder text-white mb-0">Membros</h6>
                 </nav>
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                 <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -267,239 +267,168 @@
                 </div>
             </div>
         </nav>
-        <div class="card shadow-lg mx-4 card-profile-bottom">
-            <div class="card-body p-3">
-              <div class="row gx-4">
-                <div class="col-auto my-auto">
-                  <div class="h-100">
-                    <h5 class="mb-1">
-                      Sayo Kravits
-                    </h5>
+        <div class="container-fluid py-4">
+            <div class="row">
+              <div class="col-12">
+                <div class="card mb-4">
+                  <div class="card-header pb-0">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h6>Membros</h6>
+                        </div>
+                        <div class="col-lg-8 d-flex justify-content-end">
+                            <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#createAndEditCategoryModal">
+                                Cadastrar
+                            </button>
+                        </div>
+                    </div>
                   </div>
-                </div>
-                <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-                  <div class="nav-wrapper position-relative end-0">
-                    <ul class="nav nav-pills nav-fill p-1" role="tablist">
-                      <li class="nav-item">
-                        <a class="nav-link mb-0 px-0 py-1 active d-flex align-items-center justify-content-center " data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="true">
-                          <span class="ms-2">Editar</span>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mb-0 px-0 py-1 d-flex align-items-center justify-content-center " data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="false">
-                          <span class="ms-2">Assinatura</span>
-                        </a>
-                      </li>
-                    </ul>
+                  <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                      <table class="table align-items-center mb-0">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nome</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">E-mail</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Telefone</th>
+                            <th class="text-secondary opacity-7"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="d-flex px-2 py-1">
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 text-sm">John Michael</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h6 class="mb-0 text-sm">e-mail@gmail.com</h6>
+                                </td>
+                                <td class="align-middle text-center text-sm">
+                                    <span class="text-secondary text-xs font-weight-bold">(31) 99927-1156</span>
+                                </td>
+                                <td class="align-middle">
+                                    <button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="navbarDropdownMenuLink2">
+                                        <i class="fa fa-ellipsis-v text-xs"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                                        <li>
+                                            <a class="dropdown-item" href="#">
+                                                Editar
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                Excluir
+                                            </a>
+                                        </li>
+                                    </ul>                                  
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex px-2 py-1">
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 text-sm">John Michael</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h6 class="mb-0 text-sm">e-mail@gmail.com</h6>
+                                </td>
+                                <td class="align-middle text-center text-sm">
+                                    <span class="text-secondary text-xs font-weight-bold">(31) 99927-1156</span>
+                                </td>
+                                <td class="align-middle">
+                                    <button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="navbarDropdownMenuLink2">
+                                        <i class="fa fa-ellipsis-v text-xs"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                                        <li>
+                                            <a class="dropdown-item" href="#">
+                                                Editar
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                Excluir
+                                            </a>
+                                        </li>
+                                    </ul>                                  
+                                </td>
+                            </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="container-fluid py-4">
-            <div class="row">
-              <div class="col-md-8">
-                <div class="card">
-                  <div class="card-body">
-                    <p class="text-uppercase text-sm">Cliente</p>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="example-text-input" class="form-control-label">Nome</label>
-                          <input class="form-control" type="text" value="nome">
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="example-text-input" class="form-control-label">Usúario</label>
-                          <input class="form-control" type="email" value="nome do usuario">
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="example-text-input" class="form-control-label">Data de nascimento</label>
-                          <input class="form-control" type="date" value="1995-10-10">
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="example-text-input" class="form-control-label">CPF</label>
-                          <input class="form-control" type="text" value="131.766.888-45">
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="example-text-input" class="form-control-label">Telefone</label>
-                          <input class="form-control" type="text" value="(31) 99989-4516">
-                        </div>
-                      </div>
-                    </div>
-                    <hr class="horizontal dark">
-                    <p class="text-uppercase text-sm">Endereço</p>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group">
-                          <label for="example-text-input" class="form-control-label">Endereço</label>
-                          <input class="form-control" type="text" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label for="example-text-input" class="form-control-label">Cidade</label>
-                          <input class="form-control" type="text" value="New York">
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label for="example-text-input" class="form-control-label">Bairro</label>
-                          <input class="form-control" type="text" value="United States">
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label for="example-text-input" class="form-control-label">Postal code</label>
-                          <input class="form-control" type="text" value="437300">
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label for="example-text-input" class="form-control-label">Número</label>
-                          <input class="form-control" type="text" value="437300">
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label for="example-text-input" class="form-control-label">Complemento</label>
-                          <input class="form-control" type="text" value="437300">
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label for="example-text-input" class="form-control-label">Estado</label>
-                          <select class="form-control" name="" id="">
-                            <option>MG</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                        <button type="button" class="btn bg-gradient-info btn-block mb-3">
-                            Editar
-                        </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="card card-profile">
-                  <div class="row justify-content-center">
-                    <div class="col-4 col-lg-4 order-lg-2">
-                      <div class="mt-n4 mt-lg-n6 mb-4 mb-lg-0">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
-                  </div>
-                  <div class="card-body pt-0">
-                    <div class="row">
-                      <div class="col">
-                        <div class="d-flex justify-content-center">
-                          <div class="d-grid text-center">
-                            <span class="text-lg font-weight-bolder">22</span>
-                            <span class="text-sm opacity-8">Posts</span>
-                          </div>
-                          <div class="d-grid text-center mx-4">
-                            <span class="text-lg font-weight-bolder">10</span>
-                            <span class="text-sm opacity-8">Liks</span>
-                          </div>
-                          <div class="d-grid text-center mx-4">
-                            <span class="text-lg font-weight-bolder">89</span>
-                            <span class="text-sm opacity-8">Deslink</span>
-                          </div>
-                          <div class="d-grid text-center">
-                            <span class="text-lg font-weight-bolder">89</span>
-                            <span class="text-sm opacity-8">Comentarios</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="text-center mt-4">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-header mx-4 p-3 text-center">
-                                        <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
-                                            <i class="fas fa-landmark opacity-10"></i>
-                                        </div>
-                                    </div>
-                                    <div class="card-body pt-0 p-3 text-center">
-                                        <h6 class="text-center mb-0">Plano</h6>
-                                        <span class="text-xs">Belong Interactive</span>
-                                        <hr class="horizontal dark my-3">
-                                        <h5 class="mb-0">Ativo</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-header mx-4 p-3 text-center">
-                                        <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
-                                            <i class="ni ni-credit-card opacity-10"></i>
-                                        </div>
-                                    </div>
-                                    <div class="card-body pt-0 p-3 text-center">
-                                        <h6 class="text-center mb-0">Assinatura</h6>
-                                        <span class="text-xs">Freelance Payment</span>
-                                        <hr class="horizontal dark my-3">
-                                        <h5 class="mb-0">$455.00</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            <footer class="footer pt-3  ">
-              <div class="container-fluid">
-                <div class="row align-items-center justify-content-lg-between">
-                  <div class="col-lg-6 mb-lg-0 mb-4">
-                    <div class="copyright text-center text-sm text-muted text-lg-start">
-                      © <script>
-                        document.write(new Date().getFullYear())
-                      </script>,
-                      made with <i class="fa fa-heart"></i> by
-                      <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
-                      for a better web.
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                      <li class="nav-item">
-                        <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About Us</a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">License</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </footer>
-          </div>
+        </div>
     </main>
+
+    <div class="modal fade" id="createAndEditCategoryModal" tabindex="-1" role="dialog" aria-labelledby="createAndEditCategoryModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="createAndEditCategoryModal">Cadastrar Membro</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group has-success">
+                        <input type="text" placeholder="Nome" class="form-control is-valid" />
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="form-group has-danger">
+                        <input type="email" placeholder="Nome" class="form-control is-invalid" />
+                      </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group has-success">
+                          <input type="text" placeholder="E-mail" class="form-control is-valid" />
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group has-danger">
+                          <input type="email" placeholder="E-mail" class="form-control is-invalid" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group has-success">
+                          <input type="text" placeholder="Telefone" class="form-control is-valid" />
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group has-danger">
+                          <input type="email" placeholder="Telefone" class="form-control is-invalid" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn bg-gradient-primary">Save</button>
+            </div>
+          </div>
+        </div>
+    </div>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Excluir Cliente</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Excluir Membro</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -507,8 +436,7 @@
             <div class="modal-body">
                 <div class="py-3 text-center">
                     <i class="ni ni-bell-55 ni-3x"></i>
-                    <h4 class="text-gradient text-danger mt-4">Deseja excluir essa Cliente?</h4>
-                    <p>Todos os posts relacionados a essa Cliente será excluidos também</p>
+                    <h4 class="text-gradient text-danger mt-4">Deseja excluir essa Membro?</h4>
                 </div>
             </div>
             <div class="modal-footer">
