@@ -13,10 +13,10 @@ import { createApp } from 'vue';
  * to use in your application's views. An example is included for you.
  */
 
-const app = createApp({});
+const app = createApp();
 
-import ExampleComponent from './components/ExampleComponent.vue';
-app.component('example-component', ExampleComponent);
+app.component('admin-navbar', require('./components/admin/NavBar.vue').default);
+app.component('admin-nav', require('./components/admin/Nav.vue').default);
 
 /**
  * The following block of code may be used to automatically register your
