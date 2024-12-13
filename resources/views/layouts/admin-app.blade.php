@@ -24,9 +24,17 @@
 <body class="g-sidenav-show   bg-gray-100">
     <div id="app">
         <div class="min-height-300 bg-primary position-absolute w-100"></div>
-        <admin-navbar/>
+        <admin-navbar></admin-navbar>
+        <main class="main-content position-relative border-radius-lg ">
+            <admin-header>
+                @yield('breadcrumb')
+            </admin-header>
+            <div class="container-fluid py-4">
+                @yield('content')
+                <admin-footer></admin-footer>
+            </div>
+        </main>
     </div>
-
     <script src="{{ asset('admin/js/core/popper.min.js') }}"></script>
     <script src="{{ asset('admin/js/core/bootstrap.min.js') }}"></script>
     <script src="{{ asset('admin/js/plugins/perfect-scrollbar.min.js') }}"></script>

@@ -17,7 +17,10 @@ const app = createApp();
 
 app.component('admin-navbar', require('./components/admin/NavBar.vue').default);
 app.component('admin-nav', require('./components/admin/Nav.vue').default);
-
+app.component('admin-footer', require('./components/admin/Footer.vue').default);
+app.component('admin-header', require('./components/admin/Header.vue').default);
+app.component('admin-card-info', require('./components/admin/CardInfo.vue').default)
+app.component('breadcrumb', require('./components/Breadcrumb.vue').default)
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
