@@ -63,6 +63,10 @@
                     </p>
                 </div>
                 <div class="card-body p-3">
+                    <admin-chart-line
+                        :labels='{!! json_encode(["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]) !!}'
+                        :datasets='{!! json_encode(["50", "40", "300", "220", "500", "250", "400", "230", "500"]) !!}'
+                    ></admin-chart-line>
                 </div>
             </div>
         </div>
@@ -76,6 +80,23 @@
                     </p>
                 </div>
                 <div class="card-body p-3">
+                    <admin-chart-line-grandient
+                        :labels='{!! json_encode(["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]) !!}'
+                        :datasets='{!! json_encode([
+                            [
+                                "label" => "Dataset 1",
+                                "data" => [50, 40, 300, 220, 500, 250, 400, 230, 500, 600, 700, 800],
+                                "borderColor" => "#FF5733",
+                                "backgroundColor" => "rgba(255, 87, 51, 0.2)"
+                            ],
+                            [
+                                "label" => "Dataset 2",
+                                "data" => [40, 40, 150, 200, 300, 100, 30, 20, 50, 60, 70, 80],
+                                "borderColor" => "#33FF57",
+                                "backgroundColor" => "rgba(51, 255, 87, 0.2)"
+                            ]
+                        ]) !!}'
+                    ></admin-chart-line-grandient>
                 </div>
             </div>
         </div>
