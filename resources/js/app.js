@@ -24,6 +24,14 @@ app.component('admin-chart-line', require('./components/admin/chart/chart-line.v
 app.component('admin-chart-line-grandient', require('./components/admin/chart/chart-line-chart-gradient.vue').default);
 app.component('admin-list-group-item', require('./components/admin/ListGroupItem.vue').default);
 app.component('admin-table', require('./components/table/Table.vue').default);
+app.component('admin-filter-select', require('./components/filter/SelectFilter.vue').default);
+app.component('admin-filter-input', require('./components/filter/InputFilter.vue').default);
+app.component('admin-thead', require('./components/table/Thead.vue').default);
+app.component('admin-tr', require('./components/table/Tr.vue').default);
+app.component('component-td', require('./components/table/Td.vue').default);
+app.component('component-span-status', require('./components/SpanStatus.vue').default);
+app.component('component-dropdown', require('./components/Dropdown.vue').default);
+app.component('component-dropdown-item', require('./components/Dropdown-item.vue').default);
 
 app.component('breadcrumb', require('./components/Breadcrumb.vue').default);
 
