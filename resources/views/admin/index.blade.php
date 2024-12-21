@@ -53,7 +53,7 @@
         @endforeach
     </div>
     <div class="row mt-4">
-        <div class="col-lg-7 mb-lg-0 mb-4">
+        <div class="col-lg-6 mb-lg-0 mb-4">
             <div class="card z-index-2 h-100">
                 <div class="card-header pb-0 pt-3 bg-transparent">
                     <h6 class="text-capitalize">Comentários</h6>
@@ -70,10 +70,15 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-5">
+        <div class="col-lg-6">
             <div class="card z-index-2 h-100">
                 <div class="card-header pb-0 pt-3 bg-transparent">
-                    <h6 class="text-capitalize">Like e Deslike</h6>
+                    <h6 class="text-capitalize">
+                        Like 
+                        <span class="badge rounded-circle" style="background-color: rgba(51, 255, 87, 0.2); width: 12px; height: 12px; display: inline-block;"></span> 
+                        Deslike
+                        <span class="badge rounded-circle" style="background-color: rgba(255, 87, 51, 0.2); width: 12px; height: 12px; display: inline-block;"></span>
+                    </h6>
                     <p class="text-sm mb-0">
                         <i class="fa fa-arrow-up text-success"></i>
                         <span class="font-weight-bold">4% more</span> in 2024
@@ -84,16 +89,18 @@
                         :labels='{!! json_encode(["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]) !!}'
                         :datasets='{!! json_encode([
                             [
-                                "label" => "Dataset 1",
+                                "label" => "Like",
                                 "data" => [50, 40, 300, 220, 500, 250, 400, 230, 500, 600, 700, 800],
                                 "borderColor" => "#FF5733",
-                                "backgroundColor" => "rgba(255, 87, 51, 0.2)"
+                                "backgroundColor" => "rgba(51, 255, 87, 0.2)",
+                                "tension" => 0.4
                             ],
                             [
-                                "label" => "Dataset 2",
+                                "label" => "Deslike",
                                 "data" => [40, 40, 150, 200, 300, 100, 30, 20, 50, 60, 70, 80],
                                 "borderColor" => "#33FF57",
-                                "backgroundColor" => "rgba(51, 255, 87, 0.2)"
+                                "backgroundColor" => "rgba(255, 87, 51, 0.2)",
+                                "tension" => 0.4
                             ]
                         ]) !!}'
                     ></admin-chart-line-grandient>

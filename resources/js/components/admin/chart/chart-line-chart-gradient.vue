@@ -30,30 +30,20 @@
 
                 // Gradients for each dataset
                 const gradient1 = ctx.createLinearGradient(0, 0, 0, 400);
-                gradient1.addColorStop(0, "rgba(255, 99, 132, 0.5)");
-                gradient1.addColorStop(1, "rgba(255, 99, 132, 0)");
+                gradient1.addColorStop(1, 'rgba(94, 114, 228, 0.2)');
+                gradient1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
+                gradient1.addColorStop(0, 'rgba(94, 114, 228, 0)');
 
                 const gradient2 = ctx.createLinearGradient(0, 0, 0, 400);
-                gradient2.addColorStop(0, "rgba(54, 162, 235, 0.5)");
-                gradient2.addColorStop(1, "rgba(54, 162, 235, 0)");
+                gradient2.addColorStop(1, 'rgba(94, 114, 228, 0.2)');
+                gradient2.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
+                gradient2.addColorStop(0, 'rgba(94, 114, 228, 0)');
 
                 const chartData = {
                     labels: this.labels,
                     datasets: [
-                        {
-                            label: "Dataset 1",
-                            data: this.datasets[0],
-                            borderColor: "rgba(255, 99, 132, 1)",
-                            backgroundColor: gradient1,
-                            fill: true,
-                        },
-                        {
-                            label: "Dataset 2",
-                            data: this.datasets[1],
-                            borderColor: "rgba(54, 162, 235, 1)",
-                            backgroundColor: gradient2,
-                            fill: true,
-                        },
+                        this.datasets[0],
+                        this.datasets[1],
                     ],
                 };
 
@@ -61,22 +51,63 @@
                     type: "line",
                     data: chartData,
                     options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: "top",
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                labels: {
+                                    color: 'rgb(255, 99, 132)'
+                                }
+                            }
                         },
-                        title: {
-                            display: true,
-                            text: "Line Chart with Gradients",
+                        interaction: {
+                            intersect: false,
+                            mode: 'index',
                         },
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
+                        scales: {
+                            y: {
+                                grid: {
+                                    drawBorder: false,
+                                    display: true,
+                                    drawOnChartArea: true,
+                                    drawTicks: false,
+                                    borderDash: [5, 5]
+                                },
+                                ticks: {
+                                    display: true,
+                                    padding: 10,
+                                    color: '#fbfbfb',
+                                    font: {
+                                        size: 11,
+                                        family: "Open Sans",
+                                        style: 'normal',
+                                        lineHeight: 2
+                                    },
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    drawBorder: false,
+                                    display: false,
+                                    drawOnChartArea: false,
+                                    drawTicks: false,
+                                    borderDash: [5, 5]
+                                },
+                                ticks: {
+                                    display: true,
+                                    color: '#ccc',
+                                    padding: 20,
+                                    font: {
+                                        size: 11,
+                                        family: "Open Sans",
+                                        style: 'normal',
+                                        lineHeight: 2
+                                    },
+                                }
+                            }
                         },
-                    },
-                    },
+                    }
                 };
 
                 new Chart(ctx, config);
