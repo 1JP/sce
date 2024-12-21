@@ -8,6 +8,7 @@
         <title>
             SCE - Área administrativa
         </title>
+        @routes
         <!--     Fonts and icons     -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
         <!-- Nucleo Icons -->
@@ -24,7 +25,21 @@
 <body class="g-sidenav-show   bg-gray-100">
     <div id="app">
         <div class="min-height-300 bg-primary position-absolute w-100"></div>
-        <admin-navbar></admin-navbar>
+        <admin-navbar
+            :navs='{!! json_encode([
+                ["route" => route("admin.dashboard"), "icon" => "ni ni-tv-2", "name" => "Dashboard", "view" => true],
+                ["route" => "#", "icon" => "ni ni-archive-2", "name" => "Categorias", "view" => true],
+                ["route" => "#", "icon" => "ni ni-archive-2", "name" => "Tipos de Categorias", "view" => true],
+                ["route" => "#", "icon" => "ni ni-bullet-list-67", "name" => "Posts", "view" => true],
+                ["route" => "#", "icon" => "ni ni-istanbul", "name" => "Classificação Indicativas", "view" => true],
+                ["route" => "#", "icon" => "ni ni-credit-card", "name" => "Assinatura", "view" => true],
+                ["route" => "#", "icon" => "ni ni-user-run", "name" => "Clientes", "view" => true],
+                ["route" => "#", "icon" => "ni ni-badge", "name" => "Membros", "view" => true],
+                ["route" => "#", "icon" => "ni ni-folder-17", "name" => "Logs", "view" => true],
+                ["route" => "#", "icon" => "ni ni-settings-gear-65", "name" => "Permissões", "view" => true],
+            ]) !!}'
+        ></admin-navbar>
+    
         <main class="main-content position-relative border-radius-lg ">
             <admin-header>
                 @yield('breadcrumb')
