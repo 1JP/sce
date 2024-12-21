@@ -22,6 +22,8 @@ app.component('admin-header', require('./components/admin/Header.vue').default);
 app.component('admin-card-info', require('./components/admin/CardInfo.vue').default);
 app.component('admin-chart-line', require('./components/admin/chart/chart-line.vue').default);
 app.component('admin-chart-line-grandient', require('./components/admin/chart/chart-line-chart-gradient.vue').default);
+app.component('admin-list-group-item', require('./components/admin/ListGroupItem.vue').default);
+app.component('admin-table', require('./components/table/Table.vue').default);
 
 app.component('breadcrumb', require('./components/Breadcrumb.vue').default);
 

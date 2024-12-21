@@ -108,4 +108,70 @@
             </div>
         </div>
     </div>
+    <div class="row mt-4">
+        <div class="col-lg-7 mb-lg-0 mb-4">
+            <div class="card ">
+                <div class="card-header pb-0 p-3">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="mb-2">Posts</h6>
+                    </div>
+                </div>
+                <admin-table>
+                    <template v-slot:tbody>
+                        <tr>
+                            <td class="w-30">
+                              <div class="d-flex px-2 py-1 align-items-center">
+                                <div class="ms-4">
+                                  <p class="text-xs font-weight-bold mb-0">Post:</p>
+                                  <h6 class="text-sm mb-0">Nome do post</h6>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="text-center">
+                                <p class="text-xs font-weight-bold mb-0">Link:</p>
+                                <h6 class="text-sm mb-0">2500</h6>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="text-center">
+                                <p class="text-xs font-weight-bold mb-0">Deslink:</p>
+                                <h6 class="text-sm mb-0">230</h6>
+                              </div>
+                            </td>
+                            <td class="align-middle text-sm">
+                              <div class="col text-center">
+                                <p class="text-xs font-weight-bold mb-0">Comentários positivo:</p>
+                                <h6 class="text-sm mb-0">29.9%</h6>
+                              </div>
+                            </td>
+                            <td class="align-middle text-sm">
+                              <div class="col text-center">
+                                <p class="text-xs font-weight-bold mb-0">Comentários negativo:</p>
+                                <h6 class="text-sm mb-0">29.9%</h6>
+                              </div>
+                            </td>
+                        </tr>
+                    </template>
+                </admin-table>
+            </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="card">
+            <div class="card-header pb-0 p-3">
+              <h6 class="mb-0">Categorias</h6>
+            </div>
+            <div class="card-body p-3">
+                <ul class="list-group">
+                    <admin-list-group-item
+                        :name="'Opa'"
+                        :route="'#'"
+                        :number="'10'"
+                    >
+                    </admin-list-group-item>
+                </ul>
+            </div>
+          </div>
+        </div>
+    </div>
 @endsection
