@@ -97,8 +97,8 @@
                                         <component-dropdown-item name="Editar" :route="'{{ route('admin.posts.edit', 1) }}'"></component-dropdown-item>
                                         <component-dropdown-item name="Excluir" target="#destoryPost"></component-dropdown-item>
                                         <li><hr class="dropdown-divider"></li>
-                                        <component-dropdown-item name="Relatorio Geral" :route="'#'"></component-dropdown-item>
-                                        <component-dropdown-item name="Relatorio de Comentarios" :route="'#'"></component-dropdown-item>
+                                        <component-dropdown-item name="Relatório Geral" :route="'{{ route('admin.report.general') }}'"></component-dropdown-item>
+                                        <component-dropdown-item name="Relatório de Comentarios" :route="'{{ route('admin.report.comment') }}'"></component-dropdown-item>
                                     </component-dropdown>
                                 </component-td>
                             </admin-tr>
