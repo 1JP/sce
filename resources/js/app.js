@@ -33,6 +33,7 @@ app.component('component-span-status', require('./components/SpanStatus.vue').de
 app.component('component-dropdown', require('./components/Dropdown.vue').default);
 app.component('component-dropdown-item', require('./components/Dropdown-item.vue').default);
 
+app.component('fixed-bottom', require('./components/FixedBottom.vue').default);
 app.component('breadcrumb', require('./components/Breadcrumb.vue').default);
 app.component('model', require('./components/Model.vue').default);
 /**
