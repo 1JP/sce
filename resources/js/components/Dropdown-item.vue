@@ -1,6 +1,6 @@
 <template>
     <li>
-        <a v-if="route" class="dropdown-item" href="#">
+        <a v-if="route" class="dropdown-item" :href="route">
             {{ name }}
         </a>
         <a v-else class="dropdown-item" href="#" data-bs-toggle="modal" :data-bs-target="target">

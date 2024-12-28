@@ -8,7 +8,6 @@
             </li>
             <li v-for="(item, index) in items" :key="index" class="breadcrumb-item text-sm text-white active">
                 <a v-if="item.route" :href="item.route" class="opacity-5 text-white">
-                    <i v-if="index === 0" class="fa fa-fw fa-home mr-2"></i>
                     {{ item.name }}
                 </a>
                 <span v-else>
