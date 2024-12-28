@@ -30,8 +30,9 @@
             :navs='{!! json_encode([
                 ["route" => route("admin.dashboard"), "icon" => "ni ni-tv-2", "name" => "Dashboard", "view" => true],
                 ["route" => route("admin.categorias.index"), "icon" => "ni ni-archive-2", "name" => "Categorias", "view" => true],
-                ["route" => "#", "icon" => "ni ni-archive-2", "name" => "Tipos de Categorias", "view" => true],
+                ["route" => route("admin.tipos-de-categorias.index"), "icon" => "ni ni-archive-2", "name" => "Tipos de Categorias", "view" => true],
                 ["route" => "#", "icon" => "ni ni-bullet-list-67", "name" => "Posts", "view" => true],
+                ["route" => "#", "icon" => "ni ni-bullet-list-67", "name" => "Planos", "view" => true],
                 ["route" => "#", "icon" => "ni ni-istanbul", "name" => "Classificação Indicativas", "view" => true],
                 ["route" => "#", "icon" => "ni ni-credit-card", "name" => "Assinatura", "view" => true],
                 ["route" => "#", "icon" => "ni ni-user-run", "name" => "Clientes", "view" => true],
