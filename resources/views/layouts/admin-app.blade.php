@@ -34,7 +34,7 @@
                 ["route" => route("admin.categorias.index"), "icon" => "ni ni-archive-2", "name" => "Categorias", "view" => true],
                 ["route" => route("admin.tipos-de-categorias.index"), "icon" => "ni ni-archive-2", "name" => "Tipos de Categorias", "view" => true],
                 ["route" => route("admin.posts.index"), "icon" => "ni ni-bullet-list-67", "name" => "Posts", "view" => true],
-                ["route" => "#", "icon" => "ni ni-bullet-list-67", "name" => "Planos", "view" => true],
+                ["route" => route("admin.planos.index"), "icon" => "ni ni-bullet-list-67", "name" => "Planos", "view" => true],
                 ["route" => "#", "icon" => "ni ni-istanbul", "name" => "Classificação Indicativas", "view" => true],
                 ["route" => "#", "icon" => "ni ni-credit-card", "name" => "Assinatura", "view" => true],
                 ["route" => "#", "icon" => "ni ni-user-run", "name" => "Clientes", "view" => true],
