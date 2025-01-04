@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CategoryTypeController;
+use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\IndicativeRatingController;
 use App\Http\Controllers\Admin\PlanController;
@@ -20,6 +21,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/relatorio-comentarios', [ReportController::class, 'commentReport'])->name('comment');
     });
     Route::resource('/planos', PlanController::class);
-    Route::resource('classificacao-indicativas', IndicativeRatingController::class);
-    Route::resource('assinaturas', SubscriptionController::class);
+    Route::resource('/classificacao-indicativas', IndicativeRatingController::class);
+    Route::resource('/assinaturas', SubscriptionController::class);
+    Route::resource('/clientes', ClientController::class);
 });

@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div :class="['card', classCard]">
         <div :class="['card-header', classHeader]" v-if="cardHeader">
             <slot name="header" />
         </div>
@@ -39,6 +39,10 @@ export default {
             type: String,
             default: '',
         },
+        classCard: {
+            type: String,
+            default: '',
+        }
     },
 };
 </script>
