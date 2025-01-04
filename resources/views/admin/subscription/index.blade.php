@@ -107,7 +107,7 @@
                                                         Excluir Assinatura
                                                     </button>
                                                     <hr class="horizontal dark my-3">
-                                                    <a href="#" class="btn bg-gradient-info btn-block mb-3">
+                                                    <a href="{{ route('admin.assinaturas.edit', 1) }}" class="btn bg-gradient-info btn-block mb-3">
                                                         Editar Assinatura
                                                     </a>
                                                 </template>
