@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
@@ -30,5 +31,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('/membros', MemberController::class);
     Route::resource('/logs', LogController::class);
     Route::resource('/perimissoes', PermissionController::class);
-    
+    Route::resource('/configuracoes', SettingController::class);
 });

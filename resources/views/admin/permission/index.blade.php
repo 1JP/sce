@@ -64,6 +64,7 @@
                                     <component-dropdown :name="'dropdown-index-client'">
                                         <component-dropdown-item name="Editar" :route="'{{ route('admin.perimissoes.edit', 1) }}'"></component-dropdown-item>
                                         <component-dropdown-item name="Excluir" target="#destroyMemberModal"></component-dropdown-item>
+                                    </component-dropdown>
                                 </component-td>
                             </admin-tr>
                         </template>

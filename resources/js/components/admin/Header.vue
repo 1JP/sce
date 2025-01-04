@@ -7,8 +7,8 @@
                 <ul class="navbar-nav  justify-content-end">
                     <li class="nav-item d-flex align-items-center">
                         <a href="javascript:;" class="nav-link text-white font-weight-bold px-0">
-                            <i class="fa fa-user me-sm-1"></i>
-                            <span class="d-sm-inline d-none">Sign In</span>
+                            <i class="fa fa-sign-out me-sm-1"></i>
+                            <span class="d-sm-inline d-none">Logout</span>
                         </a>
                     </li>
                     <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
@@ -21,7 +21,7 @@
                         </a>
                     </li>
                     <li class="nav-item px-3 d-flex align-items-center">
-                        <a href="javascript:;" class="nav-link text-white p-0">
+                        <a :href="routeSetting" class="nav-link text-white p-0">
                             <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
                         </a>
                     </li>
@@ -32,5 +32,11 @@
 </template>
 
 <script>
-    export default {}
+    export default {
+        data(){
+            return {
+                routeSetting: route('admin.configuracoes.create')
+            }
+        }
+    }
 </script>
