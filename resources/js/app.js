@@ -36,6 +36,11 @@ app.component('component-dropdown', require('./components/Dropdown.vue').default
 app.component('component-dropdown-item', require('./components/Dropdown-item.vue').default);
 app.component('component-card', require('./components/Card.vue').default);
 
+app.component('site-header', require('./components/site/Header.vue').default);
+app.component('site-social-links', require('./components/site/SocialLinks.vue').default);
+app.component('site-nav-bar', require('./components/site/NavBar.vue').default);
+app.component('site-nav', require('./components/site/Nav.vue').default);
+
 app.component('list-group', require('./components/ListGroup.vue').default);
 app.component('list-group-item', require('./components/ListGroup-item.vue').default);
 app.component('fixed-bottom', require('./components/FixedBottom.vue').default);
