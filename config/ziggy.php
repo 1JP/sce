@@ -2,6 +2,7 @@
 
 return [
     'only' => [
-        'admin.*'
+        'admin.*',
+        'home',
     ],
 ];

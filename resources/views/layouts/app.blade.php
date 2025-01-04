@@ -19,11 +19,13 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('site/icomoon/icomoon.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('site/css/vendor.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('site/css/style.css') }}">
+
+        @yield('css')
     </head>
-    @yield('css')
     <body data-bs-spy="scroll" data-bs-target="#header" tabindex="0">
         <div id="app">
             <site-header></site-header>
+            @yield('content')
             <footer id="footer">
                 <div class="container">
                     <div class="row">

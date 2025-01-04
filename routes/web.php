@@ -13,7 +13,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SubscriptionController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,3 +36,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('/configuracoes', SettingController::class);
     Route::resource('/profiles', ProfileController::class);
 });
+
+Route::get("/", [HomeController::class, 'index'])->name('home');
