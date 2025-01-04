@@ -38,7 +38,7 @@
                 ["route" => route("admin.classificacao-indicativas.index"), "icon" => "ni ni-istanbul", "name" => "Classificação Indicativas", "view" => true],
                 ["route" => route("admin.assinaturas.index"), "icon" => "ni ni-credit-card", "name" => "Assinatura", "view" => true],
                 ["route" => route("admin.clientes.index"), "icon" => "ni ni-user-run", "name" => "Clientes", "view" => true],
-                ["route" => "#", "icon" => "ni ni-badge", "name" => "Membros", "view" => true],
+                ["route" => route("admin.membros.index"), "icon" => "ni ni-badge", "name" => "Membros", "view" => true],
                 ["route" => "#", "icon" => "ni ni-folder-17", "name" => "Logs", "view" => true],
                 ["route" => "#", "icon" => "ni ni-settings-gear-65", "name" => "Permissões", "view" => true],
             ]) !!}'

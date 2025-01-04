@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryTypeController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\IndicativeRatingController;
+use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\SubscriptionController;
@@ -24,4 +25,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('/classificacao-indicativas', IndicativeRatingController::class);
     Route::resource('/assinaturas', SubscriptionController::class);
     Route::resource('/clientes', ClientController::class);
+    Route::resource('/membros', MemberController::class);
+    
 });
