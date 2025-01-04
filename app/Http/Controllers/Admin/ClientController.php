@@ -51,7 +51,7 @@ class ClientController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('admin.client.edit');
     }
 
     /**
