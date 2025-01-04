@@ -28,11 +28,16 @@ app.component('admin-filter-select', require('./components/filter/SelectFilter.v
 app.component('admin-filter-input', require('./components/filter/InputFilter.vue').default);
 app.component('admin-thead', require('./components/table/Thead.vue').default);
 app.component('admin-tr', require('./components/table/Tr.vue').default);
+app.component('admin-subscription-info', require('./components/admin/SubscriptionInfo.vue').default);
+
 app.component('component-td', require('./components/table/Td.vue').default);
 app.component('component-span-status', require('./components/SpanStatus.vue').default);
 app.component('component-dropdown', require('./components/Dropdown.vue').default);
 app.component('component-dropdown-item', require('./components/Dropdown-item.vue').default);
+app.component('component-card', require('./components/Card.vue').default);
 
+app.component('list-group', require('./components/ListGroup.vue').default);
+app.component('list-group-item', require('./components/ListGroup-item.vue').default);
 app.component('fixed-bottom', require('./components/FixedBottom.vue').default);
 app.component('breadcrumb', require('./components/Breadcrumb.vue').default);
 app.component('model', require('./components/Model.vue').default);
