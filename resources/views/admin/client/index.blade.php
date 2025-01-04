@@ -68,7 +68,7 @@
                                 </component-td>
                                 <component-td :class="'align-middle'">
                                     <component-dropdown :name="'dropdown-index-client'">
-                                        <component-dropdown-item name="Visualizar" :route="'{{ route('admin.posts.show', 1) }}'"></component-dropdown-item>
+                                        <component-dropdown-item name="Visualizar" :route="'{{ route('admin.clientes.show', 1) }}'"></component-dropdown-item>
                                         <component-dropdown-item name="Editar" :route="'{{ route('admin.clientes.edit', 1) }}'"></component-dropdown-item>
                                         <component-dropdown-item name="Excluir" target="#destoryPost"></component-dropdown-item>
                                 </component-td>

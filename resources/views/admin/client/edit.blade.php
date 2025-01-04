@@ -101,9 +101,9 @@
                                 <button type="button" class="btn bg-gradient-info m-1">
                                     Editar
                                 </button>
-                                <button type="button" class="btn bg-gradient-secondary m-1">
+                                <a href="{{ route('admin.clientes.show', 1) }}" class="btn bg-gradient-secondary m-1">
                                     Visualizar
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
