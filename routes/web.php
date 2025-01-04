@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\IndicativeRatingController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,4 +21,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
     Route::resource('/planos', PlanController::class);
     Route::resource('classificacao-indicativas', IndicativeRatingController::class);
+    Route::resource('assinaturas', SubscriptionController::class);
 });
