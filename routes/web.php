@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\IndicativeRatingController;
 use App\Http\Controllers\Admin\LogController;
 use App\Http\Controllers\Admin\MemberController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\SubscriptionController;
@@ -28,4 +29,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('/clientes', ClientController::class);
     Route::resource('/membros', MemberController::class);
     Route::resource('/logs', LogController::class);
+    Route::resource('/perimissoes', PermissionController::class);
+    
 });

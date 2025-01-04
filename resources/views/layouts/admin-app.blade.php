@@ -40,7 +40,7 @@
                 ["route" => route("admin.clientes.index"), "icon" => "ni ni-user-run", "name" => "Clientes", "view" => true],
                 ["route" => route("admin.membros.index"), "icon" => "ni ni-badge", "name" => "Membros", "view" => true],
                 ["route" => route("admin.logs.index"), "icon" => "ni ni-folder-17", "name" => "Logs", "view" => true],
-                ["route" => "#", "icon" => "ni ni-settings-gear-65", "name" => "Permissões", "view" => true],
+                ["route" => route("admin.perimissoes.index"), "icon" => "ni ni-settings-gear-65", "name" => "Permissões", "view" => true],
             ]) !!}'
         ></admin-navbar>
     
