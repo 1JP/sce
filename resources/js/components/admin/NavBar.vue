@@ -38,14 +38,15 @@
                 type: Array,
                 required: true,
                 default: () => [],
+            },
+            accounts: {
+                type: Array,
+                required: true,
+                default: () => [],
             }
         },
         data(){
-            return {
-                accounts: [
-                    {route: '#', icon: 'ni ni-single-02', name: 'Profile', view: true },
-                ]
-            }
+            return {}
         }
     }
 </script>

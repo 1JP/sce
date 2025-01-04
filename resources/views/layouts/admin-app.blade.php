@@ -42,6 +42,9 @@
                 ["route" => route("admin.logs.index"), "icon" => "ni ni-folder-17", "name" => "Logs", "view" => true],
                 ["route" => route("admin.perimissoes.index"), "icon" => "ni ni-settings-gear-65", "name" => "Permissões", "view" => true],
             ]) !!}'
+            :accounts='{!! json_encode([
+                ["route" => route("admin.profiles.index"), "icon" => "ni ni-single-02", "name" => 'Profile', "view" => true]
+            ])!!}'
         ></admin-navbar>
     
         <main class="main-content position-relative border-radius-lg ">
