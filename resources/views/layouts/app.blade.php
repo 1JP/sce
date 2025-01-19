@@ -109,7 +109,6 @@
             integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
             crossorigin="anonymous"></script>
         <script src="{{ asset('js/plugins.js') }}"></script>
-        <script src="{{ asset('js/script.js') }}"></script>
         <script src="{{ mix('/js/app.js') }}" type="text/javascript"></script>
     </body>
 </html>

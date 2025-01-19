@@ -40,6 +40,8 @@ app.component('site-header', require('./components/site/Header.vue').default);
 app.component('site-social-links', require('./components/site/SocialLinks.vue').default);
 app.component('site-nav-bar', require('./components/site/NavBar.vue').default);
 app.component('site-nav', require('./components/site/Nav.vue').default);
+app.component('site-post', require('./components/site/Post.vue').default);
+app.component('site-plan', require('./components/site/Plan.vue').default);
 
 app.component('list-group', require('./components/ListGroup.vue').default);
 app.component('list-group-item', require('./components/ListGroup-item.vue').default);

@@ -51,5 +51,53 @@
     </div>
 
 </section>
+<section id="popular-books" class="bookshelf ">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-header align-center">
+                    <h2 class="section-title">Popular</h2>
+                </div>
 
+                <ul class="tabs">
+                    <li data-tab-target="#all-genre" class="active tab">All Genre</li>
+                    <li data-tab-target="#business" class="tab">Livros</li>
+                    <li data-tab-target="#technology" class="tab">Series</li>
+                    <li data-tab-target="#romantic" class="tab">Filmes</li>
+                    <li data-tab-target="#adventure" class="tab">Animes</li>
+                    <li data-tab-target="#fictional" class="tab">Mangás</li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="all-genre" data-tab-content class="active">
+                        <site-post></site-post>
+                    </div>
+                    <div id="business" data-tab-content>
+                        <site-post></site-post>
+                    </div>
+                    <div id="technology" data-tab-content>
+                        <site-post></site-post>
+                    </div>
+                    <div id="romantic" data-tab-content>
+                        <site-post></site-post>
+                    </div>
+                    <div id="adventure" data-tab-content>
+                        <site-post></site-post>
+                    </div>
+                    <div id="fictional" data-tab-content>
+                        <site-post></site-post>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="row">
+        <div class="text-center mx-auto col-md-12">
+            <h1 class="section-title">Planos</h1>
+        </div>
+    </div>
+    <site-plan></site-plan>
+</div>
 @endsection

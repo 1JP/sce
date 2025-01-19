@@ -56,8 +56,20 @@
                 links : [
                     { route: "#", icon: "icon icon-facebook", name: "Facebook" },
                 ],
-                routeHome: route('home')
+                routeHome: route('home'),
+				routeScript: 'http://127.0.0.1:8000/js/script.js',
             }
-        }
+        },
+		methods: {
+			loadScript() {
+				const script = document.createElement('script');
+				script.src = this.routeScript;
+				script.async = true;
+				document.body.appendChild(script);
+			}
+		},
+		mounted() {
+			this.loadScript();
+		},
     }
 </script>
