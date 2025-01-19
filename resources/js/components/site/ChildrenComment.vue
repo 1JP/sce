@@ -59,7 +59,7 @@
         },
         components: {
             // A importação dinâmica ajuda a evitar problemas de dependência circular
-            ChildrenComment: () => import('./ChildrenComment.vue'),
+            ChildrenComment: () => import('./ReplyComment.vue'),
         },
     }
 </script>

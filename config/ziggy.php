@@ -4,5 +4,6 @@ return [
     'only' => [
         'admin.*',
         'home',
+        'posts.*',
     ],
 ];
