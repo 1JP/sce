@@ -58,7 +58,7 @@
       <div class="row mx-0">
         <div class="col-md-12 px-0">
             <breadcrumb :items='@json([
-                [ "name" => "LIVROS", "route" => "#" ],
+                [ "name" => "LIVROS", "route" => route('categorias.index') ],
                 [ "name" => "Batman o cavaleiro das trevas"]
             ])' :icone="'bi bi-house-door text-muted'"
             :text-color="''"></breadcrumb>

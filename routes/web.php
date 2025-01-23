@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SiteCategoryController;
 use App\Http\Controllers\SitePostController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,3 +41,4 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 Route::get("/", [HomeController::class, 'index'])->name('home');
 Route::resource('/posts', SitePostController::class);
+Route::resource('/categorias', SiteCategoryController::class);
