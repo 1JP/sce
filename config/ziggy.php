@@ -5,6 +5,7 @@ return [
         'admin.*',
         'home',
         'posts.*',
-        'categorias.*'
+        'categorias.*',
+        'pagamento.*'
     ],
 ];

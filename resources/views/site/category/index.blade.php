@@ -120,4 +120,26 @@
         </div>
     </div>
 </div>
+
+<model :title="'Filtrar por'" :name="'filtros'" :class-header="'bg-primary rounded-0'">
+    <div class="row mx-auto">
+        <div class="col-md-12">
+            <a class="btn btn-light rounded m-2" href="#">Nome A
+                <i class="bi bi-x-circle text-primary ml-2"></i>
+            </a>
+            <a class="btn btn-light rounded m-2" href="#">
+                Nome B
+                <i class="bi bi-x-circle text-primary ml-2"></i>
+            </a>
+        </div>
+    </div>
+    <div class="row mx-auto">
+      <div class="col-md-12 pt-2 pb-4"><a class="btn btn-outline-dark btn-block" href="#">Limpar filtro</a></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 d-lg-block">
+            <component-accordion/>
+        </div>
+    </div>
+</model>
 @endsection
