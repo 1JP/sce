@@ -13,13 +13,19 @@
                         </a>
                     </list-group-item>
                     <list-group-item :class-item="'list-group-item-action'" style="background: #EDEBE4;">
-                        Área administrativa
+                        <a href="#">
+                            Área administrativa
+                        </a>
                     </list-group-item>
                     <list-group-item :class-item="'list-group-item-action'" style="background: #EDEBE4;">
-                        Assinatura
+                        <a href="{{ route('pagamento.show', 1) }}">
+                            Assinatura
+                        </a>
                     </list-group-item>
                     <list-group-item :class-item="'list-group-item-action'" style="background: #EDEBE4;">
-                        Sair
+                        <a href="#">
+                            Sair
+                        </a>
                     </list-group-item>
                 </list-group>
             </div>

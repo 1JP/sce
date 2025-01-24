@@ -36,7 +36,7 @@ class PaymentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return view('site.payment.show');
     }
 
     /**

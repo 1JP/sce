@@ -3,7 +3,7 @@
         <h6 class="mb-1 text-dark font-weight-bold text-sm">
             {{ date }}
         </h6>
-        <span class="text-xs">#AS-{{ id }}</span>
+        <span class="text-xs">#FA-{{ id }}</span>
     </div>
     <div class="d-flex align-items-center text-sm">
         R$ {{ value }}

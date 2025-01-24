@@ -6,6 +6,10 @@ return [
         'home',
         'posts.*',
         'categorias.*',
-        'pagamento.*'
+        'pagamento.*',
+        'usuarios.*',
+        'first-access',
+        'login',
+        'forgot-password'
     ],
 ];
