@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div :class="['modal-header', classHeader]">
-              <h5 class="modal-title" :id="name">{{ title }}</h5>
+              <h4 class="modal-title" :id="name">{{ title }}</h4>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>

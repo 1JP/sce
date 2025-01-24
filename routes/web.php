@@ -19,6 +19,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SiteCategoryController;
 use App\Http\Controllers\SitePostController;
+use App\Http\Controllers\SiteUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -49,3 +50,4 @@ Route::get("/", [HomeController::class, 'index'])->name('home');
 Route::resource('/posts', SitePostController::class);
 Route::resource('/categorias', SiteCategoryController::class);
 Route::resource('/pagamento', PaymentController::class);
+Route::resource('/usuarios', SiteUserController::class);
