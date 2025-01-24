@@ -13,12 +13,17 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SubscriptionController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SiteCategoryController;
 use App\Http\Controllers\SitePostController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::get('/primeiro-acesso', [LoginController::class, 'firstAccess'])->name('first-access');
+Route::get('/esqueci-minha-senha', [LoginController::class, 'forgotPassword'])->name('forgot-password');
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
