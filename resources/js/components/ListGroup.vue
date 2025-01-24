@@ -1,9 +1,16 @@
 <template>
-    <ul class="list-group">
+    <ul :class="['list-group', classItem]">
         <slot/>
     </ul>
 </template>
 
 <script>
-    export default {}
+    export default {
+        props: {
+            classItem: {
+                type: String,
+                required: false,
+            },
+        }
+    }
 </script>

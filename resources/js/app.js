@@ -5,6 +5,7 @@
  */
 
 import './bootstrap';
+
 import { createApp } from 'vue';
 
 /**
@@ -35,6 +36,19 @@ app.component('component-span-status', require('./components/SpanStatus.vue').de
 app.component('component-dropdown', require('./components/Dropdown.vue').default);
 app.component('component-dropdown-item', require('./components/Dropdown-item.vue').default);
 app.component('component-card', require('./components/Card.vue').default);
+app.component('component-accordion', require('./components/Accordion.vue').default);
+app.component('component-accordion-item', require('./components/Accordion-item.vue').default);
+
+app.component('site-header', require('./components/site/Header.vue').default);
+app.component('site-social-links', require('./components/site/SocialLinks.vue').default);
+app.component('site-nav-bar', require('./components/site/NavBar.vue').default);
+app.component('site-nav', require('./components/site/Nav.vue').default);
+app.component('site-post', require('./components/site/Post.vue').default);
+app.component('site-plan', require('./components/site/Plan.vue').default);
+app.component('site-carousel', require('./components/site/Carousel.vue').default);
+app.component('site-comment', require('./components/site/Comment.vue').default);
+app.component('site-create-comment', require('./components/site/CreateComment.vue').default);
+app.component('site-children-comment', require('./components/site/ChildrenComment.vue').default);
 
 app.component('list-group', require('./components/ListGroup.vue').default);
 app.component('list-group-item', require('./components/ListGroup-item.vue').default);

@@ -2,6 +2,14 @@
 
 return [
     'only' => [
-        'admin.*'
+        'admin.*',
+        'home',
+        'posts.*',
+        'categorias.*',
+        'pagamento.*',
+        'usuarios.*',
+        'first-access',
+        'login',
+        'forgot-password'
     ],
 ];
