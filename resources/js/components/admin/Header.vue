@@ -6,7 +6,7 @@
                 <div class="ms-md-auto pe-md-3 d-flex align-items-center"></div>
                 <ul class="navbar-nav  justify-content-end">
                     <li class="nav-item d-flex align-items-center">
-                        <a href="javascript:;" class="nav-link text-white font-weight-bold px-0">
+                        <a :href="routeLogout" class="nav-link text-white font-weight-bold px-0">
                             <i class="fa fa-sign-out me-sm-1"></i>
                             <span class="d-sm-inline d-none">Logout</span>
                         </a>
@@ -35,7 +35,8 @@
     export default {
         data(){
             return {
-                routeSetting: route('admin.configuracoes.create')
+                routeSetting: route('admin.configuracoes.create'),
+                routeLogout: route('auth.logout')
             }
         }
     }
