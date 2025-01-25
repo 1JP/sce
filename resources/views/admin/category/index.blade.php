@@ -36,7 +36,7 @@
                             ></admin-filter-select>
                         </div>
                         <div class="col-lg-3 d-flex justify-content-end">
-                            <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#createAndEditCategoryModal">
+                            <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#createCategoryModal">
                                 Cadastrar
                             </button>
                         </div>
@@ -53,6 +53,7 @@
                             @endforeach
                         </template>
                         <template v-slot:tbody>
+                            
                             <admin-tr>
                                 <component-td>
                                     <div class="d-flex px-2 py-1">
@@ -85,51 +86,12 @@
     </div>
 </div>
 
-<model :title="'Cadastrar Categoria'" :name="'createAndEditCategoryModal'">
-    <div class="row">
-        <div class="col-md-12">
-          <div class="form-group has-success">
-            <input type="text" placeholder="Nome" class="form-control is-valid" />
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="form-group has-danger">
-            <input type="email" placeholder="Error Input" class="form-control is-invalid" />
-          </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-          <div class="form-group has-success">
-            <select class="form-control form-control-lg is-valid">
-                <option>Classificação Indicativas</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="form-group has-danger">
-            <select class="form-control form-control-lg is-invalid">
-                <option>Classificação Indicativas</option>
-            </select>
-          </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-          <div class="form-group">
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked="">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Ativo</label>
-              </div>
-          </div>
-        </div>
-    </div>
+<admin-category-create
+    :title="'Cadastrar Categoria'"
+    :name-id="'createCategoryModal'"
+    :types='@json($types)'
+/>
 
-    <template v-slot:footer>
-        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn bg-gradient-primary">Save</button>
-    </template>
-</model>
 <model :title="'Excluir Categoria'" :name="'destoryCategory'">
     <div class="py-3 text-center">
         <i class="ni ni-bell-55 ni-3x"></i>

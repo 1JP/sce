@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
+use App\Models\Category;
+use App\Models\CategoryType;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -20,7 +23,10 @@ class CategoryController extends Controller
             ['class' => 'text-secondary opacity-7', 'name' => '']
         ];
 
-        return view('admin.category.index', compact('ths'));
+        $types = CategoryType::all();
+        $categories = Category::all();
+
+        return view('admin.category.index', compact('ths', 'types', 'categories'));
     }
 
     /**
@@ -34,9 +40,21 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        try {
+            $validated = $request->validated();
+            $category = Category::create([
+                'name' => $validated['name']
+            ]);
+            $category->categoryTypes()->attach($validated['category_type_id']);
+
+            return redirect()->route('admin.categorias.index')->with('success', 'Categoria criada com sucesso!');
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->route('admin.categorias.index')->with('danger', 'Não foi possível criar a categoria!');
+        }
+        
     }
 
     /**
@@ -60,7 +78,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        //$category->categoryTypes()->detach($categoryType->id);
     }
 
     /**

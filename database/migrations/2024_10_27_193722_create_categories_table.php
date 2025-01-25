@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_type_id')->constrained();
             $table->string('name', 45);
-            $table->boolean('active');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

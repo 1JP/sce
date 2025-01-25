@@ -7,6 +7,15 @@
 import './bootstrap';
 
 import { createApp } from 'vue';
+import axios from 'axios';
+
+// Recupera o token CSRF do meta tag
+const csrfToken = document.head.querySelector('meta[name="csrf-token"]')?.content;
+
+// Configura o Axios para enviar o token CSRF em todas as requisições
+if (csrfToken) {
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+}
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -31,6 +40,8 @@ app.component('admin-thead', require('./components/table/Thead.vue').default);
 app.component('admin-tr', require('./components/table/Tr.vue').default);
 app.component('admin-subscription-info', require('./components/admin/SubscriptionInfo.vue').default);
 
+app.component('admin-category-create', require('./components/admin/category/create.vue').default);
+
 app.component('component-td', require('./components/table/Td.vue').default);
 app.component('component-span-status', require('./components/SpanStatus.vue').default);
 app.component('component-dropdown', require('./components/Dropdown.vue').default);
@@ -39,6 +50,7 @@ app.component('component-card', require('./components/Card.vue').default);
 app.component('component-accordion', require('./components/Accordion.vue').default);
 app.component('component-accordion-item', require('./components/Accordion-item.vue').default);
 app.component('component-input', require('./components/Input.vue').default);
+app.component('component-select', require('./components/Select.vue').default);
 
 app.component('site-header', require('./components/site/Header.vue').default);
 app.component('site-social-links', require('./components/site/SocialLinks.vue').default);

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, AppLogModel;
 
     /**
      * The attributes that are mass assignable.
@@ -18,17 +18,17 @@ class Category extends Model
     protected $guarded = [];
 
     /**
-     * Defines an inverse one-to-many relationship with the `CategoryType` model.
+     * Defines an inverse belongs-to-many relationship with the `CategoryType` model.
      *
      * This method indicates that each instance of the current model belongs to
      * a specific category type. It uses the `category_type_id` foreign key to
      * link to the related `CategoryType` record.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
-    public function type()
+    public function categoryTypes()
     {
-        return $this->belongsTo(CategoryType::class, 'category_type_id');
+        return $this->belongsToMany(CategoryType::class, 'category_types_categories');
     }
 
     /**

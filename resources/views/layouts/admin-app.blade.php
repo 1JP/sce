@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('admin/img/apple-icon.png') }}">
         <link rel="icon" type="image/png" href="{{ asset('admin/img/favicon.png') }}">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>
             SCE - Área administrativa
         </title>
@@ -52,6 +53,7 @@
                 @yield('breadcrumb')
             </admin-header>
             <div class="container-fluid py-4">
+                @include('partials.alert')
                 @yield('content')
                 <admin-footer></admin-footer>
             </div>
