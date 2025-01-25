@@ -38,6 +38,7 @@ app.component('component-dropdown-item', require('./components/Dropdown-item.vue
 app.component('component-card', require('./components/Card.vue').default);
 app.component('component-accordion', require('./components/Accordion.vue').default);
 app.component('component-accordion-item', require('./components/Accordion-item.vue').default);
+app.component('component-input', require('./components/Input.vue').default);
 
 app.component('site-header', require('./components/site/Header.vue').default);
 app.component('site-social-links', require('./components/site/SocialLinks.vue').default);

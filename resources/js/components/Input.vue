@@ -1,5 +1,5 @@
 <template>
-    <input class="form-control" :class="classInput" :value="value" @blur="handleBlur($event)" @input="handleInput($event)" :required="required" :type="inputType" :placeholder="placeholder" :name="nameId" :maxlength="maxLength" :disabled="isDisabled">
+    <input :class="['form-control', classInput]" :value="value" @blur="handleBlur($event)" @input="handleInput($event)" :required="required" :type="inputType" :placeholder="placeholder" :name="nameId" :maxlength="maxLength" :disabled="isDisabled">
 </template>
 
 <script>
