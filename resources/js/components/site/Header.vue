@@ -10,9 +10,9 @@
 					</div>
 					<div class="col-md-6">
 						<div class="right-element">
-							<a href="#" class="user-account for-buy">
-                                <i class="icon icon-user"></i>
-                                <span>Account</span>
+							<a :href="routeLogout" class="user-account for-buy">
+                                <i class="icon icon-user me-1"></i>
+                                <span>{{ name }}</span>
                             </a>
 							<div class="action-menu">
 								<div class="search-bar">
@@ -57,8 +57,15 @@
                     { route: "#", icon: "icon icon-facebook", name: "Facebook" },
                 ],
                 routeHome: route('home'),
+				routeLogout: route('auth.logout'),
 				routeScript: 'http://127.0.0.1:8000/js/script.js',
             }
+        },
+		props: {
+            name: {
+                type: String,
+                default: '',
+            },
         },
 		methods: {
 			loadScript() {

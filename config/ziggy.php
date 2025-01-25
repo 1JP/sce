@@ -9,7 +9,7 @@ return [
         'pagamento.*',
         'usuarios.*',
         'first-access',
-        'login',
+        'auth.*',
         'forgot-password'
     ],
 ];

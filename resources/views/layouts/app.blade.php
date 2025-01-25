@@ -25,7 +25,7 @@
     </head>
     <body data-bs-spy="scroll" data-bs-target="#header" tabindex="0">
         <div id="app">
-            <site-header></site-header>
+            <site-header :name="' {{ Auth::user()->name ?? '' }} '"></site-header>
             <div class="py-5">
                 <div class="container">
                     @include('partials.alert')

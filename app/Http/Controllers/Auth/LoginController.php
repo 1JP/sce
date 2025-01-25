@@ -73,6 +73,20 @@ class LoginController extends Controller
     }
 
     /**
+     * Method to logout an user.
+     *
+     *
+     * @throws BindingResolutionException
+     * @throws RouteNotFoundException
+     */
+    public function logout(): RedirectResponse
+    {
+        Auth::logout();
+
+        return redirect()->route('auth.login');
+    }
+    
+    /**
      * * The username string to use for authentication.
      */
     public function username(): string
