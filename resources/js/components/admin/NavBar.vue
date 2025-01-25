@@ -14,6 +14,7 @@
                         :route="nav.route"
                         :icon="nav.icon"
                         :name="nav.name"
+                        :view="nav.view"
                     />
                 </li>
                 <li class="nav-item mt-3">
