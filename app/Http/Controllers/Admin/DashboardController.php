@@ -12,7 +12,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->hasRole('Usuario')){
+        if(Auth::check() && Auth::user()->hasRole('Usuario')){
             return redirect()->route('home');
         }
 
