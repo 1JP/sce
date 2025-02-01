@@ -1,7 +1,11 @@
 <template>
     <div class="form-group">
         <select class="form-control">
-            <option>{{ name }}</option>
+            <option v-if="name != ''" :value="''">{{ name }}</option>
+            <option v-for="option,index in options" :key="index" :value="option.id ?? option" 
+                :selected="valueSelect == (option.id ?? option)">
+                {{ option.name ?? option }}
+            </option>
         </select>
     </div>
 </template>
@@ -17,6 +21,10 @@
             name: {
                 type: String,
                 required: true,
+            },
+            valueSelect: {
+                required: false,
+                type: [String, Number],
             }
         },
     }

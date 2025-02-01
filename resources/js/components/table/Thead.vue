@@ -1,5 +1,7 @@
 <template>
-    <th :class="class">{{ name }}</th>
+    <th :class="class">
+        <slot/>
+    </th>
 </template>
 
 <script>
@@ -7,12 +9,12 @@
         props: {
             class: {
                 type: String,
-                required: true,
+                required: false,
+                default: ''
             },
-            name: {
-                type: String,
-                required: true,
-            }
         },
+        mounted() {
+            //
+        }
     }
 </script>
