@@ -16,7 +16,6 @@ const csrfToken = document.head.querySelector('meta[name="csrf-token"]')?.conten
 if (csrfToken) {
     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
 }
-
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
  * registering components with the application instance so they are ready
@@ -41,6 +40,7 @@ app.component('admin-tr', require('./components/table/Tr.vue').default);
 app.component('admin-subscription-info', require('./components/admin/SubscriptionInfo.vue').default);
 
 app.component('admin-category-create', require('./components/admin/category/create.vue').default);
+app.component('admin-category-index', require('./components/admin/category/index.vue').default);
 
 app.component('component-td', require('./components/table/Td.vue').default);
 app.component('component-span-status', require('./components/SpanStatus.vue').default);
