@@ -3,6 +3,7 @@
 return [
     'only' => [
         'admin.*',
+        'api.*',
         'home',
         'posts.*',
         'categorias.*',
