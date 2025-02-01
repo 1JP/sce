@@ -51,7 +51,6 @@ class CategoryController extends Controller
 
             return redirect()->route('admin.categorias.index')->with('success', 'Categoria criada com sucesso!');
         } catch (\Exception $e) {
-            dd($e);
             return redirect()->route('admin.categorias.index')->with('danger', 'Não foi possível criar a categoria!');
         }
         
