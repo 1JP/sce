@@ -85,20 +85,27 @@ class CategoryController extends Controller
                 'active' => $active,
             ]);
 
-            $category->categoryTypes()->attach($validated['category_type_id']);
+            $category->categoryTypes()->sync($validated['category_type_id']);
 
             return redirect()->route('admin.categorias.index')->with('success', 'Categoria alterada com sucesso!');
         } catch (\Exception $e) {
+            dd($e);
             return redirect()->route('admin.categorias.index')->with('danger', 'Não foi possível alterada a categoria!');
         }
-        //$category->categoryTypes()->detach($categoryType->id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        //
+        try {
+            $category->categoryTypes()->detach();
+            $category->delete();
+
+            return redirect()->route('admin.categorias.index')->with('success', 'Categoria removida com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.categorias.index')->with('danger', 'Não foi possível removida a categoria!');
+        }
     }
 }

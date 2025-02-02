@@ -138,8 +138,9 @@
             <h4 class="text-gradient text-danger mt-4">Deseja excluir essa categoria?</h4>
             <p>Todos os posts relacionados a essa Categoria será excluidos também</p>
         </div>
-        <form method="DELETE" :action="routeDelete" ref="formDelete">
+        <form method="POST" :action="routeDelete" ref="formDelete">
             <input type="hidden" name="_token" :value="token"/>
+            <input type="hidden" name="_method" value="DELETE" />
         </form>
         <template v-slot:footer>
             <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
