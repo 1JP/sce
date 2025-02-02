@@ -6,16 +6,6 @@
     export default {
         emits: ['input', 'blur'],
         props: {
-            showLabel: {
-                required: false,
-                type: Boolean,
-                default: true
-            },
-            iconInput: {
-                required: false,
-                type: String,
-                default: ''
-            },
             nameId: {
                 required: false,
                 type: String,
@@ -25,21 +15,6 @@
                 required: false,
                 type: String,
                 default: ''
-            },
-            instruction: {
-                required: false,
-                type: String,
-                default: ''
-            },
-            widths: {
-                required: false,
-                default: '100%',
-                type: String
-            },
-            mode: {
-                required: false,
-                type: String,
-                default: 'none'
             },
             inputType: {
                 required: false,

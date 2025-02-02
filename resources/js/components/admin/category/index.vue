@@ -70,9 +70,9 @@
                             <component-span-status :class="'bg-gradient-danger'" v-else>Desativado</component-span-status>
                         </component-td>
                         <component-td>
-                            <component-dropdown :name="'teste'">
-                                <component-dropdown-item name="Editar" route="#"></component-dropdown-item>
-                                <component-dropdown-item name="Excluir" target="#destoryCategory"></component-dropdown-item>
+                            <component-dropdown :name="'category'">
+                                <component-dropdown-item name="Editar" target="#updateCategoryModal" @click="selectCategory(category)"></component-dropdown-item>
+                                <component-dropdown-item name="Excluir" target="#destoryCategory" @click="selectCategory(category)"></component-dropdown-item>
                             </component-dropdown>
                         </component-td>
                     </admin-tr>
@@ -80,6 +80,72 @@
             </admin-table>
         </template>
     </component-card>
+
+    <model :title="'Editar Categoria'" :name="'updateCategoryModal'">
+        <form method="POST" :action="routeUpdate" ref="formUpdate">
+            <input type="hidden" name="_token" :value="token"/>
+            <input type="hidden" name="_method" value="PATCH" />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <component-input
+                            :required="true"
+                            :input-type="'name'"
+                            :placeholder="'Nome'"
+                            :name-id="'name'"
+                            :value="name"
+                            :class-input="classInput"
+                            @input="valueInput($event)"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <component-select
+                        :is-required="true"
+                        :placeholder="'Classificação Indicativas'"
+                        :name-id="'category_type_id[]'"
+                        :is-mutiple="true"
+                        :options='types'
+                        :class-item="classItem"
+                        :value-select="categoryTypeIds"
+                        @onChanged="valueSelect($event)"
+                    />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="active" v-if="category.active" value="true" checked="">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="active" v-else>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Ativo</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <template v-slot:footer>
+            <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn bg-gradient-primary" @click="update()">Editar</button>
+        </template>
+    </model>
+
+    <model :title="'Excluir Categoria'" :name="'destoryCategory'">
+        <div class="py-3 text-center">
+            <i class="ni ni-bell-55 ni-3x"></i>
+            <h4 class="text-gradient text-danger mt-4">Deseja excluir essa categoria?</h4>
+            <p>Todos os posts relacionados a essa Categoria será excluidos também</p>
+        </div>
+        <form method="DELETE" :action="routeDelete" ref="formDelete">
+            <input type="hidden" name="_token" :value="token"/>
+        </form>
+        <template v-slot:footer>
+            <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn bg-gradient-danger" @click="destroy()">Excluir</button>
+        </template>
+    </model>
 </template>
 
 <script>
@@ -99,18 +165,56 @@
         data(){
             return {
                 categories: [],
+                category: {},
+                categoryTypeIds: [],
+                name: '',
+                token: '',
+                classItem: '',
+                classInput: '',
+                routeUpdate: '',
+                routeDelete: '',
+                classInputCheck: 'form-check-input',
             }
         },
         methods: {
+            selectCategory(category){
+                this.category = category;
+                this.name = category.name;
+                this.routeUpdate = route('admin.categorias.update', this.category.id);
+                this.routeDelete = route('admin.categorias.destroy', this.category.id);
+                this.categoryTypeIds = this.category.category_types.map(ct => ct.id);
+            },
             listCategories(){
                 axios.get(route('api.admin.categories.index'))
                     .then((response) => {
                         this.categories = response.data.data;
                     })
+            },
+            valueSelect(event){
+                this.categoryTypeIds = event.target.value;
+            },
+            valueInput(event){
+                this.name = event.target.value;
+            },
+            update(){
+                if(this.name == '' || this.categoryTypeIds == ''){
+                    this.classInput = this.name == '' ? 'is-invalid' : 'is-valid'
+                    this.classItem = this.categoryTypeIds == '' ? 'is-invalid' : 'is-valid'
+                    return;
+                }
+                
+                this.classInput = 'is-valid';
+                this.classItem = 'is-valid';
+
+                this.$refs.formUpdate.submit();
+            },
+            destroy(){
+                this.$refs.formDelete.submit();
             }
         },
         mounted() {
             this.listCategories();
+            this.token = document.head.querySelector('meta[name="csrf-token"]')?.content;
         }
     }
 </script>

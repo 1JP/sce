@@ -24,7 +24,8 @@ class CategoryRequest extends FormRequest
         return [
             'name' => 'required|string',
             'category_type_id' => 'required|array',
-            'category_type_id.*' => 'required|exists:category_types,id'
+            'category_type_id.*' => 'required|exists:category_types,id',
+            'active' => 'nullable',
         ];
     }
 

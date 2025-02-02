@@ -75,8 +75,22 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CategoryRequest $request, Category $category)
     {
+        try {
+            $validated = $request->validated();
+            $active = !isset($validated['active']) ? 0 : $category->active;
+            $category->update([
+                'name' => $validated['name'],
+                'active' => $active,
+            ]);
+
+            $category->categoryTypes()->attach($validated['category_type_id']);
+
+            return redirect()->route('admin.categorias.index')->with('success', 'Categoria alterada com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.categorias.index')->with('danger', 'Não foi possível alterada a categoria!');
+        }
         //$category->categoryTypes()->detach($categoryType->id);
     }
 
