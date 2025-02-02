@@ -3,7 +3,6 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Category;
-use App\Models\CategoryType;
 use Database\Seeders\CategoryTypeSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use InvalidArgumentException;
@@ -13,16 +12,11 @@ class CategoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @var CategoryType */
-    protected $categoryType;
-
     public function setUp(): void
     {
         parent::setUp();
         
         $this->seed(CategoryTypeSeeder::class);
-
-        $this->categoryType = CategoryType::first();
     }
 
     /**
@@ -31,13 +25,11 @@ class CategoryTest extends TestCase
     public function test_create_category(): void
     {
         $category = Category::factory()->create([
-            'categoryType_id' => $this->categoryType->id,
-            'name' => 'Batman Cavaleiro das trevas',
+            'name' => 'Livro',
             'active' => true,
         ]);
 
-        $this->assertEquals($category->type->id, $this->categoryType->id);
-        $this->assertEquals($category->name, 'Batman Cavaleiro das trevas');
+        $this->assertEquals($category->name, 'Livro');
         $this->assertTrue($category->active);
     }
 
@@ -46,30 +38,23 @@ class CategoryTest extends TestCase
      */
     public function test_update_category(): void
     {
-        $categoryType_new = CategoryType::factory()->create();
-
         $category = Category::factory()->create([
-            'categoryType_id' => $this->categoryType->id,
-            'name' => 'Batman Cavaleiro das trevas'
+            'name' => 'Livro'
         ]);
 
         $category->update([
-            'categoryType_id' => $categoryType_new->id,
             'name' => 'Super-man o retorno',
             'active' => true,
         ]);
 
-        $this->assertEquals($category->type->id, $categoryType_new->id);
         $this->assertEquals($category->name, 'Super-man o retorno');
         $this->assertTrue($category->active);
 
         $category->update([
-            'categoryType_id' => $categoryType_new->id,
             'name' => 'Super-man o retorno',
             'active' => false,
         ]);
 
-        $this->assertEquals($category->type->id, $categoryType_new->id);
         $this->assertEquals($category->name, 'Super-man o retorno');
         $this->assertFalse($category->active);
     }
@@ -116,7 +101,6 @@ class CategoryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         Category::factory()->create([
-            'categoryType_id' => $this->categoryType->id,
             'name' => fake()->randomDigit(),
             'active' => fake()->boolean(),
         ]);
@@ -130,7 +114,6 @@ class CategoryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         Category::create([
-            'categoryType_id' => $this->categoryType->id,
             'name' => fake()->randomDigit(),
             'active' => fake()->boolean(),
         ]);
@@ -146,7 +129,6 @@ class CategoryTest extends TestCase
         $longString = "Esta é uma string que contém mais de 45 caracteres, para testar a validação e outras funções.";
 
         Category::create([
-            'categoryType_id' => $this->categoryType->id,
             'name' => $longString,
             'active' => fake()->boolean(),
         ]);

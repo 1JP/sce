@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('category_type_id')->constrained();
-            $table->string('name', 45);
-            $table->boolean('active')->default(true);
+        Schema::create('category_types_categories', function (Blueprint $table) {
+            $table->foreignId('category_type_id')->constrained('category_types');
+            $table->foreignId('category_id')->constrained('categories');
             $table->timestamps();
+
+            $table->unique(['category_type_id', 'category_id']);
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        //
     }
 };

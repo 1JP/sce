@@ -24,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
             \Illuminate\Auth\Middleware\Authorize::class,
+            $middleware->statefulApi(),
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

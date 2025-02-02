@@ -22,14 +22,14 @@ use App\Http\Controllers\SitePostController;
 use App\Http\Controllers\SiteUserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('auth.login');
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/signin', [LoginController::class, 'store'])->name('signin');
 Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
 
 Route::get('/primeiro-acesso', [LoginController::class, 'firstAccess'])->name('first-access');
 Route::get('/esqueci-minha-senha', [LoginController::class, 'forgotPassword'])->name('forgot-password');
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('/categorias', CategoryController::class);
     Route::resource('/tipos-de-categorias', CategoryTypeController::class);
