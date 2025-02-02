@@ -79,17 +79,16 @@ class CategoryController extends Controller
     {
         try {
             $validated = $request->validated();
-            $active = !isset($validated['active']) ? 0 : $category->active;
+
             $category->update([
                 'name' => $validated['name'],
-                'active' => $active,
+                'active' => !isset($validated['active']) ? 0 : 1,
             ]);
 
             $category->categoryTypes()->sync($validated['category_type_id']);
 
             return redirect()->route('admin.categorias.index')->with('success', 'Categoria alterada com sucesso!');
         } catch (\Exception $e) {
-            dd($e);
             return redirect()->route('admin.categorias.index')->with('danger', 'Não foi possível alterada a categoria!');
         }
     }

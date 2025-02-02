@@ -18,7 +18,6 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'category_type_id' => CategoryType::factory(),
             'name' => fake()->name(),
             'active' => fake()->boolean(),
         ];
