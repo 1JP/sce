@@ -8,13 +8,15 @@
     >
         <template v-slot:header>
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-lg-1">
                     <h6>Categorias</h6>
                 </div>
-                <div class="col-lg-1 col-lg-3">
+                <div class="col-lg-1 col-lg-2">
                     <admin-filter-select
                         :name="'Classificação Indicativa'"
                         :options="types"
+                        :value-select="selectedIndicative"
+                        @onChanged="filterSelect($event)"
                     ></admin-filter-select>
                 </div>
                 <div class="col-lg-1 col-lg-2">
@@ -22,13 +24,22 @@
                         :name="'Categoria...'"
                         :type="'text'"
                         :icon="'fa fa-search'"
+                        :value-input="inputCategory"
+                        @input="searchInputCategory($event)"
                     ></admin-filter-input>
                 </div>
                 <div class="col-lg-1 col-lg-2">
                     <admin-filter-select
                         :name="'Status'"
                         :options="['Ativo', 'Desativado']"
+                        :value-select="selectedStatus"
+                        @onChanged="filterSelectStatus($event)"
                     ></admin-filter-select>
+                </div>
+                <div class="col-lg-2">
+                    <button type="button" class="btn bg-gradient-primary" @click="clear()">
+                        Limpar filtros
+                    </button>
                 </div>
                 <div class="col-lg-3 d-flex justify-content-end">
                     <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#createCategoryModal">
@@ -175,6 +186,9 @@
                 routeUpdate: '',
                 routeDelete: '',
                 classInputCheck: 'form-check-input',
+                selectedIndicative: '',
+                selectedStatus: '',
+                inputCategory: '',
             }
         },
         methods: {
@@ -211,6 +225,34 @@
             },
             destroy(){
                 this.$refs.formDelete.submit();
+            },
+            filterSelect(event){
+                this.selectedIndicative = event.target.value;
+            },
+            filterSelectStatus(event){
+                this.selectedStatus = event.target.value;
+            },
+            searchInputCategory(event){
+                this.inputCategory = event.target.value;
+                let params = {
+                    'search': {
+                        'name' : this.inputCategory
+                    }
+                };
+
+                this.search(params);
+            },
+            search(params){
+                axios.get(route('api.admin.categories.search'), {params})
+                    .then((response) => {
+                        this.categories = response.data.data;
+                    })
+            },
+            clear(){
+                this.inputCategory = '',
+                this.selectedStatus = '',
+                this.selectedIndicative = '',
+                this.listCategories();
             }
         },
         mounted() {
