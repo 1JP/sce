@@ -24,7 +24,7 @@
             },
             valueSelect: {
                 required: false,
-                type: [String, Number, Array],
+                type: [String, Number],
             }
         },
         methods: {
@@ -35,16 +35,12 @@
         computed: {
             normalizedSelectedValues: {
                 get() {
-                    if (Array.isArray(this.valueSelect)) {
+                    if (typeof this.valueSelect === "string") {
                         return this.valueSelect;
                     }
-                    if (typeof this.valueSelect === "string") {
-                        return this.valueSelect.split(",").map(val => Number(val.trim()));
-                    }
                     if (typeof this.valueSelect === "number") {
-                        return [this.valueSelect]; // Converte número em array
+                        return this.valueSelect; // Converte número em array
                     }
-                    return [];
                 },
                 set(newValue) {
                     this.$emit("update:valueSelect", newValue);

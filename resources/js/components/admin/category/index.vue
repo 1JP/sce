@@ -36,12 +36,10 @@
                         @onChanged="filterSelectStatus($event)"
                     ></admin-filter-select>
                 </div>
-                <div class="col-lg-2">
-                    <button type="button" class="btn bg-gradient-primary" @click="clear()">
+                <div class="col-lg-5 d-flex justify-content-end align-items-center">
+                    <button type="button" class="btn bg-gradient-primary me-2" @click="clear()" v-if="Object.keys(listSearch).length > 0">
                         Limpar filtros
                     </button>
-                </div>
-                <div class="col-lg-3 d-flex justify-content-end">
                     <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#createCategoryModal">
                         Cadastrar
                     </button>
@@ -189,6 +187,7 @@
                 selectedIndicative: '',
                 selectedStatus: '',
                 inputCategory: '',
+                listSearch: {},
             }
         },
         methods: {
@@ -228,9 +227,43 @@
             },
             filterSelect(event){
                 this.selectedIndicative = event.target.value;
+                let params = {
+                    'search': {
+                        'category_type_id' : this.selectedIndicative
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.category_type_id = this.selectedIndicative
+                }
+                
+                this.listSearch = params;
+                this.search(params);
             },
             filterSelectStatus(event){
                 this.selectedStatus = event.target.value;
+                let status = 0;
+
+                if (this.selectedStatus == 'Ativo') {
+                    status = 1
+                } else {
+                    status = 0
+                }
+
+                let params = {
+                    'search': {
+                        'status' : status
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.status = status
+                }
+                
+                this.listSearch = params;
+                this.search(params);
             },
             searchInputCategory(event){
                 this.inputCategory = event.target.value;
@@ -239,7 +272,13 @@
                         'name' : this.inputCategory
                     }
                 };
-
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.name = this.inputCategory
+                }
+                
+                this.listSearch = params;
                 this.search(params);
             },
             search(params){
@@ -252,6 +291,7 @@
                 this.inputCategory = '',
                 this.selectedStatus = '',
                 this.selectedIndicative = '',
+                this.listSearch = {}
                 this.listCategories();
             }
         },
