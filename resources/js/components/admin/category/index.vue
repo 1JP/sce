@@ -8,13 +8,15 @@
     >
         <template v-slot:header>
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-lg-1">
                     <h6>Categorias</h6>
                 </div>
-                <div class="col-lg-1 col-lg-3">
+                <div class="col-lg-1 col-lg-2">
                     <admin-filter-select
                         :name="'Classificação Indicativa'"
                         :options="types"
+                        :value-select="selectedIndicative"
+                        @onChanged="filterSelect($event)"
                     ></admin-filter-select>
                 </div>
                 <div class="col-lg-1 col-lg-2">
@@ -22,15 +24,22 @@
                         :name="'Categoria...'"
                         :type="'text'"
                         :icon="'fa fa-search'"
+                        :value-input="inputCategory"
+                        @input="searchInputCategory($event)"
                     ></admin-filter-input>
                 </div>
                 <div class="col-lg-1 col-lg-2">
                     <admin-filter-select
                         :name="'Status'"
                         :options="['Ativo', 'Desativado']"
+                        :value-select="selectedStatus"
+                        @onChanged="filterSelectStatus($event)"
                     ></admin-filter-select>
                 </div>
-                <div class="col-lg-3 d-flex justify-content-end">
+                <div class="col-lg-5 d-flex justify-content-end align-items-center">
+                    <button type="button" class="btn bg-gradient-primary me-2" @click="clear()" v-if="Object.keys(listSearch).length > 0">
+                        Limpar filtros
+                    </button>
                     <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#createCategoryModal">
                         Cadastrar
                     </button>
@@ -175,6 +184,10 @@
                 routeUpdate: '',
                 routeDelete: '',
                 classInputCheck: 'form-check-input',
+                selectedIndicative: '',
+                selectedStatus: '',
+                inputCategory: '',
+                listSearch: {},
             }
         },
         methods: {
@@ -211,6 +224,75 @@
             },
             destroy(){
                 this.$refs.formDelete.submit();
+            },
+            filterSelect(event){
+                this.selectedIndicative = event.target.value;
+                let params = {
+                    'search': {
+                        'category_type_id' : this.selectedIndicative
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.category_type_id = this.selectedIndicative
+                }
+                
+                this.listSearch = params;
+                this.search(params);
+            },
+            filterSelectStatus(event){
+                this.selectedStatus = event.target.value;
+                let status = 0;
+
+                if (this.selectedStatus == 'Ativo') {
+                    status = 1
+                } else {
+                    status = 0
+                }
+
+                let params = {
+                    'search': {
+                        'status' : status
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.status = status
+                }
+                
+                this.listSearch = params;
+                this.search(params);
+            },
+            searchInputCategory(event){
+                this.inputCategory = event.target.value;
+                let params = {
+                    'search': {
+                        'name' : this.inputCategory
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.name = this.inputCategory
+                }
+                
+                this.listSearch = params;
+                this.search(params);
+            },
+            search(params){
+                axios.get(route('api.admin.categories.search'), {params})
+                    .then((response) => {
+                        this.categories = response.data.data;
+                    })
+            },
+            clear(){
+                this.inputCategory = '',
+                this.selectedStatus = '',
+                this.selectedIndicative = '',
+                this.listSearch = {}
+                this.listCategories();
             }
         },
         mounted() {

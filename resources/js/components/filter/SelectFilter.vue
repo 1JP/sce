@@ -1,9 +1,8 @@
 <template>
     <div class="form-group">
-        <select class="form-control">
+        <select class="form-control" v-model="normalizedSelectedValues" @change="optionsSelected($event)">
             <option v-if="name != ''" :value="''">{{ name }}</option>
-            <option v-for="option,index in options" :key="index" :value="option.id ?? option" 
-                :selected="valueSelect == (option.id ?? option)">
+            <option v-for="option,index in options" :key="index" :value="option.id ?? option">
                 {{ option.name ?? option }}
             </option>
         </select>
@@ -12,6 +11,7 @@
 
 <script>
     export default {
+        emits: ['onChanged', 'update:valueSelect'],
         props: {
             options: {
                 type: Array,
@@ -25,6 +25,26 @@
             valueSelect: {
                 required: false,
                 type: [String, Number],
+            }
+        },
+        methods: {
+            optionsSelected(value){
+                this.$emit('onChanged', value)
+            }
+        },
+        computed: {
+            normalizedSelectedValues: {
+                get() {
+                    if (typeof this.valueSelect === "string") {
+                        return this.valueSelect;
+                    }
+                    if (typeof this.valueSelect === "number") {
+                        return this.valueSelect; // Converte número em array
+                    }
+                },
+                set(newValue) {
+                    this.$emit("update:valueSelect", newValue);
+                }
             }
         },
     }

@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Hash;
 */
 
 Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(function () {
+    Route::prefix('categories')->name('categories.')->group(function () {
+        Route::get('search', [CategoryController::class, 'search'])->name('search');
+    });
     Route::apiResource('categories', CategoryController::class);
 });
 
