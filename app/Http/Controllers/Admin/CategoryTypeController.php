@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryTypeRequest;
+use App\Http\Resources\CategoryTypeResource;
+use App\Models\CategoryType;
 use Illuminate\Http\Request;
 
 class CategoryTypeController extends Controller
@@ -32,9 +35,15 @@ class CategoryTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryTypeRequest $request)
     {
-        //
+        try {
+            CategoryType::create($request->validated());
+
+            return redirect()->route('admin.tipos-de-categorias.index')->with('success', 'Categoria criada com sucesso!');
+        }   catch (\Exception $e) {
+            return redirect()->route('admin.tipos-de-categorias.index')->with('danger', 'Não foi possível criar a categoria!');
+        }
     }
 
     /**
@@ -56,16 +65,31 @@ class CategoryTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CategoryTypeRequest $request, CategoryType $type)
     {
-        //
+
+        try {
+            $type->update($request->validated());
+
+            return redirect()->route('admin.tipos-de-categorias.index')->with('success', 'Categoria alterada com sucesso!');
+        }   catch (\Exception $e) {
+            return redirect()->route('admin.tipos-de-categorias.index')->with('danger', 'Não foi possível alterar a categoria!');
+        }
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(CategoryType $type)
     {
-        //
+        try {
+            $type->categories()->detach();
+            $type->delete();
+
+            return redirect()->route('admin.tipos-de-categorias.index')->with('success', 'Categoria removida com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.tipos-de-categorias.index')->with('danger', 'Não foi possível removida a categoria!');
+        }
     }
 }
