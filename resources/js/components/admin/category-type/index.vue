@@ -16,9 +16,14 @@
                         :name="'Categoria...'"
                         :type="'text'"
                         :icon="'fa fa-search'"
+                        :value-input="inputCategory"
+                        @input="searchInputCategory($event)"
                     ></admin-filter-input>
                 </div>
-                <div class="col-lg-5 d-flex justify-content-end">
+                <div class="col-lg-5 d-flex justify-content-end align-items-center">
+                    <button type="button" class="btn bg-gradient-primary me-2" @click="clear()" v-if="Object.keys(listSearch).length > 0">
+                        Limpar filtros
+                    </button>
                     <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#createCategory">
                         Cadastrar
                     </button>
@@ -182,6 +187,29 @@
             destroy(){
                 this.$refs.formDelete.submit();
             },
+            searchInputCategory(event){
+                this.inputCategory = event.target.value;
+                let params = {
+                    'search': {
+                        'name' : this.inputCategory
+                    }
+                };
+                
+                this.listSearch = params;
+
+                this.search(params);
+            },
+            search(params){
+                axios.get(route('api.admin.categorie-types.search'), {params})
+                    .then((response) => {
+                        this.categories = response.data.data;
+                    })
+            },
+            clear(){
+                this.inputCategory = '',
+                this.listSearch = {}
+                this.listCategories();
+            }
         },
         mounted() {
             this.listCategories();
