@@ -46,4 +46,19 @@ class CategoryType extends Model
         $this->attributes['name'] = $value;
     }
     
+    /**
+     * Sets the `name` attribute and ensures it is not an integer.
+     *
+     * @param mixed $value The name value to be set
+     * @throws \InvalidArgumentException if the name is an integer
+     */
+    public function setDescriptionAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('A descrição não pode ser um número inteiro.');
+        }
+
+        $this->attributes['description'] = $value;
+    }
+
 }
