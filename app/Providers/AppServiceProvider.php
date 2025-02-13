@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\CategoryType;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -22,5 +23,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Route::model('categoria', Category::class);
+        Route::model('tipos_de_categoria', CategoryType::class);
     }
 }
