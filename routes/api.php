@@ -23,6 +23,9 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
         Route::get('search', [CategoryController::class, 'search'])->name('search');
     });
     Route::apiResource('categories', CategoryController::class);
+    Route::prefix('categorie-types')->name('categorie-types.')->group(function () {
+        Route::get('search', [CategoryTypeController::class, 'search'])->name('search');
+    });
     Route::apiResource('categorie-types', CategoryTypeController::class);
 });
 
