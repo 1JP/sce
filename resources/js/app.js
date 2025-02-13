@@ -41,6 +41,8 @@ app.component('admin-subscription-info', require('./components/admin/Subscriptio
 
 app.component('admin-category-create', require('./components/admin/category/create.vue').default);
 app.component('admin-category-index', require('./components/admin/category/index.vue').default);
+app.component('admin-category-type-index', require('./components/admin/category-type/index.vue').default);
+app.component('admin-category-type-create', require('./components/admin/category-type/create.vue').default);
 
 app.component('component-td', require('./components/table/Td.vue').default);
 app.component('component-span-status', require('./components/SpanStatus.vue').default);
@@ -51,6 +53,7 @@ app.component('component-accordion', require('./components/Accordion.vue').defau
 app.component('component-accordion-item', require('./components/Accordion-item.vue').default);
 app.component('component-input', require('./components/Input.vue').default);
 app.component('component-select', require('./components/Select.vue').default);
+app.component('component-text-area', require('./components/TextArea.vue').default);
 
 app.component('site-header', require('./components/site/Header.vue').default);
 app.component('site-social-links', require('./components/site/SocialLinks.vue').default);
