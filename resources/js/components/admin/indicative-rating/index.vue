@@ -9,22 +9,17 @@
         <template v-slot:header>
             <div class="row">
                 <div class="col-lg-4">
-                    <h6>Tipos de Categorias</h6>
+                    <h6>Classificação Indicativa</h6>
                 </div>
                 <div class="col-lg-1 col-lg-3">
                     <admin-filter-input
-                        :name="'Categoria...'"
+                        :name="'Indicação...'"
                         :type="'text'"
                         :icon="'fa fa-search'"
-                        :value-input="inputCategory"
-                        @input="searchInputCategory($event)"
                     ></admin-filter-input>
                 </div>
-                <div class="col-lg-5 d-flex justify-content-end align-items-center">
-                    <button type="button" class="btn bg-gradient-primary me-2" @click="clear()" v-if="Object.keys(listSearch).length > 0">
-                        Limpar filtros
-                    </button>
-                    <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#createCategory">
+                <div class="col-lg-5 d-flex justify-content-end">
+                    <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#createIndicativeModal">
                         Cadastrar
                     </button>
                 </div>
@@ -42,23 +37,23 @@
                     </admin-thead>
                 </template>
                 <template v-slot:tbody>
-                    <admin-tr v-for="category in categories" :key="category.id">
+                    <admin-tr v-for="indicative in indications" :key="indicative.id">
                         <component-td>
                             <div class="d-flex px-2 py-1">
                                 <div class="d-flex flex-column justify-content-center">
-                                    <h6 class="mb-0 text-sm">{{ category.name }}</h6>
+                                    <h6 class="mb-0 text-sm">{{ indicative.indicative }}</h6>
                                 </div>
                             </div>
                         </component-td>
                         <component-td>
                             <p class="mb-0 text-sm">
-                                {{ category.description }}
+                                {{ indicative.description }}
                             </p>
                         </component-td>
                         <component-td :class="'align-middle'">
                             <component-dropdown :name="'teste'">
-                                <component-dropdown-item name="Editar" target="#editCategory" @click="selectCategory(category)"></component-dropdown-item>
-                                <component-dropdown-item name="Excluir" target="#destoryCategory" @click="selectCategory(category)"></component-dropdown-item>
+                                <component-dropdown-item name="Editar" target="#editIndicative" @click="selectIndicative(indicative)"></component-dropdown-item>
+                                <component-dropdown-item name="Excluir" target="#destoryIndicative" @click="selectIndicative(indicative)"></component-dropdown-item>
                             </component-dropdown>
                         </component-td>
                     </admin-tr>
@@ -67,7 +62,7 @@
         </template>
     </component-card>
 
-    <model :title="'Editar Categoria'" :name="'editCategory'">
+    <model :title="'Editar Classificação Indicativa'" :name="'editIndicative'">
         <form method="POST" :action="routeUpdate" ref="formUpdate">
             <input type="hidden" name="_token" :value="token"/>
             <input type="hidden" name="_method" value="PATCH" />
@@ -78,7 +73,7 @@
                             :required="true"
                             :input-type="'name'"
                             :placeholder="'Nome'"
-                            :name-id="'name'"
+                            :name-id="'indicative'"
                             :value="name"
                             :class-input="classInput"
                             @input="valueInput($event)"
@@ -105,11 +100,11 @@
         </template>
     </model>
 
-    <model :title="'Excluir Categoria'" :name="'destoryCategory'">
+    <model :title="'Excluir Classificação Indicativa'" :name="'destoryIndicative'">
         <div class="py-3 text-center">
             <i class="ni ni-bell-55 ni-3x"></i>
-            <h4 class="text-gradient text-danger mt-4">Deseja excluir essa categoria?</h4>
-            <p>Todos os posts relacionados a essa Categoria será excluidos também</p>
+            <h4 class="text-gradient text-danger mt-4">Deseja excluir essa indicativa?</h4>
+            <p>Todos os posts relacionados a essa indicativa será excluidos também</p>
         </div>
         <form method="POST" :action="routeDelete" ref="formDelete">
             <input type="hidden" name="_token" :value="token"/>
@@ -120,6 +115,7 @@
             <button type="button" class="btn bg-gradient-danger" @click="destroy()">Excluir</button>
         </template>
     </model>
+
 </template>
 
 <script>
@@ -134,8 +130,8 @@
         },
         data(){
             return {
-                categories: [],
-                category: {},
+                indications: [],
+                indicative: {},
                 name: '',
                 description: '',
                 classDescription: '',
@@ -145,29 +141,23 @@
                 routeUpdate: '',
                 routeDelete: '',
                 classInputCheck: 'form-check-input',
-                inputCategory: '',
+                inputIndicative: '',
                 listSearch: {},
             }
         },
         methods: {
-            selectCategory(category){
-                this.category = category;
-                this.name = category.name;
-                this.routeUpdate = route('admin.tipos-de-categorias.update', this.category.id);
-                this.routeDelete = route('admin.tipos-de-categorias.destroy', this.category.id);
-                this.description = this.category.description;
+            selectIndicative(indicative){
+                this.indicative = indicative;
+                this.name = indicative.indicative;
+                this.routeUpdate = route('admin.classificacao-indicativas.update', this.indicative.id);
+                this.routeDelete = route('admin.classificacao-indicativas.destroy', this.indicative.id);
+                this.description = this.indicative.description;
             },
-            listCategories(){
-                axios.get(route('api.admin.categorie-types.index'))
+            listIndications(){
+                axios.get(route('api.admin.indicative-rating.index'))
                     .then((response) => {
-                        this.categories = response.data.data;
+                        this.indications = response.data.data;
                     })
-            },
-            valueTextArea(event){
-                this.description = event.target.value;
-            },
-            valueInput(event){
-                this.name = event.target.value;
             },
             update(){
                 if(this.name == '' || this.description == ''){
@@ -182,33 +172,10 @@
             },
             destroy(){
                 this.$refs.formDelete.submit();
-            },
-            searchInputCategory(event){
-                this.inputCategory = event.target.value;
-                let params = {
-                    'search': {
-                        'name' : this.inputCategory
-                    }
-                };
-                
-                this.listSearch = params;
-
-                this.search(params);
-            },
-            search(params){
-                axios.get(route('api.admin.categorie-types.search'), {params})
-                    .then((response) => {
-                        this.categories = response.data.data;
-                    })
-            },
-            clear(){
-                this.inputCategory = '',
-                this.listSearch = {}
-                this.listCategories();
             }
         },
         mounted() {
-            this.listCategories();
+            this.listIndications();
             this.token = document.head.querySelector('meta[name="csrf-token"]')?.content;
         }
     }
