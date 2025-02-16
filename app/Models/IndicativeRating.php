@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class IndicativeRating extends Model
 {
-    use HasFactory;
+    use HasFactory, AppLogModel;
 
     /**
      * The attributes that are mass assignable.
