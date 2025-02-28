@@ -30,6 +30,9 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
     });
     Route::apiResource('categorie-types', CategoryTypeController::class);
 
+    Route::prefix('indicative-rating')->name('indicative-rating.')->group(function () {
+        Route::get('search', [IndicativeRatingController::class, 'search'])->name('search');
+    });
     Route::apiResource('indicative-rating', IndicativeRatingController::class);
 });
 

@@ -16,9 +16,14 @@
                         :name="'Indicação...'"
                         :type="'text'"
                         :icon="'fa fa-search'"
+                        :value-input="inputIndicative"
+                        @input="searchInputIndicative($event)"
                     ></admin-filter-input>
                 </div>
                 <div class="col-lg-5 d-flex justify-content-end">
+                    <button type="button" class="btn bg-gradient-primary me-2" @click="clear()" v-if="Object.keys(listSearch).length > 0">
+                        Limpar filtros
+                    </button>
                     <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#createIndicativeModal">
                         Cadastrar
                     </button>
@@ -172,6 +177,35 @@
             },
             destroy(){
                 this.$refs.formDelete.submit();
+            },
+            searchInputIndicative(event){
+                this.inputIndicative = event.target.value;
+
+                if(this.inputIndicative == ''){
+                    this.clear();
+                    return;
+                }
+                
+                let params = {
+                    'search': {
+                        'name' : this.inputIndicative
+                    }
+                };
+                
+                this.listSearch = params;
+
+                this.search(params);
+            },
+            search(params){
+                axios.get(route('api.admin.indicative-rating.search'), {params})
+                    .then((response) => {
+                        this.indications = response.data.data;
+                    })
+            },
+            clear(){
+                this.inputIndicative = '',
+                this.listSearch = {}
+                this.listIndications();
             }
         },
         mounted() {
