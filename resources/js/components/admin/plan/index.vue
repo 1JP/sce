@@ -50,41 +50,41 @@
                     </admin-thead>
                 </template>
                 <template v-slot:tbody>
-                    <admin-tr>
+                    <admin-tr v-for="plan in plans" :key="plan.id">
                         <component-td>
                             <div class="d-flex px-2 py-1">
                                 <div class="d-flex flex-column justify-content-center">
-                                    <h6 class="mb-0 text-sm">John Michael</h6>
+                                    <h6 class="mb-0 text-sm">
+                                        {{ plan.name }}
+                                    </h6>
                                 </div>
                             </div>
                         </component-td>
                         <component-td>
                             <h6 class="mb-0 text-sm">
-                                Todas estas questões, devidamente ponderadas, levantam dúvidas sobre se a crescente influência da mídia aponta para a melhoria do impacto na agilidade decisória.
-                                
+                                {{ plan.description }}
                             </h6>
                         </component-td>
                         <component-td :class="'align-middle text-sm'">
-                            <component-span-status :class="'bg-gradient-success'">
-                                Ativo
-                            </component-span-status>
+                            <component-span-status :class="'bg-gradient-success'" v-if="plan.active">Ativo</component-span-status>
+                            <component-span-status :class="'bg-gradient-danger'" v-else>Desativado</component-span-status>
                         </component-td>
                         <component-td :class="'align-middle text-center'">
-                            <h6 class="mb-0 text-sm">7</h6>
+                            <h6 class="mb-0 text-sm">{{ plan.number_film }}</h6>
                         </component-td>
                         <component-td :class="'align-middle text-center'">
-                            <h6 class="mb-0 text-sm">7</h6>
+                            <h6 class="mb-0 text-sm">{{ plan.number_book }}</h6>
                         </component-td>
                         <component-td :class="'align-middle text-center'">
-                            <h6 class="mb-0 text-sm">7</h6>
+                            <h6 class="mb-0 text-sm">{{ plan.number_serie }}</h6>
                         </component-td>
                         <component-td :class="'align-middle text-center'">
-                            <h6 class="mb-0 text-sm">7</h6>
+                            <h6 class="mb-0 text-sm">{{ plan.count_assinatura }}</h6>
                         </component-td>
                         <component-td>
-                            <component-dropdown :name="'teste'">
+                            <component-dropdown :name="'planDropdown'">
                                 <component-dropdown-item name="Visualizar" target="#viewPlanoModal"></component-dropdown-item>
-                                <component-dropdown-item name="Editar" route="#"></component-dropdown-item>
+                                <component-dropdown-item name="Editar" target="#editPlanoModal" @click="selectPlan(plan)"></component-dropdown-item>
                                 <component-dropdown-item name="Excluir" target="#destoryPlan"></component-dropdown-item>
                             </component-dropdown>
                         </component-td>
@@ -94,6 +94,106 @@
         </template>
     </component-card>
 
+    <model :title="'Editar Plano'" :name="'editPlanoModal'">
+        <form method="POST" :action="routeUpdate" ref="formUpdate">
+            <input type="hidden" name="_token" :value="token"/>
+            <input type="hidden" name="_method" value="PATCH" />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <component-input
+                            :required="true"
+                            :input-type="'name'"
+                            :placeholder="'Nome'"
+                            :name-id="'name'"
+                            :value="name"
+                            :class-input="classInput"
+                            @input="valueInput($event)"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <component-text-area
+                        :is-required="true"
+                        :placeholder="'Descrição'"
+                        :name-id="'description'"
+                        :class-input="classDescription"
+                        :value="description"
+                        @input="valueTextArea($event)"
+                    />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <component-input
+                            :required="true"
+                            :input-type="'number'"
+                            :placeholder="'Filme'"
+                            :name-id="'number_film'"
+                            :value="numberFilm"
+                            :class-input="classFilm"
+                            @input="valueInputFilm($event)"
+                        />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <component-input
+                            :required="true"
+                            :input-type="'number'"
+                            :placeholder="'Serie'"
+                            :name-id="'number_serie'"
+                            :value="numberSerie"
+                            :class-input="classSerie"
+                            @input="valueInputSerie($event)"
+                        />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <component-input
+                            :required="true"
+                            :input-type="'number'"
+                            :placeholder="'Livro'"
+                            :name-id="'number_book'"
+                            :value="numberBook"
+                            :class-input="classBook"
+                            @input="valueInputBook($event)"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <component-input
+                        :required="true"
+                        :input-type="'text'"
+                        :placeholder="'Valor'"
+                        :name-id="'value'"
+                        :value="valuePlan"
+                        :class-input="classValuePlan"
+                        @input="valueInputPlan($event)"
+                    />
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" name="active" value="1" id="flexSwitchCheckDefault" v-if="plan.active" checked="">
+                            <input class="form-check-input" type="checkbox" name="active" value="0" id="flexSwitchCheckDefault" v-else>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Ativo</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <template v-slot:footer>
+            <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn bg-gradient-primary" @click="update()">Editar</button>
+        </template>
+    </model>
 </template>
 
 <script>
@@ -108,20 +208,104 @@
         },
         data(){
             return {
-                indications: [],
-                indicative: {},
+                plans: [],
+                plan: {},
+                classInput: '',
+                classDescription: '',
+                classSerie: '',
+                classFilm: '',
+                classBook: '',
+                classValuePlan: '',
                 name: '',
                 description: '',
-                classDescription: '',
+                numberFilm: '',
+                numberSerie: '',
+                numberBook: '',
+                valuePlan: '',
+                activePlan: '',
                 token: '',
-                classItem: '',
-                classInput: '',
                 routeUpdate: '',
                 routeDelete: '',
-                classInputCheck: 'form-check-input',
                 selectedStatus: '',
                 listSearch: {},
             }
         },
+        methods: {
+            maskMount(string){
+                string = string.replace(/\D/g, '');
+                string = (string / 100).toFixed(2) + '';
+                string = string.replace('.', ',');
+                string = string.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                return string;
+            },
+            valueTextArea(event){
+                this.description = event.target.value;
+            },
+            valueInput(event){
+                this.name = event.target.value;
+            },
+            valueInputFilm(event){
+                this.numberFilm = event.target.value;
+            },
+            valueInputSerie(event){
+                this.numberSerie = event.target.value;
+            },
+            valueInputBook(event){
+                this.numberBook = event.target.value;
+            },
+            valueInputPlan(event){
+                if(/^[a-zA-Z]$/.test(event.target.value)){
+                    this.valuePlan = null;
+                    event.target.value = null
+                    return;
+                }
+                this.valuePlan = this.maskMount(event.target.value);
+            },
+            listPlans(){
+                axios.get(route('api.admin.plans.index'))
+                    .then((response) => {
+                        this.plans = response.data.data;
+                    })
+            },
+            selectPlan(plan){
+                this.plan = plan;
+                this.routeUpdate = route('admin.planos.update', this.plan.id);
+                this.routeDelete = route('admin.planos.destroy', this.plan.id);
+                this.name = plan.name;
+                this.description = plan.description;
+                this.numberFilm = plan.number_film;
+                this.numberSerie = plan.number_serie;
+                this.numberBook = plan.number_book;
+                this.valuePlan = plan.value;
+                this.activePlan = plan.active;
+            },
+            update(){
+                if(this.name == '' || this.description == '' 
+                    || this.numberFilm == '' || this.numberSerie == ''
+                    || this.numberBook == '' || this.valuePlan == ''
+                ){
+                    this.classInput = this.name == '' ? 'is-invalid' : 'is-valid'
+                    this.classDescription = this.description == '' ? 'is-invalid' : 'is-valid'
+                    this.classFilm = this.numberFilm == '' ? 'is-invalid' : 'is-valid'
+                    this.classSerie = this.numberSerie == '' ? 'is-invalid' : 'is-valid'
+                    this.classBook = this.numberBook == '' ? 'is-invalid' : 'is-valid'
+                    this.classValuePlan = this.valuePlan == '' ? 'is-invalid' : 'is-valid'
+
+                    return;
+                }
+
+                this.classInput = 'is-valid'
+                this.classDescription = 'is-valid'
+                this.classFilm = 'is-valid'
+                this.classSerie = 'is-valid'
+                this.classBook = 'is-valid'
+                this.classValuePlan = 'is-valid'
+                this.$refs.formUpdate.submit();
+            }
+        },
+        mounted() {
+            this.listPlans();
+            this.token = document.head.querySelector('meta[name="csrf-token"]')?.content;
+        }
     }
 </script>
