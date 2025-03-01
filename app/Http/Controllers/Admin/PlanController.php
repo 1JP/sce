@@ -129,7 +129,7 @@ class PlanController extends Controller
         try {
             $validated = $request->validated();
             $validated['active'] = !isset($validated['active']) ? 0 : 1;
-            
+
             $this->updatePlanStatus($plan, $validated['active']);
 
             $body = $this->preparePaymentData($validated);
@@ -151,9 +151,19 @@ class PlanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Plan $plan)
     {
-        //
+        if (Gate::denies('delete', Auth::user())) {
+            abort(403);
+        }
+
+        try {
+            $plan->delete();
+
+            return redirect()->route('admin.planos.index')->with('success', 'Plano excluido com sucesso!');
+        }catch (\Exception $e) {
+            return redirect()->route('admin.planos.index')->with('danger', 'Não foi possível excluir a plano!');
+        }
     }
 
     /**
