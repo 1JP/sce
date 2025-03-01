@@ -83,7 +83,7 @@
                         </component-td>
                         <component-td>
                             <component-dropdown :name="'planDropdown'">
-                                <component-dropdown-item name="Visualizar" target="#viewPlanoModal"></component-dropdown-item>
+                                <component-dropdown-item name="Visualizar" target="#viewPlanoModal" @click="selectPlan(plan)"></component-dropdown-item>
                                 <component-dropdown-item name="Editar" target="#editPlanoModal" @click="selectPlan(plan)"></component-dropdown-item>
                                 <component-dropdown-item name="Excluir" target="#destoryPlan"></component-dropdown-item>
                             </component-dropdown>
@@ -192,6 +192,63 @@
         <template v-slot:footer>
             <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn bg-gradient-primary" @click="update()">Editar</button>
+        </template>
+    </model>
+
+    <model :title="plan.name" :name="'viewPlanoModal'">
+        <div class="row">
+            <div class="col-lg-12 col-lg-3">
+                <div class="form-group"> 
+                    <h5>Descrição:</h5> 
+                    <p class="text-center">
+                        {{ plan.description }}
+                    </p> 
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-lg-3">
+                <div class="form-group"> 
+                    <h5>Filmes:</h5> 
+                    <p>{{ plan.number_film }}</p> 
+                </div>
+            </div>
+            <div class="col-lg-4 col-lg-3">
+                <div class="form-group"> 
+                    <h5>Series:</h5> 
+                    <p>{{ plan.number_serie }}</p> 
+                </div>
+            </div>
+            <div class="col-lg-4 col-lg-3">
+                <div class="form-group"> 
+                    <h5>Livros:</h5> 
+                    <p>{{ plan.number_book }}</p> 
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-lg-3">
+                <div class="form-group"> 
+                    <h5>Ativo:</h5> 
+                    <p v-if="plan.active">Sim</p> 
+                    <p v-else>Não</p> 
+                </div>
+            </div>
+            <div class="col-lg-4 col-lg-3">
+                <div class="form-group"> 
+                    <h5>Assinatura:</h5> 
+                    <p>{{ plan.count_assinatura }}</p> 
+                </div>
+            </div>
+            <div class="col-lg-4 col-lg-3">
+                <div class="form-group"> 
+                    <h5>Valor:</h5> 
+                    <p>R$ {{ plan.value }}</p> 
+                </div>
+            </div>
+        </div>
+        <template v-slot:footer>
+            <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
         </template>
     </model>
 </template>
