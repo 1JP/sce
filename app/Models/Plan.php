@@ -139,8 +139,8 @@ class Plan extends Model
      */
     public function setValueAttribute($value)
     {
-        if (is_int($value) || is_string($value)) {
-            throw new \InvalidArgumentException('O número de séries não pode ser uma string/inteiro.');
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O número de séries não pode ser uma inteiro.');
         }
 
         $this->attributes['value'] = $value;
