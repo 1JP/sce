@@ -120,9 +120,32 @@ class PlanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PlanRequest $request, Plan $plan)
     {
-        //
+        if (Gate::denies('update', Auth::user())) {
+            abort(403);
+        }
+
+        try {
+            $validated = $request->validated();
+            $validated['active'] = !isset($validated['active']) ? 0 : 1;
+            
+            $this->updatePlanStatus($plan, $validated['active']);
+
+            $body = $this->preparePaymentData($validated);
+            $payment = $this->paymentApi->updatePlan($body, $plan->customer_id);
+            
+            if (isset($payment->error_messages)) {
+                return redirect()->route('admin.planos.index')->with('danger', 'Não foi possivel editado o plano!');
+            }
+            
+            $plan->update($validated);
+
+            return redirect()->route('admin.planos.index')->with('success', 'Plano editado com sucesso!');
+
+        } catch (\Exception $e) {
+            return redirect()->route('admin.planos.index')->with('danger', 'Não foi possível editado a plano!');
+        }
     }
 
     /**
@@ -133,6 +156,58 @@ class PlanController extends Controller
         //
     }
 
+    /**
+     * Updates the plan status (active/inactive) in the payment API.
+     *
+     * @param Plan $plan
+     * @param int $status
+     * @return void
+     */
+    private function updatePlanStatus(Plan $plan, int $status)
+    {
+        if ($status !== $plan->active) {
+            if ($status === 0) {
+                $this->inactivatePlan($plan);
+            } elseif ($status === 1) {
+                $this->activatePlan($plan);
+            }
+        }
+    }
+
+    /**
+     * Activate the plan in the payment API.
+     *
+     * @param Plan $plan
+     * @return void
+     */
+    private function activatePlan(Plan $plan)
+    {
+        $activePlan = $this->paymentApi->activePlan($plan->customer_id);
+        if (isset($activePlan->error_messages)) {
+            throw new \Exception('Não foi possível ativar o plano!');
+        }
+    }
+
+    /**
+     * Deactivate the plan in the payment API.
+     *
+     * @param Plan $plan
+     * @return void
+     */
+    private function inactivatePlan(Plan $plan)
+    {
+        $inactivatePlan = $this->paymentApi->inactivatePlan($plan->customer_id);
+        if (isset($inactivatePlan->error_messages)) {
+            throw new \Exception('Não foi possível inativar o plano!');
+        }
+    }
+
+    /**
+     * Prepares payment data for plan update.
+     *
+     * @param array $validated
+     * @return array
+    */
     private function preparePaymentData(array $validated)
     {
         $value = (int) ($validated['value'] * 100);

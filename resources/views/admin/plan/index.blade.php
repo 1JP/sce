@@ -21,64 +21,6 @@
     :title="'Cadastrar Categoria'"
     :name-id="'createPlanModal'"
 />
-{{-- <model :title="'Cadastrar Plano'" :name="'createAndEditPlanoModal'">
-    <div class="row">
-        <div class="col-md-12">
-          <div class="form-group has-success">
-            <input type="text" placeholder="Nome" class="form-control is-valid" />
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="form-group has-danger">
-            <input type="email" placeholder="Error Input" class="form-control is-invalid" />
-          </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group has-success">
-                <textarea class="form-control is-valid" placeholder="Descrição"></textarea>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group has-success">
-                <input type="number" placeholder="Filme" class="form-control is-invalid" />
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group has-success">
-                <input type="number" placeholder="Serie" class="form-control is-invalid" />
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group has-success">
-                <input type="number" placeholder="Livro" class="form-control is-invalid" />
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group has-success">
-                <input type="text" placeholder="Valor" class="form-control is-invalid" />
-            </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked="">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Ativo</label>
-              </div>
-          </div>
-        </div>
-    </div>
-
-    <template v-slot:footer>
-        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn bg-gradient-primary">Save</button>
-    </template>
-</model> --}}
 
 <model :title="'Visualizar Plano'" :name="'viewPlanoModal'">
     <div class="row">
