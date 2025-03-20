@@ -52,8 +52,8 @@ class PlanRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'O nome da categoria é obrigatório.',
-            'description.required' => 'A descrição da categoria é obrigatório.',
+            'name.required' => 'O nome do plano é obrigatório.',
+            'description.required' => 'A descrição do plano é obrigatório.',
             'number_film.required' => 'O número de filmes é obrigatório.',
             'number_serie.required' => 'O número de series é obrigatório.',
             'number_book.required' => 'O número de livros é obrigatório.',

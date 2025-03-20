@@ -84,9 +84,9 @@ class PlanController extends Controller
             $validated = $request->validated();
             $body = $this->preparePaymentData($validated);
             $payment = $this->paymentApi->createPlan($body);
-            
-            if (isset($payment->error_messages)) {
-                return redirect()->route('admin.planos.index')->with('danger', 'Não foi possivel criar o plano!');
+
+            if (!isset($payment->id)) {
+                return redirect()->route('admin.planos.index')->with('danger', 'Não foi possível criar o plano!');
             }
 
             $validated['customer_id'] = $payment->id;
@@ -96,7 +96,7 @@ class PlanController extends Controller
             return redirect()->route('admin.planos.index')->with('success', 'Plano criada com sucesso!');
 
         } catch (\Exception $e) {
-            return redirect()->route('admin.planos.index')->with('danger', 'Não foi possível criar a plano!');
+            return redirect()->route('admin.planos.index')->with('danger', 'Não foi possível criar o plano!');
         }
         
     }
@@ -138,7 +138,7 @@ class PlanController extends Controller
             if (isset($payment->error_messages)) {
                 return redirect()->route('admin.planos.index')->with('danger', 'Não foi possivel editado o plano!');
             }
-            
+
             $plan->update($validated);
 
             return redirect()->route('admin.planos.index')->with('success', 'Plano editado com sucesso!');
