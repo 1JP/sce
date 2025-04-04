@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class Plan extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -139,8 +140,8 @@ class Plan extends Model
      */
     public function setValueAttribute($value)
     {
-        if (is_int($value) || is_string($value)) {
-            throw new \InvalidArgumentException('O número de séries não pode ser uma string/inteiro.');
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O número de séries não pode ser uma inteiro.');
         }
 
         $this->attributes['value'] = $value;
@@ -178,7 +179,7 @@ class Plan extends Model
     public function setActiveAttribute($value)
     {
         if (is_string($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser uma string.');
+            throw new \InvalidArgumentException('O status não pode ser uma string.');
         }
 
         $this->attributes['active'] = $value;

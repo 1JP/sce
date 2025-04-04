@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CategoryTypeController;
 use App\Http\Controllers\Api\IndicativeRatingController;
+use App\Http\Controllers\Api\PlanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
@@ -34,6 +35,8 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
         Route::get('search', [IndicativeRatingController::class, 'search'])->name('search');
     });
     Route::apiResource('indicative-rating', IndicativeRatingController::class);
+
+    Route::apiResource('plans', PlanController::class);
 });
 
 Route::post('/sanctum/token', function (Request $request) {
