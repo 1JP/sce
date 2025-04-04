@@ -73,12 +73,24 @@ class PlanControllerTest extends TestCase
         $response->assertSessionHasErrors(['description']);
     }
 
-    public function test_update_plan(): void
+    /**
+     * Tests updating an existing plan.
+     *
+     * This test creates a mock plan, sends a PUT request to update its data, 
+     * and verifies that the changes are persisted in the database.
+     *
+     * Steps:
+     * 1. Mocks the payment API to ensure the update process runs smoothly.
+     * 2. Creates a test plan with a specific customer ID.
+     * 3. Sends a request to update the plan details.
+     * 4. Checks if the database contains the updated plan data.
+     */
+    public function test_edit_plan(): void
     {
         $this->mockPaymentApi(true);
 
         $plan = Plan::factory()->create([
-            'customer_id' => 'PLAN_FA7A96BE-469B-4C92-8402-50270D5402A9'
+            'customer_id' => ''
         ]);
 
         $this->put(route('admin.planos.update', $plan->id), [
@@ -92,6 +104,77 @@ class PlanControllerTest extends TestCase
 
         $this->assertDatabaseHas('plans', ['name' => 'Plano Premium']);
 
+    }
+
+    /**
+     * Tests if a plan can be deleted correctly.
+     *
+     * This test creates a fake plan in the database, 
+     * sends a DELETE request to remove it, and then 
+     * verifies if the record was marked as deleted 
+     * using soft delete.
+     */
+    public function test_destroy_plan(): void
+    {
+        $plan = Plan::factory()->create();
+
+        $this->delete(route('admin.planos.destroy', $plan->id));
+        
+        $this->assertSoftDeleted('plans', [
+            'id' => $plan->id,
+        ]);
+    }
+
+    /**
+     * Tests if a plan's status can be successfully updated to active.
+     *
+     * This test mocks a successful payment API response,
+     * creates an inactive plan, sends a PUT request to update the plan
+     * (setting it as active), and finally asserts that the plan's
+     * `active` attribute is now set to 1.
+     */
+    public function test_alter_status_active(): void
+    {
+        $this->mockPaymentApi(true);
+
+        $plan = Plan::factory()->create([
+            'customer_id' => '',
+            'active' => 0
+        ]);
+
+        $this->put(route('admin.planos.update', $plan->id), [
+            'name' => 'Plano Premium',
+            'description' => fake()->text(),
+            'number_film' => 1,
+            'number_book' => 2,
+            'number_serie' => 3,
+            'value' => '100.00',
+            'active' => 1
+        ]);
+
+        $this->assertEquals($plan->active, 1);
+    }
+
+    public function test_alter_status_inactivate(): void
+    {
+        $this->mockPaymentApi(true);
+
+        $plan = Plan::factory()->create([
+            'customer_id' => '',
+            'active' => 1
+        ]);
+
+        $this->put(route('admin.planos.update', $plan->id), [
+            'name' => 'Plano Premium',
+            'description' => fake()->text(),
+            'number_film' => 1,
+            'number_book' => 2,
+            'number_serie' => 3,
+            'value' => '100.00',
+            'active' => 0
+        ]);
+
+        $this->assertEquals($plan->active, 0);
     }
 
     private function mockPaymentApi($success)

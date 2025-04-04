@@ -179,7 +179,7 @@ class Plan extends Model
     public function setActiveAttribute($value)
     {
         if (is_string($value)) {
-            throw new \InvalidArgumentException('O nome não pode ser uma string.');
+            throw new \InvalidArgumentException('O status não pode ser uma string.');
         }
 
         $this->attributes['active'] = $value;
