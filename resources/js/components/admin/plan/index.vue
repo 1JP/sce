@@ -17,6 +17,7 @@
                         <admin-filter-select
                             :name="'Status'"
                             :options="['Ativo', 'Desativado']"
+                            @onChanged="filterSelectStatus($event)"
                             :value-select="selectedStatus"
                         ></admin-filter-select>
                     </div>
@@ -26,6 +27,8 @@
                         :name="'Plano...'"
                         :type="'text'"
                         :icon="'fa fa-search'"
+                        :value-input="inputPlan"
+                        @input="searchInputPlan($event)"
                     ></admin-filter-input>
                 </div>
                 <div class="col-lg-4 d-flex justify-content-end">
@@ -300,6 +303,7 @@
                 routeUpdate: '',
                 routeDelete: '',
                 selectedStatus: '',
+                inputPlan: '',
                 listSearch: {},
             }
         },
@@ -378,6 +382,64 @@
             destroy(){
                 this.$refs.formDelete.submit();
             },
+            filterSelectStatus(event){
+                this.selectedStatus = event.target.value;
+                if(this.selectedStatus == ''){
+                    this.listPlans();
+                    return;
+                }
+                let status = 0;
+
+                if (this.selectedStatus == 'Ativo') {
+                    status = 1
+                }
+
+                let params = {
+                    'search': {
+                        'status' : status
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.status = status
+                }
+                
+                this.listSearch = params;
+                this.search(params);
+            },
+            searchInputPlan(event){
+                this.inputPlan = event.target.value;
+                if(this.inputPlan == ''){
+                    this.listPlans();
+                    return;
+                }
+                let params = {
+                    'search': {
+                        'name' : this.inputPlan
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.name = this.inputPlan
+                }
+                
+                this.listSearch = params;
+                this.search(params);
+            },
+            search(params){
+                axios.get(route('api.admin.plans.search'), {params})
+                    .then((response) => {
+                        this.plans = response.data.data;
+                    })
+            },
+            clear(){
+                this.inputPlan = '',
+                this.selectedStatus = '',
+                this.listSearch = {}
+                this.listPlans();
+            }
         },
         mounted() {
             this.listPlans();

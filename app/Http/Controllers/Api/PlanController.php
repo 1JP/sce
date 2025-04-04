@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SearchRequest;
 use App\Http\Resources\PlanResource;
 use App\Models\Plan;
 use Illuminate\Http\Request;
@@ -23,6 +24,22 @@ class PlanController extends Controller
         $plans = Plan::all();
 
         return PlanResource::collection($plans);
+    }
+
+    /**
+     * Search a listing of the resource.
+     */
+    public function search(SearchRequest $request)
+    {
+        $validated = $request->validated();
+
+        $plans = Plan::when(isset($validated['search']['name']), function ($query) use ($validated){
+            $query->where('name', 'like', '%'.$validated['search']['name'].'%');
+        })->when(isset($validated['search']['status']), function ($query) use ($validated){
+            $query->where('active', '=', $validated['search']['status']);
+        })->get();
+
+       return PlanResource::collection($plans);
     }
 
 }
