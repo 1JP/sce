@@ -36,6 +36,9 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
     });
     Route::apiResource('indicative-rating', IndicativeRatingController::class);
 
+    Route::prefix('plans')->name('plans.')->group(function () {
+        Route::get('search', [PlanController::class, 'search'])->name('search');
+    });
     Route::apiResource('plans', PlanController::class);
 });
 
