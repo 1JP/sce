@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SubscriptionController;
+use App\Http\Controllers\Auth\AccessController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentController;
@@ -26,7 +27,9 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/signin', [LoginController::class, 'store'])->name('signin');
 Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
 
-Route::get('/primeiro-acesso', [LoginController::class, 'firstAccess'])->name('first-access');
+Route::get('/primeiro-acesso', [AccessController::class, 'index'])->name('first-access');
+Route::post('/send-primeiro-acesso', [AccessController::class, 'store'])->name('create.first-access');
+
 Route::get('/esqueci-minha-senha', [LoginController::class, 'forgotPassword'])->name('forgot-password');
 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
@@ -53,4 +56,12 @@ Route::get("/", [HomeController::class, 'index'])->name('home');
 Route::resource('/posts', SitePostController::class);
 Route::resource('/categorias', SiteCategoryController::class);
 Route::resource('/pagamento', PaymentController::class);
-Route::resource('/usuarios', SiteUserController::class);
+Route::prefix('usuarios')->name('usuarios.')->group(function () {
+    Route::get('/create/{token}', [SiteUserController::class, 'create'])->name('create');
+});
+
+Route::resource('/usuarios', SiteUserController::class)->except(['create']);
+
+Route::get('/teste', function(){
+    return view('email.first-access');
+});

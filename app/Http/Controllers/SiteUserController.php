@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\PasswordResetToken;
 use Illuminate\Http\Request;
 
 class SiteUserController extends Controller
@@ -18,9 +19,13 @@ class SiteUserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(string $token)
     {
-        //
+        $reset = PasswordResetToken::where('token', '=', $token)->first();
+        
+        return view('site.user.create', [
+            'email' => $reset->email
+        ]);
     }
 
     /**

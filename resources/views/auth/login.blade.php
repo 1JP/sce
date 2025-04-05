@@ -25,11 +25,11 @@
                         :placeholder="'Senha'"
                         :name-id="'password'"
                     />
-                    <small class="form-text text-muted text-right">
-                        <a href="#"> Primeiro acesso</a>-
-                        <a href="#"> Esqueci minha senha </a>
-                    </small> 
                 </div>
+                <small class="form-text text-muted text-right">
+                    <a href="{{ route('first-access') }}"> Primeiro acesso</a> -
+                    <a href="#"> Esqueci minha senha </a>
+                </small> 
                 <button type='submit' class="btn btn-primary btn-block rounded w-100" >Login</button>
             </form>
         </div>
