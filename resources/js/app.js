@@ -58,6 +58,11 @@ app.component('component-accordion-item', require('./components/Accordion-item.v
 app.component('component-input', require('./components/Input.vue').default);
 app.component('component-select', require('./components/Select.vue').default);
 app.component('component-text-area', require('./components/TextArea.vue').default);
+app.component('list-group', require('./components/ListGroup.vue').default);
+app.component('list-group-item', require('./components/ListGroup-item.vue').default);
+app.component('fixed-bottom', require('./components/FixedBottom.vue').default);
+app.component('breadcrumb', require('./components/Breadcrumb.vue').default);
+app.component('model', require('./components/Model.vue').default);
 
 app.component('site-header', require('./components/site/Header.vue').default);
 app.component('site-social-links', require('./components/site/SocialLinks.vue').default);
@@ -69,12 +74,8 @@ app.component('site-carousel', require('./components/site/Carousel.vue').default
 app.component('site-comment', require('./components/site/Comment.vue').default);
 app.component('site-create-comment', require('./components/site/CreateComment.vue').default);
 app.component('site-children-comment', require('./components/site/ChildrenComment.vue').default);
+app.component('site-create-user', require('./components/site/user/create.vue').default);
 
-app.component('list-group', require('./components/ListGroup.vue').default);
-app.component('list-group-item', require('./components/ListGroup-item.vue').default);
-app.component('fixed-bottom', require('./components/FixedBottom.vue').default);
-app.component('breadcrumb', require('./components/Breadcrumb.vue').default);
-app.component('model', require('./components/Model.vue').default);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
