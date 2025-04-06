@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CategoryTypeController;
 use App\Http\Controllers\Api\IndicativeRatingController;
 use App\Http\Controllers\Api\PlanController;
+use App\Http\Controllers\Api\RoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
@@ -41,6 +42,8 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
     });
     Route::apiResource('plans', PlanController::class);
 });
+
+Route::apiResource('roles', RoleController::class);
 
 Route::post('/sanctum/token', function (Request $request) {
     $request->validate([

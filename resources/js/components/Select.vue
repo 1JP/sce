@@ -9,7 +9,7 @@
 
 <script>
     export default {
-        emits: ['onChanged'],
+        emits: ['onChanged', 'update:valueSelect'],
         props: {
             options: {
                 type: Array,
@@ -58,10 +58,10 @@
                         return this.valueSelect;
                     }
                     if (typeof this.valueSelect === "string") {
-                        return this.valueSelect.split(",").map(val => Number(val.trim()));
+                        return this.valueSelect;
                     }
                     if (typeof this.valueSelect === "number") {
-                        return [this.valueSelect]; // Converte número em array
+                        return this.valueSelect; // Converte número em array
                     }
                     return [];
                 },
