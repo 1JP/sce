@@ -1,184 +1,201 @@
 <template>
     <div class="row d-flex justify-content-center">
         <div class="col-lg-9">
-            <h3 style="margin: 0;">Minha conta</h3>
-            <component-card
-                :class-card="'mb-2'"
-                :card-body="true"
-                style="background: #EDEBE4;"
-            >
-                <template v-slot:body>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-12 col-12" style="">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <label for="form19" class="text-dark">Nome Completo</label>
-                                    <component-input
-                                        :required="true"
-                                        :input-type="'text'"
-                                        :placeholder="'Nome'"
-                                        :name-id="'name'"
-                                        :value="name"
-                                        :class-input="className"
-                                    />
+            <form method="POST" :action="routeForm" ref="form">
+                <input type="hidden" name="_token" :value="token"/>
+                <input type="hidden" name="_method" value="PATCH" v-if="isUpdate"/>
+                <h3 style="margin: 0;">Minha conta</h3>
+                <component-card
+                    :class-card="'mb-2'"
+                    :card-body="true"
+                    style="background: #EDEBE4;"
+                >
+                    <template v-slot:body>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12 col-12" style="">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="form19" class="text-dark">Nome Completo</label>
+                                        <component-input
+                                            :required="true"
+                                            :input-type="'text'"
+                                            :placeholder="'Nome'"
+                                            :name-id="'name'"
+                                            :value="name"
+                                            :class-input="className"
+                                            @input="inputName($event)"
+                                        />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="form19" class="text-dark">Data de Nascimento</label>
+                                        <component-input
+                                            :required="true"
+                                            :input-type="'date'"
+                                            :name-id="'birth_date'"
+                                            :value="birth_date"
+                                            :class-input="classBirthDate"
+                                            @input="inputBirthDate($event)"
+                                        />
+                                    </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <label for="form19" class="text-dark">Data de Nascimento</label>
-                                    <component-input
-                                        :required="true"
-                                        :input-type="'date'"
-                                        :name-id="'birth_date'"
-                                        :value="birth_date"
-                                        :class-input="classBithDate"
-                                    />
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="form19" class="text-dark">Telefone</label>
+                                        <component-input
+                                            :required="true"
+                                            :input-type="'text'"
+                                            :placeholder="'(31) 99999-9999'"
+                                            :name-id="'phone'"
+                                            :value="phone"
+                                            pattern="[0-9]*" 
+                                            :class-input="classPhone"
+                                            @input="inputPhone($event)"
+                                        />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="form19" class="text-dark">CPF</label>
+                                        <component-input
+                                            :required="true"
+                                            :input-type="'text'"
+                                            :placeholder="'000.000.000-00'"
+                                            :name-id="'cpf'"
+                                            :value="cpf"
+                                            :class-input="classCpf"
+                                            @input="inputCpf($event)"
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <label for="form19" class="text-dark">Telefone</label>
-                                    <component-input
-                                        :required="true"
-                                        :input-type="'text'"
-                                        :placeholder="'(31) 99999-9999'"
-                                        :name-id="'phone'"
-                                        :value="phone"
-                                        :class-input="classPhone"
-                                    />
-                                </div>
-                                <div class="col-lg-6">
-                                    <label for="form19" class="text-dark">CPF</label>
-                                    <component-input
-                                        :required="true"
-                                        :input-type="'text'"
-                                        :placeholder="'000.000.000-00'"
-                                        :name-id="'cpf'"
-                                        :value="cpf"
-                                        :class-input="classCpf"
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <label for="form19" class="text-dark">E-mail</label>
-                                    <component-input
-                                        :required="true"
-                                        :input-type="'email'"
-                                        :placeholder="'email@gmail.com'"
-                                        :name-id="'email'"
-                                        :value="email"
-                                        :class-input="classEmail"
-                                    />
-                                </div>
-                                <div class="col-lg-6">
-                                    <label for="form19" class="text-dark">Senha</label>
-                                    <component-input
-                                        :required="true"
-                                        :input-type="'password'"
-                                        :name-id="'password'"
-                                        :value="password"
-                                        :class-input="classPassword"
-                                    />
+                                
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="form19" class="text-dark">E-mail</label>
+                                        <component-input
+                                            :required="true"
+                                            :input-type="'email'"
+                                            :placeholder="'email@gmail.com'"
+                                            :name-id="'email'"
+                                            :value="emailInput"
+                                            :class-input="classEmail"
+                                            @input="inputEmail($event)"
+                                        />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="form19" class="text-dark">Senha</label>
+                                        <component-input
+                                            :required="true"
+                                            :input-type="'password'"
+                                            :name-id="'password'"
+                                            :value="password"
+                                            :class-input="classPassword"
+                                            @input="inputPassword($event)"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </template>
-            </component-card>
-            <h3 >Endereço<br></h3>
-            <component-card
-                :class-card="'mb-2'"
-                :card-body="true"
-                style="background: #EDEBE4;"
-            >
-                <template v-slot:body>
-                    <div class="row">
-                        <div class="col-lg-4 col-12" style="">
-                            <label for="form19" class="text-dark">CEP</label>
-                            <div class="form-group"> 
+                    </template>
+                </component-card>
+                <h3 >Endereço<br></h3>
+                <component-card
+                    :class-card="'mb-2'"
+                    :card-body="true"
+                    style="background: #EDEBE4;"
+                >
+                    <template v-slot:body>
+                        <div class="row">
+                            <div class="col-lg-4 col-12" style="">
+                                <label for="form19" class="text-dark">CEP</label>
+                                <div class="form-group"> 
+                                    <component-input
+                                        :required="true"
+                                        :input-type="'text'"
+                                        :placeholder="'00000-000'"
+                                        :name-id="'postal_code'"
+                                        :value="postal_code"
+                                        pattern="[0-9]*"
+                                        :class-input="classPostalCode"
+                                        @input="inputPostalCode($event)"
+                                    />
+                                    <p class=""><a href="https://buscacepinter.correios.com.br/app/endereco/index.php" target="_blank">Não sei meu CEP</a></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-8" style="">
+                                <label for="form19" class="text-dark">Endereço</label>
                                 <component-input
                                     :required="true"
                                     :input-type="'text'"
-                                    :placeholder="'00000-000'"
-                                    :name-id="'postal_code'"
-                                    :value="postal_code"
-                                    pattern="[0-9]*"
-                                    :class-input="classPostalCode"
+                                    :placeholder="'Rua, Avenida, Beco'"
+                                    :name-id="'street'"
+                                    :value="street"
+                                    :class-input="classStreet"
+                                    @input="inputStreet($event)"
                                 />
-                                <p class=""><a href="https://buscacepinter.correios.com.br/app/endereco/index.php" target="_blank">Não sei meu CEP</a></p>
                             </div>
                         </div>
-                        <div class="col-lg-8" style="">
-                            <label for="form19" class="text-dark">Endereço</label>
-                            <component-input
-                                :required="true"
-                                :input-type="'text'"
-                                :placeholder="'Rua, Avenida, Beco'"
-                                :name-id="'street'"
-                                :value="street"
-                                :class-input="classStreet"
-                            />
+                        <div class="row">
+                            <div class="col-lg-4 col-12" style="">
+                                <label for="form19" class="text-dark">Número</label>
+                                <component-input
+                                    :required="true"
+                                    :input-type="'text'"
+                                    :placeholder="'45A'"
+                                    :name-id="'number'"
+                                    :value="number"
+                                    :class-input="classNumber"
+                                    @input="inputNumber($event)"
+                                />
+                            </div>
+                            <div class="col-lg-4" style="">
+                                <label for="form19" class="text-dark">Complemento</label>
+                                <component-input
+                                    :required="true"
+                                    :input-type="'text'"
+                                    :placeholder="'Casa, Apt'"
+                                    :name-id="'complement'"
+                                />
+                            </div>
+                            <div class="col-lg-4" style="">
+                                <label for="form19" class="text-dark">Bairro</label>
+                                <component-input
+                                    :required="true"
+                                    :input-type="'text'"
+                                    :placeholder="'Bairro'"
+                                    :name-id="'locality'"
+                                    :value="locality"
+                                    :class-input="classLocality"
+                                    @input="inputLocality($event)"
+                                />
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4 col-12" style="">
-                            <label for="form19" class="text-dark">Número</label>
-                            <component-input
-                                :required="true"
-                                :input-type="'text'"
-                                :placeholder="'45A'"
-                                :name-id="'number'"
-                                :value="number"
-                                :class-input="classNumber"
-                            />
+                        <div class="row">
+                            <div class="form-group col-lg-4" style="">
+                                <label for="form19" class="text-dark">Cidade</label>
+                                <component-input
+                                    :required="true"
+                                    :input-type="'text'"
+                                    :placeholder="'Cidade'"
+                                    :name-id="'city'"
+                                    :class-input="classCity"
+                                    :value="city"
+                                    @input="inputCity($event)"
+                                />
+                            </div>
+                            <div class="form-group col-lg-4" style="">
+                                <label for="form19" class="text-dark">Estado</label>
+                                <component-input
+                                    :required="true"
+                                    :input-type="'text'"
+                                    :placeholder="'MG'"
+                                    :name-id="'region_code'"
+                                    :class-input="classRegionCode"
+                                    :value="region_code"
+                                    @input="inputRegiaoCode($event)"
+                                />
+                            </div>
                         </div>
-                        <div class="col-lg-4" style="">
-                            <label for="form19" class="text-dark">Complemento</label>
-                            <component-input
-                                :required="true"
-                                :input-type="'text'"
-                                :placeholder="'Casa, Apt'"
-                                :name-id="'complement'"
-                            />
-                        </div>
-                        <div class="col-lg-4" style="">
-                            <label for="form19" class="text-dark">Bairro</label>
-                            <component-input
-                                :required="true"
-                                :input-type="'text'"
-                                :placeholder="'Bairro'"
-                                :name-id="'locality'"
-                                :value="locality"
-                                :class-input="classLocality"
-                            />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-4" style="">
-                            <label for="form19" class="text-dark">Cidade</label>
-                            <component-input
-                                :required="true"
-                                :input-type="'text'"
-                                :placeholder="'Cidade'"
-                                :name-id="'city'"
-                                :class-input="classCity"
-                                :value="city"
-                            />
-                        </div>
-                        <div class="form-group col-lg-4" style="">
-                            <label for="form19" class="text-dark">Estado</label>
-                            <component-input
-                                :required="true"
-                                :input-type="'text'"
-                                :placeholder="'MG'"
-                                :name-id="'region_code'"
-                                :class-input="classRegionCode"
-                                :value="region_code"
-                            />
-                        </div>
-                    </div>
-                </template>
-            </component-card>
+                    </template>
+                </component-card>
+            </form>
         </div>
     </div>
 
@@ -188,7 +205,7 @@
             <div class="rounded col-md-6" style="">
               <div class="row d-flex justify-content-center align-items-center">
                 <div class="d-flex flex-row justify-content-center align-items-center col-md-6 col-11 pb-3">
-                    <a class="btn finalizar btn-primary text-white d-flex justify-content-center btn-block rounded-sm" href="#" style="">
+                    <a class="btn finalizar btn-primary text-white d-flex justify-content-center btn-block rounded-sm" href="#" style="" @click="save()">
                         Salvar alterações
                     </a>
                 </div>
@@ -209,15 +226,24 @@
         props: {
             email: {
                 type: String,
-                required: true,
+                required: false,
             },
+            routeForm: {
+                type: String,
+                required: false,
+            },
+            isUpdate: {
+                type: Boolean,
+                required: false,
+                default: false
+            }
         },
         data() {
             return {
                 viacep: {},
                 token: '',
                 className: '',
-                classBithDate: '',
+                classBirthDate: '',
                 classPhone: '',
                 classCpf: '',
                 classEmail: '',
@@ -232,14 +258,14 @@
                 name: '',
                 phone: '',
                 cpf: '',
-                email: email,
+                emailInput: '',
                 password: '',
                 postal_code: '',
                 street: '',
                 number: '',
                 locality: '',
                 city: '',
-                region_code: ''
+                region_code: '',
             };
         },
         methods: {
@@ -247,8 +273,10 @@
                 if (cep.length >= 9) {
                     let fixedCep = cep.replace('-', '')
                     await axios.get(`https://viacep.com.br/ws/${fixedCep}/json/`)
-                        .then(response => this.viacep = response.data);
-
+                        .then(response => this.viacep = response.data)
+                        .catch(function(error) {
+                            console.log(error.request)
+                        })
                     this.street = this.viacep.logradouro;
                     this.city = this.viacep.localidade;
                     this.locality = this.viacep.bairro;
@@ -285,8 +313,91 @@
 
                 return string;
             },
+            inputName(event){
+                this.name = event.target.value;
+            },
+            inputBirthDate(event){
+                this.birth_date = event.target.value;
+            },
+            inputPhone(event){
+                if(/^[a-zA-Z]$/.test(event.target.value)){
+                    this.phone = null;
+                    return;
+                }
+                this.phone = this.maskPhoneNumber(event.target.value);
+            },
+            inputCpf(event){
+                event.target.value = event.target.value.replace(/\D/g, '');
+                this.cpf = this.maskCpf(event.target.value);
+            },
+            inputEmail(event){
+                this.email = event.target.value
+            },
+            inputPassword(event){
+                this.password = event.target.value
+            },
+            inputPostalCode(event){
+                event.target.value = event.target.value.replace(/\D/g, '');
+                this.postal_code = this.maskCep(event.target.value);
+                this.getAddressByCep(this.postal_code);
+            },
+            inputStreet(event){
+                this.street = event.target.value
+            },
+            inputNumber(event){
+                this.number = event.target.value
+            },
+            inputLocality(event){
+                this.locality = event.target.value
+            },
+            inputCity(event){
+                this.city = event.target.value
+            },
+            inputRegiaoCode(event){
+                this.region_code = event.target.value
+            },
+            checkEmptyFields() {
+                if(this.birth_date == '' || this.name == '' || this.phone == '' ||
+                 this.cpf == '' || this.emailInput == '' || this.password == '' ||
+                 this.postal_code == '' || this.street == '' || this.number == '' ||
+                 this.locality == '' || this.city == '' || this.region_code == ''){
+                    this.className = this.name == '' ? 'is-invalid' : 'is-valid'
+                    this.classBirthDate = this.birth_date == '' ? 'is-invalid' : 'is-valid'
+                    this.classPhone = this.phone == '' ? 'is-invalid' : 'is-valid'
+                    this.classCpf = this.cpf == '' ? 'is-invalid' : 'is-valid'
+                    this.classEmail = this.emailInput == '' ? 'is-invalid' : 'is-valid'
+                    this.classPassword = this.password == '' ? 'is-invalid' : 'is-valid'
+                    this.classPostalCode = this.postal_code == '' ? 'is-invalid' : 'is-valid'
+                    this.classStreet = this.street == '' ? 'is-invalid' : 'is-valid'
+                    this.classNumber = this.number == '' ? 'is-invalid' : 'is-valid'
+                    this.classLocality = this.locality == '' ? 'is-invalid' : 'is-valid'
+                    this.classCity = this.city == '' ? 'is-invalid' : 'is-valid'
+                    this.classRegionCode = this.region_code == '' ? 'is-invalid' : 'is-valid'
+                    return true;
+                }
+
+                this.classInput = 'is-valid'
+                this.classBirthDate = 'is-valid'
+                this.classPhone = 'is-valid'
+                this.classCpf = 'is-valid'
+                this.classEmail = 'is-valid'
+                this.classPassword = 'is-valid'
+                this.classPostalCode = 'is-valid'
+                this.classStreet = 'is-valid'
+                this.classLocality = 'is-valid'
+                this.classCity = 'is-valid'
+                this.classRegionCode = 'is-valid'
+
+                return false;
+            },
+            save(){
+                if(this.checkEmptyFields()) return;
+
+                this.$refs.form.submit();
+            }
         },
         mounted() {
+            this.emailInput = this.email
             this.token = document.head.querySelector('meta[name="csrf-token"]')?.content;
         }
     }
