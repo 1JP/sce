@@ -7,6 +7,7 @@ use App\Http\Requests\CreateUserRequest;
 use App\Models\PasswordResetToken;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -82,9 +83,23 @@ class SiteUserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CreateUserRequest $request, User $user)
     {
-        //
+        try {
+            $validated = $request->validated();
+            if (isset($validated['password'])) {
+                $validated['password'] = Hash::make($validated['password']);
+            }else{
+                $validated = Arr::except($validated, ['password']);
+            }
+            
+            $user->update($validated);
+
+            return redirect()->route('usuarios.index')->with('success', 'Usuário Cadastrado com sucesso!');
+        }catch (\Exception $e) {
+            return redirect()->route('usuarios.index')
+                ->with('danger', 'Não foi possível fazer o cadastro!');
+        }
     }
 
     /**

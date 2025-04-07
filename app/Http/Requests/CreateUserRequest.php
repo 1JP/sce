@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CreateUserRequest extends FormRequest
 {
@@ -21,9 +22,8 @@ class CreateUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => 'required|string',
-            'email' => 'required|string|unique:users,email',
             'phone' => 'required|string',
             'cpf' => 'required|string',
             'password' => 'nullable|string|min:8',
@@ -36,7 +36,18 @@ class CreateUserRequest extends FormRequest
             'region_code' => 'required|string',
             'country' => 'nullable|string',
             'area' => 'nullable|string',
+            'complement' => 'nullable|string',
         ];
+        
+        if ($this->isMethod('POST')) {
+            $rules['email'] = 'required|string|email|unique:users,email';
+        }
+    
+        if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
+            $rules['email'] = 'required|string|email|unique:users,email,' . Auth::user()->id;
+        }
+
+        return $rules;
     }
 
     /**
