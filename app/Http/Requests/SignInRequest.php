@@ -33,7 +33,7 @@ class SignInRequest extends FormRequest
             'email.exists' => 'E-mail não existe.',
             'email.required' => 'Por favor insira um email.',
             'password.required' => 'Por favor insira uma senha.',
-            'password.min' => 'Sua senha deve conter no mínimo 6 caracteres.',
+            'password.min' => 'Sua senha deve conter no mínimo 8 caracteres.',
         ];
     }
 }

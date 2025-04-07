@@ -1,7 +1,7 @@
 <template>
     <div class="row d-flex justify-content-center">
         <div class="col-lg-9">
-            <form method="POST" :action="routeForm" ref="form">
+            <form method="POST" :action="routeForm" ref="formUser">
                 <input type="hidden" name="_token" :value="token"/>
                 <input type="hidden" name="_method" value="PATCH" v-if="isUpdate"/>
                 <h3 style="margin: 0;">Minha conta</h3>
@@ -47,7 +47,8 @@
                                             :placeholder="'(31) 99999-9999'"
                                             :name-id="'phone'"
                                             :value="phone"
-                                            pattern="[0-9]*" 
+                                            pattern="[0-9]*"
+                                            :max-length="'15'" 
                                             :class-input="classPhone"
                                             @input="inputPhone($event)"
                                         />
@@ -60,6 +61,7 @@
                                             :placeholder="'000.000.000-00'"
                                             :name-id="'cpf'"
                                             :value="cpf"
+                                            :max-length="'14'"
                                             :class-input="classCpf"
                                             @input="inputCpf($event)"
                                         />
@@ -113,6 +115,7 @@
                                         :name-id="'postal_code'"
                                         :value="postal_code"
                                         pattern="[0-9]*"
+                                        :max-length="'9'"
                                         :class-input="classPostalCode"
                                         @input="inputPostalCode($event)"
                                     />
@@ -277,10 +280,13 @@
                         .catch(function(error) {
                             console.log(error.request)
                         })
-                    this.street = this.viacep.logradouro;
-                    this.city = this.viacep.localidade;
-                    this.locality = this.viacep.bairro;
-                    this.state = this.viacep.uf;
+
+                    if(Object.keys(this.viacep).length > 0){
+                        this.street = this.viacep.logradouro;
+                        this.city = this.viacep.localidade;
+                        this.locality = this.viacep.bairro;
+                        this.state = this.viacep.uf;
+                    }
                 }
             },
             maskCep(string){
@@ -387,13 +393,14 @@
                 this.classLocality = 'is-valid'
                 this.classCity = 'is-valid'
                 this.classRegionCode = 'is-valid'
+                this.classNumber = 'is-valid'
 
                 return false;
             },
             save(){
                 if(this.checkEmptyFields()) return;
-
-                this.$refs.form.submit();
+                
+                this.$refs.formUser.submit();
             }
         },
         mounted() {

@@ -58,9 +58,12 @@ Route::resource('/categorias', SiteCategoryController::class);
 Route::resource('/pagamento', PaymentController::class);
 Route::prefix('usuarios')->name('usuarios.')->group(function () {
     Route::get('/create/{token}', [SiteUserController::class, 'create'])->name('create');
+    Route::post('/store', [SiteUserController::class, 'store'])->name('store');
 });
 
-Route::resource('/usuarios', SiteUserController::class)->except(['create']);
+Route::middleware(['auth'])->group(function () {
+    Route::resource('/usuarios', SiteUserController::class)->except(['create', 'store']);
+});
 
 Route::get('/teste', function(){
     return view('email.first-access');

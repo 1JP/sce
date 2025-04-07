@@ -11,7 +11,6 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles, AppLogModel, HasApiTokens;
 
     /**
@@ -181,7 +180,7 @@ class User extends Authenticatable
             throw new \InvalidArgumentException('O cep não pode ser um número inteiro.');
         }
 
-        if (strlen($value) > 8) {
+        if (strlen($value) > 9) {
             throw new \InvalidArgumentException('O cep não pode ter mais que 8 caracteres.');
         }
 
