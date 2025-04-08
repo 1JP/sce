@@ -36,11 +36,11 @@
 					<div class="col-md-2">
 						<div class="main-logo">
 							<a :href="routeHome">
-                                <img src="images/main-logo.png" alt="logo">
+                                <img :src="logo" alt="logo" class="img-fluid ratio ratio-7x1 object-fit-contain" style="width: 189px; height: 60px;">
                             </a>
 						</div>
 					</div>
-					<div class="col-md-10">
+					<div class="col-md-10 py-2">
 						<site-nav-bar></site-nav-bar>
 					</div>
 				</div>
@@ -66,6 +66,10 @@
                 type: String,
                 default: '',
             },
+			logo: {
+				type: String,
+                default: '',
+			}
         },
 		methods: {
 			loadScript() {
