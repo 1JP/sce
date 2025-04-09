@@ -7,6 +7,8 @@
 import './bootstrap';
 
 import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+
 import axios from 'axios';
 
 // Recupera o token CSRF do meta tag
@@ -23,6 +25,8 @@ if (csrfToken) {
  */
 
 const app = createApp();
+const pinia = createPinia();
+app.use(pinia);
 
 app.component('admin-navbar', require('./components/admin/NavBar.vue').default);
 app.component('admin-nav', require('./components/admin/Nav.vue').default);
