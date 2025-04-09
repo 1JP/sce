@@ -59,23 +59,18 @@
             </div>
         </template>
     </component-card>
+    <div v-if="paymentData">
+        <p>Pagamento criado:</p>
+        <p>ID: {{ paymentData.id }}</p>
+        <p>Valor: {{ paymentData.valor }}</p>
+        <p>Data: {{ paymentData.data }}</p>
+    </div>
 </template>
 
-<script>
-    import axios from 'axios';
+<script setup>
+    import { storeToRefs } from 'pinia'
+    import { usePaymentStore } from '../../../stores/paymentStore'
 
-    export default {
-        props: {
-            
-        },
-        data() {
-            return {}
-        },
-        methods: {
-
-        },
-        mounted() {
-            
-        }
-    }
+    const paymentStore = usePaymentStore()
+    const { paymentData } = storeToRefs(paymentStore)
 </script>

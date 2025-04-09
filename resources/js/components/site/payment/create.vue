@@ -12,7 +12,7 @@
                             :is-required="true"
                             :placeholder="'Selecione o plano'"
                             :name-id="'plan_id'"
-                            :options="[]"
+                            :options="['Plan']"
                             :value-select="plan_id"
                             :class-item="classPlan"
                             @onChanged="valueSelect($event)"
@@ -188,6 +188,7 @@
   
 <script>
     import axios from 'axios';
+    import { usePaymentStore } from '../../../stores/paymentStore';
 
     export default {
         props: {
@@ -226,6 +227,7 @@
                 month: '',
                 year: '',
                 cvv: '',
+                plans: '',
             };
         },
         methods: {
@@ -308,12 +310,22 @@
             },
             valueSelect(event){
                 this.plan_id = event.target.value;
+                this.createPayment(this.plan_id);
             },
             inputNumberCard(event){
                 this.number_card = event.target.value;
             },
             inputCvv(event){
                 this.cvv = event.target.value;
+            },
+            createPayment(plan){
+                const paymentStore = usePaymentStore();
+
+                paymentStore.setPayment({
+                    id: 1,
+                    valor: 100,
+                    data: new Date()
+                })
             }
         },
         mounted() {
