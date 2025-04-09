@@ -76,6 +76,7 @@ app.component('site-create-comment', require('./components/site/CreateComment.vu
 app.component('site-children-comment', require('./components/site/ChildrenComment.vue').default);
 app.component('site-create-user', require('./components/site/user/create.vue').default);
 app.component('site-create-payment', require('./components/site/payment/create.vue').default)
+app.component('site-summary-payment', require('./components/site/payment/summary.vue').default)
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
