@@ -55,13 +55,14 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 Route::get("/", [HomeController::class, 'index'])->name('home');
 Route::resource('/posts', SitePostController::class);
 Route::resource('/categorias', SiteCategoryController::class);
-Route::resource('/pagamento', PaymentController::class);
+
 Route::prefix('usuarios')->name('usuarios.')->group(function () {
     Route::get('/create/{token}', [SiteUserController::class, 'create'])->name('create');
     Route::post('/store', [SiteUserController::class, 'store'])->name('store');
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::resource('/pagamento', PaymentController::class);
     Route::resource('/usuarios', SiteUserController::class)->except(['create', 'store']);
 });
 
