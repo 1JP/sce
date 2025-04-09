@@ -11,6 +11,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Gate;
 
 class SiteUserController extends Controller
 {
@@ -85,6 +86,10 @@ class SiteUserController extends Controller
      */
     public function update(CreateUserRequest $request, User $user)
     {
+        if (Gate::denies('update', Auth::user())) {
+            abort(403);
+        }
+        
         try {
             $validated = $request->validated();
             if (isset($validated['password'])) {
