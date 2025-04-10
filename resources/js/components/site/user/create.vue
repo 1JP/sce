@@ -13,7 +13,7 @@
                     <div class="col-lg-12 col-12" style="">
                         <div class="row">
                             <div class="col-lg-6">
-                                <label for="form19" class="text-dark">Nome Completo</label>
+                                <label for="form19"  class="text-body-tertiary">Nome Completo</label>
                                 <component-input
                                     :required="true"
                                     :input-type="'text'"
@@ -25,7 +25,7 @@
                                 />
                             </div>
                             <div class="col-lg-6">
-                                <label for="form19" class="text-dark">Data de Nascimento</label>
+                                <label for="form19"  class="text-body-tertiary">Data de Nascimento</label>
                                 <component-input
                                     :required="true"
                                     :input-type="'date'"
@@ -38,7 +38,7 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-6">
-                                <label for="form19" class="text-dark">Telefone</label>
+                                <label for="form19"  class="text-body-tertiary">Telefone</label>
                                 <component-input
                                     :required="true"
                                     :input-type="'text'"
@@ -52,7 +52,7 @@
                                 />
                             </div>
                             <div class="col-lg-6">
-                                <label for="form19" class="text-dark">CPF</label>
+                                <label for="form19"  class="text-body-tertiary">CPF</label>
                                 <component-input
                                     :required="true"
                                     :input-type="'text'"
@@ -68,7 +68,7 @@
                         
                         <div class="row">
                             <div class="col-lg-6">
-                                <label for="form19" class="text-dark">E-mail</label>
+                                <label for="form19"  class="text-body-tertiary">E-mail</label>
                                 <component-input
                                     :required="true"
                                     :input-type="'email'"
@@ -80,7 +80,7 @@
                                 />
                             </div>
                             <div class="col-lg-6">
-                                <label for="form19" class="text-dark">Senha</label>
+                                <label for="form19"  class="text-body-tertiary">Senha</label>
                                 <component-input
                                     :required="true"
                                     :input-type="'password'"
@@ -104,7 +104,7 @@
             <template v-slot:body>
                 <div class="row">
                     <div class="col-lg-4 col-12" style="">
-                        <label for="form19" class="text-dark">CEP</label>
+                        <label for="form19"  class="text-body-tertiary">CEP</label>
                         <div class="form-group"> 
                             <component-input
                                 :required="true"
@@ -121,7 +121,7 @@
                         </div>
                     </div>
                     <div class="col-lg-8" style="">
-                        <label for="form19" class="text-dark">Endereço</label>
+                        <label for="form19"  class="text-body-tertiary">Endereço</label>
                         <component-input
                             :required="true"
                             :input-type="'text'"
@@ -135,7 +135,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-4 col-12" style="">
-                        <label for="form19" class="text-dark">Número</label>
+                        <label for="form19"  class="text-body-tertiary">Número</label>
                         <component-input
                             :required="true"
                             :input-type="'text'"
@@ -147,7 +147,7 @@
                         />
                     </div>
                     <div class="col-lg-4" style="">
-                        <label for="form19" class="text-dark">Complemento</label>
+                        <label for="form19"  class="text-body-tertiary">Complemento</label>
                         <component-input
                             :required="true"
                             :input-type="'text'"
@@ -157,7 +157,7 @@
                         />
                     </div>
                     <div class="col-lg-4" style="">
-                        <label for="form19" class="text-dark">Bairro</label>
+                        <label for="form19"  class="text-body-tertiary">Bairro</label>
                         <component-input
                             :required="true"
                             :input-type="'text'"
@@ -171,7 +171,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-4" style="">
-                        <label for="form19" class="text-dark">Cidade</label>
+                        <label for="form19"  class="text-body-tertiary">Cidade</label>
                         <component-input
                             :required="true"
                             :input-type="'text'"
@@ -183,7 +183,7 @@
                         />
                     </div>
                     <div class="form-group col-lg-4" style="">
-                        <label for="form19" class="text-dark">Estado</label>
+                        <label for="form19"  class="text-body-tertiary">Estado</label>
                         <component-input
                             :required="true"
                             :input-type="'text'"

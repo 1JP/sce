@@ -1,5 +1,6 @@
 <template>
-    <form class="text-left">
+    <form class="text-left" :action="routeForm" method="POST" ref="formPayment">
+        <input type="hidden" name="_token" :value="token"/>
         <component-card
             :card-body="true"
             style="background: rgb(237, 235, 228);"
@@ -12,7 +13,7 @@
                             :is-required="true"
                             :placeholder="'Selecione o plano'"
                             :name-id="'plan_id'"
-                            :options="['Plan']"
+                            :options="plans"
                             :value-select="plan_id"
                             :class-item="classPlan"
                             @onChanged="valueSelect($event)"
@@ -29,6 +30,7 @@
                             :placeholder="'1234 5678 9012 3456'"
                             :name-id="'number_card'"
                             :value="number_card"
+                            :max-length="'19'"
                             :class-input="classNumberCard"
                             @input="inputNumberCard($event)"
                         />
@@ -38,7 +40,7 @@
                         <component-input
                             :required="true"
                             :input-type="'text'"
-                            :placeholder="'José da Silva'"
+                            :placeholder="'Jose da Silva'"
                             :name-id="'name'"
                             :value="name"
                             :class-input="className"
@@ -56,7 +58,7 @@
                             :options="['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']"
                             :value-select="month"
                             :class-item="classMonth"
-                            @onChanged="valueSelect($event)"
+                            @onChanged="valueSelectMonth($event)"
                         />
                     </div>
                     <div class="form-group col-lg-4">
@@ -68,7 +70,7 @@
                             :options="['2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031', '2032', '2033']"
                             :value-select="year"
                             :class-item="classYear"
-                            @onChanged="valueSelect($event)"
+                            @onChanged="valueSelectYear($event)"
                         />
                     </div>
                     <div class="form-group col-lg-4"> 
@@ -86,10 +88,50 @@
                         /> 
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label class="text-body-tertiary">CPF *</label>
+                        <component-input
+                            :required="true"
+                            :input-type="'text'"
+                            :placeholder="'000.000.000-00'"
+                            :name-id="'cpf'"
+                            :value="cpf"
+                            :max-length="'14'"
+                            :class-input="classCpf"
+                            @input="inputCpf($event)"
+                        />
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label class="text-body-tertiary">Data de Nascimento*</label>
+                        <component-input
+                            :required="true"
+                            :input-type="'date'"
+                            :name-id="'birth_date'"
+                            :value="birth_date"
+                            :class-input="classBirthDate"
+                            @input="inputBirthDate($event)"
+                        />
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="form19"  class="text-body-tertiary">Telefone *</label>
+                        <component-input
+                            :required="true"
+                            :input-type="'text'"
+                            :placeholder="'(31) 99999-9999'"
+                            :name-id="'phone'"
+                            :value="phone"
+                            pattern="[0-9]*"
+                            :max-length="'15'" 
+                            :class-input="classPhone"
+                            @input="inputPhone($event)"
+                        />
+                    </div>
+                </div>
                 <h3 class="mb-4 pb-4">Endereço</h3>
                 <div class="row">
                     <div class="col-lg-4 col-12" style="">
-                        <label for="form19" class="text-dark">CEP</label>
+                        <label for="form19"  class="text-body-tertiary">CEP</label>
                         <div class="form-group"> 
                             <component-input
                                 :required="true"
@@ -106,7 +148,7 @@
                         </div>
                     </div>
                     <div class="col-lg-8" style="">
-                        <label for="form19" class="text-dark">Endereço</label>
+                        <label for="form19"  class="text-body-tertiary">Endereço</label>
                         <component-input
                             :required="true"
                             :input-type="'text'"
@@ -120,7 +162,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-4 col-12" style="">
-                        <label for="form19" class="text-dark">Número</label>
+                        <label for="form19"  class="text-body-tertiary">Número</label>
                         <component-input
                             :required="true"
                             :input-type="'text'"
@@ -132,7 +174,7 @@
                         />
                     </div>
                     <div class="col-lg-4" style="">
-                        <label for="form19" class="text-dark">Complemento</label>
+                        <label for="form19"  class="text-body-tertiary">Complemento</label>
                         <component-input
                             :required="true"
                             :input-type="'text'"
@@ -142,7 +184,7 @@
                         />
                     </div>
                     <div class="col-lg-4" style="">
-                        <label for="form19" class="text-dark">Bairro</label>
+                        <label for="form19"  class="text-body-tertiary">Bairro</label>
                         <component-input
                             :required="true"
                             :input-type="'text'"
@@ -156,7 +198,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-4" style="">
-                        <label for="form19" class="text-dark">Cidade</label>
+                        <label for="form19"  class="text-body-tertiary">Cidade</label>
                         <component-input
                             :required="true"
                             :input-type="'text'"
@@ -168,7 +210,7 @@
                         />
                     </div>
                     <div class="form-group col-lg-4" style="">
-                        <label for="form19" class="text-dark">Estado</label>
+                        <label for="form19"  class="text-body-tertiary">Estado</label>
                         <component-input
                             :required="true"
                             :input-type="'text'"
@@ -180,7 +222,7 @@
                         />
                     </div>
                 </div>
-                <button type='submit' class="btn btn-primary btn-block rounded w-100" >Criar assinatura</button>
+                <button type='button' @click="save()" class="btn btn-primary btn-block rounded w-100" >Criar assinatura</button>
             </template>
         </component-card>
     </form>
@@ -196,10 +238,12 @@
         },
         data() {
             return {
+                routeForm: route('pagamento.store'),
                 viacep: {},
                 token: '',
                 classBirthDate: '',
                 classCpf: '',
+                classPhone: '',
                 classPostalCode: '',
                 classStreet: '',
                 classNumber: '',
@@ -219,6 +263,7 @@
                 street: '',
                 number: '',
                 locality: '',
+                phone: '',
                 city: '',
                 region_code: '',
                 complement: '',
@@ -227,10 +272,16 @@
                 month: '',
                 year: '',
                 cvv: '',
-                plans: '',
+                plans: [],
             };
         },
         methods: {
+            listPlans(){
+                axios.get(route('api.admin.plans.index'))
+                    .then((response) => {
+                        this.plans = response.data.data;
+                    })
+            },
             async getAddressByCep (cep) {
                 if (cep.length >= 9) {
                     let fixedCep = cep.replace('-', '')
@@ -278,6 +329,19 @@
 
                 return string;
             },
+            maskCard(string){
+                let value = string.replace(/\D/g, '');
+                value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+                string = value.trim();
+
+                return string;
+            },
+            valueSelectMonth(){
+                this.month = event.target.value;
+            },
+            valueSelectYear(){
+                this.year = event.target.value;
+            },
             inputName(event){
                 this.name = event.target.value;
             },
@@ -310,10 +374,18 @@
             },
             valueSelect(event){
                 this.plan_id = event.target.value;
-                this.createPayment(this.plan_id);
+                let selectedPlan = this.plans.find(plan => String(plan.id) === String(this.plan_id));
+                this.createPayment(selectedPlan);
+            },
+            inputPhone(event){
+                if(/^[a-zA-Z]$/.test(event.target.value)){
+                    this.phone = null;
+                    return;
+                }
+                this.phone = this.maskPhoneNumber(event.target.value);
             },
             inputNumberCard(event){
-                this.number_card = event.target.value;
+                this.number_card = this.maskCard(event.target.value);
             },
             inputCvv(event){
                 this.cvv = event.target.value;
@@ -322,14 +394,64 @@
                 const paymentStore = usePaymentStore();
 
                 paymentStore.setPayment({
-                    id: 1,
-                    valor: 100,
-                    data: new Date()
+                    id: plan.id,
+                    name: plan.name,
+                    value: plan.value,
+                    description: plan.description,
+                    number_book: plan.number_book,
+                    number_film: plan.number_film,
+                    number_serie: plan.number_serie,
                 })
+            },
+            checkEmptyFields() {
+                if(this.name == '' || this.number_card == '' || this.plan_id == '' ||
+                 this.cpf == '' || this.month == '' || this.year == '' || this.cvv == '' ||
+                 this.postal_code == '' || this.street == '' || this.number == '' ||
+                 this.locality == '' || this.city == '' || this.region_code == '' || this.birth_date == ''){
+                    this.className = this.name == '' ? 'is-invalid' : 'is-valid'
+                    this.classBirthDate = this.birth_date == '' ? 'is-invalid' : 'is-valid'
+                    this.classNumberCard = this.number_card == '' ? 'is-invalid' : 'is-valid'
+                    this.classCpf = this.cpf == '' ? 'is-invalid' : 'is-valid'
+                    this.classMonth = this.month == '' ? 'is-invalid' : 'is-valid'
+                    this.classYear = this.year == '' ? 'is-invalid' : 'is-valid'
+                    this.classPostalCode = this.postal_code == '' ? 'is-invalid' : 'is-valid'
+                    this.classStreet = this.street == '' ? 'is-invalid' : 'is-valid'
+                    this.classNumber = this.number == '' ? 'is-invalid' : 'is-valid'
+                    this.classLocality = this.locality == '' ? 'is-invalid' : 'is-valid'
+                    this.classCity = this.city == '' ? 'is-invalid' : 'is-valid'
+                    this.classRegionCode = this.region_code == '' ? 'is-invalid' : 'is-valid'
+                    this.classPlan = this.plan_id == '' ? 'is-invalid' : 'is-valid';
+                    this.classCvv = this.cvv == '' ? 'is-invalid' : 'is-valid';
+                    this.classPhone = this.phone == '' ? 'is-invalid' : 'is-valid';
+                    return true;
+                }
+
+                this.className = 'is-valid'
+                this.classNumberCard = 'is-valid'
+                this.classPhone = 'is-valid'
+                this.classCpf = 'is-valid'
+                this.classMonth = 'is-valid'
+                this.classYear = 'is-valid'
+                this.classPostalCode = 'is-valid'
+                this.classStreet = 'is-valid'
+                this.classLocality = 'is-valid'
+                this.classCity = 'is-valid'
+                this.classRegionCode = 'is-valid'
+                this.classNumber = 'is-valid'
+                this.classPlan = 'is-valid';
+                this.classCvv = 'is-valid';
+                this.classBirthDate = 'is-valid'
+
+                return false;
+            },
+            save(){
+                if(this.checkEmptyFields()) return;
+                this.$refs.formPayment.submit();
             }
         },
         mounted() {
             this.token = document.head.querySelector('meta[name="csrf-token"]')?.content;
+            this.listPlans();
         }
     }
 </script>
