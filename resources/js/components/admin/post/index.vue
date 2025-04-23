@@ -15,7 +15,7 @@
                 <div class="col-lg-1 col-lg-3">
                     <admin-filter-select
                         :name="'Classificação Indicativa'"
-                        :options="[]"
+                        :options="indications"
                         :value-select="indicative_rating_id"
                     ></admin-filter-select>
                 </div>
@@ -29,7 +29,7 @@
                 <div class="col-lg-1 col-lg-3">
                     <admin-filter-select
                         :name="'Categoria'"
-                        :options="[]"
+                        :options="categories"
                         :value-select="category_id"
                     ></admin-filter-select>
                 </div>
@@ -111,13 +111,27 @@
                 category_id: '',
                 indicative_rating_id: '',
                 posts: [],
-
+                indications: [],
+                categories: [],
             }
         },
         methods: {
-
+            listCategories(){
+                axios.get(route('api.admin.categories.index'))
+                    .then((response) => {
+                        this.categories = response.data.data;
+                    })
+            },
+            listIndications(){
+                axios.get(route('api.admin.indicative-rating.index'))
+                    .then((response) => {
+                        this.indications = response.data.data;
+                    })
+            },
         },
         mounted() {
+            this.listCategories();
+            this.listIndications();
             this.token = document.head.querySelector('meta[name="csrf-token"]')?.content;
         }
     }
