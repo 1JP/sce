@@ -21,91 +21,9 @@
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
-            <div class="card mb-4">
-                <div class="card-header pb-0">
-                    <div class="row">
-                        <div class="col-lg-1">
-                            <h6>Posts</h6>
-                        </div>
-                        <div class="col-lg-1 col-lg-3">
-                            <admin-filter-select
-                                :name="'Classificação Indicativa'"
-                                :options="[]"
-                            ></admin-filter-select>
-                        </div>
-                        <div class="col-lg-1 col-lg-3">
-                            <admin-filter-input
-                                :name="'Post...'"
-                                :type="'text'"
-                                :icon="'fa fa-search'"
-                            ></admin-filter-input>
-                        </div>
-                        <div class="col-lg-1 col-lg-3">
-                            <admin-filter-select
-                                :name="'Categoria'"
-                                :options="[]"
-                            ></admin-filter-select>
-                        </div>
-                        <div class="col-lg-2 d-flex justify-content-end">
-                            <a href="{{ route('admin.posts.create') }}" class="btn bg-gradient-primary">
-                                Cadastrar
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body px-0 pt-0 pb-2">
-                    <admin-table>
-                        <template v-slot:thead>
-                            @foreach ($ths as $th)
-                                <admin-thead
-                                    :class='@json($th['class'])'
-                                    :name='@json($th['name'])'
-                                ></admin-thead>
-                            @endforeach
-                        </template>
-                        <template v-slot:tbody>
-                            <admin-tr>
-                                <component-td>
-                                    <div class="d-flex px-2">
-                                        <div class="my-auto">
-                                        <h6 class="mb-0 text-sm">Spotify</h6>
-                                        </div>
-                                    </div>
-                                </component-td>
-                                <component-td>
-                                    <h6 class="mb-0 text-sm">Spotify</h6>
-                                </component-td>
-                                <component-td>
-                                    <h6 class="mb-0 text-sm">Spotify</h6>
-                                </component-td>
-                                <component-td>
-                                    <span class="me-2 text-xs font-weight-bold">60</span>
-                                </component-td>
-                                <component-td>
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <span class="me-2 text-xs font-weight-bold">60%</span>
-                                        <div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </component-td>
-                                <component-td :class="'align-middle'">
-                                    <component-dropdown :name="'teste'">
-                                        <component-dropdown-item name="Visualizar" :route="'{{ route('admin.posts.show', 1) }}'"></component-dropdown-item>
-                                        <component-dropdown-item name="Editar" :route="'{{ route('admin.posts.edit', 1) }}'"></component-dropdown-item>
-                                        <component-dropdown-item name="Excluir" target="#destoryPost"></component-dropdown-item>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <component-dropdown-item name="Relatório Geral" :route="'{{ route('admin.report.general') }}'"></component-dropdown-item>
-                                        <component-dropdown-item name="Relatório de Comentarios" :route="'{{ route('admin.report.comment') }}'"></component-dropdown-item>
-                                    </component-dropdown>
-                                </component-td>
-                            </admin-tr>
-                        </template>
-                    </admin-table>
-                </div>
-            </div>
+            <admin-post-index 
+                :ths='@json($ths)'
+            />
         </div>
     </div>
 </div>
