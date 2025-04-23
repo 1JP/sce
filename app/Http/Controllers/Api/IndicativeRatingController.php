@@ -20,7 +20,7 @@ class IndicativeRatingController extends Controller
             abort(403);
         }
 
-        $indicative = IndicativeRating::orderBy('indicative')->get();
+        $indicative = IndicativeRating::orderBy('name')->get();
 
         return IndicativeRatingResource::collection($indicative);
     }

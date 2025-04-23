@@ -57,7 +57,7 @@ class IndicativeRatingPolicyTest extends TestCase
         $indicative = IndicativeRating::factory()->create();
 
         $indicative->update([
-            'indicative' => 'Batman Cavaleiro das trevas',
+            'name' => 'Batman Cavaleiro das trevas',
         ]);
 
         $this->assertTrue($this->userRoot->can('update', $indicative));
@@ -113,7 +113,7 @@ class IndicativeRatingPolicyTest extends TestCase
         $indicative = IndicativeRating::factory()->create();
 
         $indicative->update([
-            'indicative' => 'Batman Cavaleiro das trevas',
+            'name' => 'Batman Cavaleiro das trevas',
         ]);
         
         $this->assertFalse($this->userUsuario->can('update', $indicative));

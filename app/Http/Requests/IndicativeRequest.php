@@ -22,7 +22,7 @@ class IndicativeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'indicative' => 'required|string',
+            'name' => 'required|string',
             'description' => 'required|string',
         ];
     }
@@ -35,7 +35,7 @@ class IndicativeRequest extends FormRequest
     public function messages()
     {
         return [
-            'indicative.required' => 'O nome da indicação é obrigatório.',
+            'name.required' => 'O nome da indicação é obrigatório.',
             'description.required' => 'A descrição da indicação é obrigatório.',
         ];
     }

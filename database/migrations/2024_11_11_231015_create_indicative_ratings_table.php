@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('indicative_ratings', function (Blueprint $table) {
             $table->id();
-            $table->string('indicative', 45);
+            $table->string('name', 45);
             $table->longText('description');
             $table->timestamps();
         });
