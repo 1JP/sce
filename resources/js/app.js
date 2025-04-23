@@ -8,6 +8,7 @@ import './bootstrap';
 
 import { createApp } from 'vue';
 import axios from 'axios';
+import { Ziggy } from './ziggy'
 
 // Recupera o token CSRF do meta tag
 const csrfToken = document.head.querySelector('meta[name="csrf-token"]')?.content;
@@ -23,6 +24,9 @@ if (csrfToken) {
  */
 
 const app = createApp();
+
+app.config.globalProperties.route = route
+app.provide('ziggy', Ziggy)
 
 app.component('admin-navbar', require('./components/admin/NavBar.vue').default);
 app.component('admin-nav', require('./components/admin/Nav.vue').default);
@@ -47,6 +51,7 @@ app.component('admin-indicative-index', require('./components/admin/indicative-r
 app.component('admin-indicative-create', require('./components/admin/indicative-rating/create.vue').default);
 app.component('admin-plan-index', require('./components/admin/plan/index.vue').default);
 app.component('admin-plan-create', require('./components/admin/plan/create.vue').default);
+app.component('admin-post-index', require('./components/admin/post/index.vue').default);
 
 app.component('component-td', require('./components/table/Td.vue').default);
 app.component('component-span-status', require('./components/SpanStatus.vue').default);
@@ -58,6 +63,7 @@ app.component('component-accordion-item', require('./components/Accordion-item.v
 app.component('component-input', require('./components/Input.vue').default);
 app.component('component-select', require('./components/Select.vue').default);
 app.component('component-text-area', require('./components/TextArea.vue').default);
+app.component('component-progress', require('./components/Progress.vue').default);
 
 app.component('site-header', require('./components/site/Header.vue').default);
 app.component('site-social-links', require('./components/site/SocialLinks.vue').default);
