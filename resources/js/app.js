@@ -82,6 +82,8 @@ app.component('list-group-item', require('./components/ListGroup-item.vue').defa
 app.component('fixed-bottom', require('./components/FixedBottom.vue').default);
 app.component('breadcrumb', require('./components/Breadcrumb.vue').default);
 app.component('model', require('./components/Model.vue').default);
+app.component('file-upload', require('./components/FilePond.vue').default);
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

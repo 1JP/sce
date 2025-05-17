@@ -15,8 +15,4 @@
       </div>
     </div>
 </div>
-<fixed-bottom
-    :cancel="'{{ route('admin.posts.index') }}'"
-    :name="'Cadastrar'"
-></fixed-bottom>
 @endsection

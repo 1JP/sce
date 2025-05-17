@@ -4,7 +4,6 @@
         :card-header="true"
         :class-header="'pb-0'"
         :card-body="true"
-        :class-body="'px-0 pt-0 pb-2'"
     >
         <template v-slot:header>
             <div class="row">
@@ -49,13 +48,9 @@
                         </h5>
                     </div>
                 </div>
-                <div class="row p-4 mt-4 mx-auto rounded text-muted" style="	border-style: dashed;	border-color: #f2f2f2;">
-                    <div class="col-lg-12">
-                        <h5 class="text-center text-muted"><i class="fa fa-fw fa-picture-o pr-4 fa-4x"></i></h5>
-                        <h5 class="text-center">Arraste e solte suas Imagens aqui</h5>
-                        <p class="text-center">Máximo de 10 imagens. Tamanho máximo 3MB.&nbsp;<br>Para maior qualidade envie imagens no formato JPG ou PNG.</p>
-                    </div>
-                </div>
+                <file-upload
+                    :name="'files[]'"
+                ></file-upload>
                 <p class="text-left text-muted small pt-3"><i>Tamanho recomendado: 1024px</i></p>
                 <hr>
                 <div class="row">
@@ -77,13 +72,43 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12 d-inline-flex justify-content-between align-items-center">
+                                <h5><i class="fa fa-fw fa-list mr-2 text-secondary"></i>Categorias</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group d-flex">
+                                    <component-select
+                                        :is-required="true"
+                                        :placeholder="'Categorias'"
+                                        :name-id="'category_id'"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
         </template>
     </component-card>
+    <fixed-bottom
+        :cancel="route('admin.posts.index')"
+        :name="'Cadastrar'"
+    ></fixed-bottom>
 </template>
+
 <script>
     import axios from 'axios';
 
-    export default {}
+    export default {
+
+        data(){
+            return {}
+        },
+        methods: {},
+        mounted() {}
+    }
 </script>
