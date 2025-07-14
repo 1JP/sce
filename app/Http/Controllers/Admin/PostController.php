@@ -3,7 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostRequest;
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use RahulHaque\Filepond\Facades\Filepond;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -35,9 +41,30 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        if (Gate::denies('create', Auth::user())) {
+            abort(403);
+        }
+
+        try {
+            $validated = $request->validated();
+            $post = Auth::user()->posts()->create(Arr::except($validated, ['images']));
+
+            if (isset($validated['images'])) {
+                foreach ($validated['images'] as $key => $image) {
+                    $postName = 'post_'.$post->id.'_'.$key;
+                    $fileInfos = Filepond::field($image)
+                        ->moveTo('posts/' . $postName);
+                    $post->images()->create([
+                        'name' => $fileInfos['url']
+                    ]);
+                }
+            }
+            return redirect()->route('admin.posts.index')->with('success', 'Post criada com sucesso!');
+        }catch (\Exception $e) {
+            return redirect()->route('admin.posts.create')->with('danger', 'Não foi possível criar o post!');
+        }
     }
 
     /**
