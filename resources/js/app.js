@@ -53,6 +53,7 @@ app.component('admin-plan-index', require('./components/admin/plan/index.vue').d
 app.component('admin-plan-create', require('./components/admin/plan/create.vue').default);
 app.component('admin-post-index', require('./components/admin/post/index.vue').default);
 app.component('admin-post-create', require('./components/admin/post/create.vue').default);
+app.component('admin-post-show', require('./components/admin/post/show.vue').default);
 
 app.component('component-td', require('./components/table/Td.vue').default);
 app.component('component-span-status', require('./components/SpanStatus.vue').default);

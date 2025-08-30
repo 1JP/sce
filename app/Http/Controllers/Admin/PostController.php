@@ -57,7 +57,7 @@ class PostController extends Controller
                     $fileInfos = Filepond::field($image)
                         ->moveTo('posts/' . $postName);
                     $post->images()->create([
-                        'name' => $fileInfos['url']
+                        'name' => 'posts/' . $postName
                     ]);
                 }
             }
@@ -70,9 +70,9 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $post)
     {
-        return view('admin.post.show');
+        return view('admin.post.show', compact('post'));
     }
 
     /**
