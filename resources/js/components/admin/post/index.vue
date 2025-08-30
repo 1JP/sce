@@ -77,6 +77,10 @@
                                 </div>
                             </div>
                         </component-td>
+                        <component-td :class="'align-middle text-sm'">
+                            <component-span-status :class="'bg-gradient-success'" v-if="post.active">Ativo</component-span-status>
+                            <component-span-status :class="'bg-gradient-danger'" v-else>Desativado</component-span-status>
+                        </component-td>
                         <component-td :class="'align-middle'">
                             <component-dropdown :name="'post-dropdown'">
                                 <component-dropdown-item name="Visualizar" :route="route('admin.posts.show', post.id)"></component-dropdown-item>

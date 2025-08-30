@@ -8,7 +8,7 @@
         <template v-slot:header>
             <div class="row">
                 <div class="col-lg-4">
-                    <h6>Editar Posts</h6>
+                    <h6>Criar Posts</h6>
                 </div>
                 <div class="col-lg-8 d-flex justify-content-end">
                     <a :href="route('admin.posts.index')" class="btn bg-gradient-primary">
