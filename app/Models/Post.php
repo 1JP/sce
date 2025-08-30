@@ -21,6 +21,21 @@ class Post extends Model
         return $this->hasMany(PostImage::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function indicative_rating()
+    {
+        return $this->belongsTo(IndicativeRating::class);
+    }
+
     /**
      * Sets the `name` attribute, formatting the user's name so that each word 
      * starts with an uppercase letter, while the remaining letters are lowercase.

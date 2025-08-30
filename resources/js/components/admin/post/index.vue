@@ -52,23 +52,22 @@
                     </admin-thead>
                 </template>
                 <template v-slot:tbody>
-                    <!-- v-for="post in posts" :key="post.id" -->
-                    <admin-tr>
+                    <admin-tr v-for="post in posts" :key="post.id">
                         <component-td>
                             <div class="d-flex px-2">
                                 <div class="my-auto">
-                                <h6 class="mb-0 text-sm">Spotify</h6>
+                                    <h6 class="mb-0 text-sm">{{ post.name }}</h6>
                                 </div>
                             </div>
                         </component-td>
                         <component-td>
-                            <h6 class="mb-0 text-sm">Spotify</h6>
+                            <h6 class="mb-0 text-sm">{{ post.indicative_rating.name }}</h6>
                         </component-td>
                         <component-td>
-                            <h6 class="mb-0 text-sm">Spotify</h6>
+                            <h6 class="mb-0 text-sm">{{ post.category.name }}</h6>
                         </component-td>
                         <component-td>
-                            <span class="me-2 text-xs font-weight-bold">60</span>
+                            <span class="me-2 text-xs font-weight-bold">{{ post.note }}</span>
                         </component-td>
                         <component-td>
                             <div class="d-flex align-items-center justify-content-center">
@@ -80,8 +79,8 @@
                         </component-td>
                         <component-td :class="'align-middle'">
                             <component-dropdown :name="'post-dropdown'">
-                                <component-dropdown-item name="Visualizar" :route="route('admin.posts.show', 1)"></component-dropdown-item>
-                                <component-dropdown-item name="Editar" :route="route('admin.posts.edit', 1)"></component-dropdown-item>
+                                <component-dropdown-item name="Visualizar" :route="route('admin.posts.show', post.id)"></component-dropdown-item>
+                                <component-dropdown-item name="Editar" :route="route('admin.posts.edit', post.id)"></component-dropdown-item>
                                 <component-dropdown-item name="Excluir" target="#destoryPost"></component-dropdown-item>
                                 <li><hr class="dropdown-divider"></li>
                                 <component-dropdown-item name="Relatório Geral" :route="route('admin.report.general')"></component-dropdown-item>
@@ -128,10 +127,17 @@
                         this.indications = response.data.data;
                     })
             },
+            listPosts(){
+                axios.get(route('api.admin.posts.index'))
+                    .then((response) => {
+                        this.posts = response.data.data;
+                    })
+            }
         },
         mounted() {
             this.listCategories();
             this.listIndications();
+            this.listPosts();
             this.token = document.head.querySelector('meta[name="csrf-token"]')?.content;
         }
     }
