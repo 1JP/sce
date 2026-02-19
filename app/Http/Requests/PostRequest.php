@@ -27,7 +27,7 @@ class PostRequest extends FormRequest
             'category_id' => 'required|exists:categories,id',
             'indicative_rating_id' => 'required|exists:indicative_ratings,id',
             'images' => 'nullable|array',
-            'active' => 'nulable'
+            'active' => 'nulable',
         ];
     }
 }

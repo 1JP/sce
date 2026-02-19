@@ -18,8 +18,9 @@
             </div>
         </template>
         <template v-slot:body>
-            <form method="POST" :action="route('admin.posts.store')" ref="form" enctype="multipart/form-data">
+            <form method="POST" :action="route('admin.posts.update', post.id)" ref="form" enctype="multipart/form-data">
                 <input type="hidden" name="_token" :value="token"/>
+                <input type="hidden" name="_method" value="PATCH" />
                 <div class="row">
                     <div class="col-lg-9">
                         <div class="form-group">
@@ -29,9 +30,49 @@
                                 :placeholder="'Nome'"
                                 :name-id="'name'"
                                 :class-input="classInput"
-                                :value="post.name"
+                                :value="name"
                                 @input="valueInput($event)"
                             />
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group form-check">
+                                    <component-input
+                                        :required="true"
+                                        :input-type="'radio'"
+                                        :placeholder="'Status'"
+                                        :name-id="'active'"
+                                        :value="1"
+                                        :checked="status == 1"
+                                        :class-input="'form-check-input'"
+                                        @input="valueInputCheck($event)"
+                                    >
+                                        <label class="form-check-label" for="status">
+                                            Ativado
+                                        </label>
+                                    </component-input>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group form-check">
+                                    <component-input
+                                        :required="true"
+                                        :input-type="'radio'"
+                                        :placeholder="'Status'"
+                                        :name-id="'active'"
+                                        :value="0"
+                                        :checked="status == 0"
+                                        :class-input="'form-check-input'"
+                                        @input="valueInputCheck($event)"
+                                    >
+                                        <label class="form-check-label" for="status">
+                                            Desativado
+                                        </label>
+                                    </component-input>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -41,7 +82,7 @@
                             :is-required="true"
                             :placeholder="'Descrição'"
                             :name-id="'description'"
-                            :value="post.description"
+                            :value="description"
                             :class-input="classDescription"
                             @input="valueDescription($event)"
                         />
@@ -79,7 +120,7 @@
                                         :placeholder="'Classificação Indicativas'"
                                         :name-id="'indicative_rating_id'"
                                         :options='indications'
-                                        :value-select="post.indicative_rating_id"
+                                        :value-select="indicative_rating_id"
                                         :class-item="classIndicative"
                                         @update:valueSelect="selectedIndicative($event)"
                                     />
@@ -101,7 +142,7 @@
                                         :placeholder="'Categorias'"
                                         :name-id="'category_id'"
                                         :options='categories'
-                                        :value-select="post.category_id"
+                                        :value-select="category_id"
                                         :class-item="classCategory"
                                         @update:valueSelect="selectedCategory($event)"
                                     />
@@ -150,6 +191,7 @@
                 description: '',
                 indicative_rating_id: '',
                 category_id: '',
+                status: '',
                 token: '',
             }
         },
@@ -166,6 +208,13 @@
                         this.categories = response.data.data;
                     })
             },
+            getPost(){
+                this.category_id = this.post.category_id
+                this.indicative_rating_id = this.post.indicative_rating_id
+                this.name = this.post.name
+                this.description = this.post.description
+                this.status = this.post.status
+            },
             selectedCategory(event){
                 this.category_id = event;
             },
@@ -177,6 +226,9 @@
             },
             valueDescription(event){
                 this.description = event.target.value;
+            },
+            valueInputCheck(event){
+                this.status = event.target.value
             },
             save(){
                 if(this.name == '' || this.description == '' 
@@ -200,6 +252,7 @@
         mounted() {
             this.listIndications();
             this.listCategories();
+            this.getPost();
             this.token = document.head.querySelector('meta[name="csrf-token"]')?.content;
         }
     }

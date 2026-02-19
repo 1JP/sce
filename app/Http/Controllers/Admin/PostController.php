@@ -58,7 +58,7 @@ class PostController extends Controller
                     $fileInfos = Filepond::field($image)
                         ->moveTo('posts/' . $postName);
                     $post->images()->create([
-                        'name' => 'posts/' . $postName
+                        'name' => 'posts/' . $fileInfos['location']
                     ]);
                 }
             }
@@ -92,9 +92,32 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PostRequest $request, Post $post)
     {
-        //
+        if (Gate::denies('update', Auth::user())) {
+            abort(403);
+        }
+
+        try {
+            $validated = $request->validated();
+            $post->update(Arr::except($validated, ['images']));
+
+            if (isset($validated['images'])) {
+                $post->images()->delete();
+                foreach ($validated['images'] as $key => $image) {
+                    $postName = 'post_'.$post->id.'_'.$key;
+                    $fileInfos = Filepond::field($image)
+                        ->moveTo('posts/' . $postName);
+
+                    $post->images()->create([
+                        'name' => $fileInfos['location']
+                    ]);
+                }
+            }
+            return redirect()->route('admin.posts.index')->with('success', 'Post atualizada com sucesso!');
+        }catch (\Exception $e) {
+            return redirect()->route('admin.posts.create')->with('danger', 'Não foi possível atualizar o post!');
+        }
     }
 
     /**
