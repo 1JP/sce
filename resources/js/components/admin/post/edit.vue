@@ -8,7 +8,7 @@
         <template v-slot:header>
             <div class="row">
                 <div class="col-lg-4">
-                    <h6>Criar Posts</h6>
+                    <h6>Editar Posts</h6>
                 </div>
                 <div class="col-lg-8 d-flex justify-content-end">
                     <a :href="route('admin.posts.index')" class="btn bg-gradient-primary">
@@ -29,7 +29,7 @@
                                 :placeholder="'Nome'"
                                 :name-id="'name'"
                                 :class-input="classInput"
-                                :value="name"
+                                :value="post.name"
                                 @input="valueInput($event)"
                             />
                         </div>
@@ -41,7 +41,7 @@
                             :is-required="true"
                             :placeholder="'Descrição'"
                             :name-id="'description'"
-                            :value="description"
+                            :value="post.description"
                             :class-input="classDescription"
                             @input="valueDescription($event)"
                         />
@@ -58,6 +58,7 @@
                     <div class="col-lg-12">
                         <file-upload
                             :name="'images[]'"
+                            :files="post.images"
                         ></file-upload>
                     </div>
                 </div>
@@ -78,7 +79,7 @@
                                         :placeholder="'Classificação Indicativas'"
                                         :name-id="'indicative_rating_id'"
                                         :options='indications'
-                                        :value-select="indicative_rating_id"
+                                        :value-select="post.indicative_rating_id"
                                         :class-item="classIndicative"
                                         @update:valueSelect="selectedIndicative($event)"
                                     />
@@ -100,7 +101,7 @@
                                         :placeholder="'Categorias'"
                                         :name-id="'category_id'"
                                         :options='categories'
-                                        :value-select="category_id"
+                                        :value-select="post.category_id"
                                         :class-item="classCategory"
                                         @update:valueSelect="selectedCategory($event)"
                                     />
@@ -114,7 +115,7 @@
     </component-card>
     <fixed-bottom
         :cancel="route('admin.posts.index')"
-        :name="'Cadastrar'"
+        :name="'Editar'"
         @click="save()"
     ></fixed-bottom>
 </template>
@@ -123,7 +124,20 @@
     import axios from 'axios';
 
     export default {
-
+        props: {
+            post: {
+                type: Object
+            },
+            category: {
+                type: Object
+            },
+            indicative_rating: {
+                type: Object
+            },
+            images: {
+                type: Object
+            },
+        },
         data(){
             return {
                 indications: [],

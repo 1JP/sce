@@ -79,9 +79,14 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
-        return view('admin.post.edit');
+        $post->images = $post->images->map(function($item){
+            $item->link = asset('storage').'/'.$item->name;
+            return $item;
+        });
+
+        return view('admin.post.edit', compact('post'));
     }
 
     /**

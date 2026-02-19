@@ -59,7 +59,7 @@
                         return this.valueSelect.split(",").map(val => Number(val.trim()));
                     }
                     if (typeof this.valueSelect === "number") {
-                        return [this.valueSelect]; // Converte número em array
+                        return this.valueSelect; // Converte número em array
                     }
                     return [];
                 },
