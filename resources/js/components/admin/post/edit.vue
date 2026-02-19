@@ -100,6 +100,7 @@
                         <file-upload
                             :name="'images[]'"
                             :files="post.images"
+                            @removeFiles="removeFiles"
                         ></file-upload>
                     </div>
                 </div>
@@ -213,7 +214,7 @@
                 this.indicative_rating_id = this.post.indicative_rating_id
                 this.name = this.post.name
                 this.description = this.post.description
-                this.status = this.post.status
+                this.status = this.post.active
             },
             selectedCategory(event){
                 this.category_id = event;
@@ -248,6 +249,12 @@
                 this.classCategory = 'is-valid'
                 this.$refs.form.submit();
             },
+            removeFiles(event){
+                axios.delete(route('api.admin.post-image.destroy', event))
+                    .then((response) => {
+                        console.log(response.data.data);
+                    })
+            }
         },
         mounted() {
             this.listIndications();

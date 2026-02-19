@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use RahulHaque\Filepond\Facades\Filepond;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -103,6 +103,11 @@ class PostController extends Controller
             $post->update(Arr::except($validated, ['images']));
 
             if (isset($validated['images'])) {
+                $post->images->map(function($item){
+                    if (Storage::disk('public')->exists($item->name)) {
+                        Storage::disk('public')->delete($item->name);
+                    }
+                });
                 $post->images()->delete();
                 foreach ($validated['images'] as $key => $image) {
                     $postName = 'post_'.$post->id.'_'.$key;
@@ -123,8 +128,27 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        //
+        if (Gate::denies('delete', Auth::user())) {
+            abort(403);
+        }
+
+        try {
+            if($post->images()->count() > 0){
+                $post->images->map(function($item){
+                    if (Storage::disk('public')->exists($item->name)) {
+                        Storage::disk('public')->delete($item->name);
+                    }
+                });
+                $post->images()->delete();
+            }
+
+            $post->delete();
+            return redirect()->route('admin.posts.index')->with('success', 'Post deletado com sucesso!');
+        }catch (\Exception $e) {
+            return redirect()->route('admin.posts.create')->with('danger', 'Não foi possível deletar o post!');
+        }
+        
     }
 }

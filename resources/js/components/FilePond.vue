@@ -21,6 +21,7 @@
     @updatefiles="handleUpdateFiles"
     @input="handleInput"
     @processfile="handleFilePondProcessFile"
+    @removefile="handleRemoveFile"
   />
 </template>
 
@@ -88,7 +89,12 @@ export default {
 
                 internalChange.value = true;
                 pondFiles.value = newFiles.map(file => ({
-                    source: file.link || file
+                    source: file.link || file,
+                    options: {
+                        metadata: {
+                            id: file.id || ''
+                        }
+                    }
                 }));
             },
             { immediate: true }
@@ -96,18 +102,18 @@ export default {
 
         // 🔹 updatefiles event
         const handleUpdateFiles = (fileItems) => {
-        if (internalChange.value) {
-            internalChange.value = false;
-            return;
-        }
-        const files = fileItems.map(i => i.file);
-            emit("update:files", files);
+            if (internalChange.value) {
+                internalChange.value = false;
+                return;
+            }
+            const files = fileItems.map(i => i.file);
+                emit("update:files", files);
         };
 
         // 🔹 input event
         const handleInput = (event) => {
-        if (internalChange.value) return;
-            emit("input", event);
+            if (internalChange.value) return;
+                emit("input", event);
         };
 
         // 🔹 processfile event
@@ -115,12 +121,21 @@ export default {
             pondRef.value?.processFiles();
         };
 
+        const handleRemoveFile = (error, file) => {
+            if (error) {
+                console.error("Erro ao remover arquivo:", error);
+                return;
+            }
+            emit("removeFiles", file.getMetadata('id'));
+            // Aqui você pode chamar API para deletar no backend, se não estiver usando server.revert
+        };
+
         // 🔹 expose reset
         const pondRef = ref(null);
         const reset = () => pondRef.value?.removeFiles();
         expose({ reset });
 
-        return { pondFiles, handleUpdateFiles, handleInput, handleFilePondProcessFile, pondRef, reset };
+        return { pondFiles, handleUpdateFiles, handleInput, handleFilePondProcessFile, pondRef, reset, handleRemoveFile };
     }
 };
 </script>
