@@ -21,7 +21,9 @@ class PostResource extends JsonResource
             'note' => $this->note,
             'user' => $this->user,
             'category' => $this->category,
+            'category_id' => $this->category_id,
             'indicative_rating' => $this->indicative_rating,
+            'indicative_rating_id' => $this->indicative_rating_id,
             'active' => $this->active
         ];
     }

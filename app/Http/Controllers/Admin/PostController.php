@@ -58,7 +58,7 @@ class PostController extends Controller
                     $fileInfos = Filepond::field($image)
                         ->moveTo('posts/' . $postName);
                     $post->images()->create([
-                        'name' => 'posts/' . $fileInfos['location']
+                        'name' => $fileInfos['location']
                     ]);
                 }
             }
