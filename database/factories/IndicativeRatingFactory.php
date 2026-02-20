@@ -17,7 +17,7 @@ class IndicativeRatingFactory extends Factory
     public function definition(): array
     {
         return [
-            'indicative' => fake()->name(),
+            'name' => fake()->name(),
             'description' => fake()->text()
         ];
     }

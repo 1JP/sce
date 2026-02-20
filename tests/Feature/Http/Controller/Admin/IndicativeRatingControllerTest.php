@@ -29,12 +29,12 @@ class IndicativeRatingControllerTest extends TestCase
     public function test_create_indicative_rating(): void
     {
         $this->post(route('admin.classificacao-indicativas.store'), [
-            'indicative' => 'Filme Test',
+            'name' => 'Filme Test',
             'description' => fake()->text(),
         ]);
 
         $this->assertDatabaseHas('indicative_ratings', [
-            'indicative' => 'Filme Test',
+            'name' => 'Filme Test',
         ]);
 
     }
@@ -50,7 +50,7 @@ class IndicativeRatingControllerTest extends TestCase
         $description = 'Test description';
 
         $this->patch(route('admin.classificacao-indicativas.update', $indicative->id), [
-            'indicative' => $indicative->indicative,
+            'name' => $indicative->indicative,
             'description' => $description,
         ]);
 

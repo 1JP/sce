@@ -1,5 +1,15 @@
 <template>
-    <textarea :class="['form-control', classInput]" v-model="normalizedSelectedValues" @blur="handleBlur($event)" @input="handleInput($event)" :required="required" :type="inputType" :placeholder="placeholder" :name="nameId"></textarea>
+    <textarea 
+        :class="['form-control', classInput]" 
+        v-model="normalizedSelectedValues" 
+        @blur="handleBlur($event)" 
+        @input="handleInput($event)" 
+        :required="required" 
+        :type="inputType" 
+        :placeholder="placeholder" 
+        :name="nameId"
+        rows="3">
+    </textarea>
 </template>
 
 <script>

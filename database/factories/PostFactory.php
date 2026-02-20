@@ -26,6 +26,7 @@ class PostFactory extends Factory
             'name' => fake()->name(),
             'description' => fake()->text(),
             'note' => fake()->randomFloat(2,0,100),
+            'active' => fake()->boolean()
         ];
     }
 }

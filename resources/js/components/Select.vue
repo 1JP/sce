@@ -1,5 +1,5 @@
 <template>
-    <select :class="['form-control', classItem]" v-model="normalizedSelectedValues" @change="optionsSelected($event)" :name="nameId" :id="id" :required="isRequired" :multiple="isMutiple">
+    <select :class="['form-control', classItem]" v-model="normalizedSelectedValues" :name="nameId" :id="id" :required="isRequired" :multiple="isMutiple">
         <option v-if="placeholder != ''" :value="''">{{ placeholder }}</option>
         <option v-for="option,index in options" :key="index" :value="option.id ?? option">
             {{ option.name ?? option }}
@@ -9,7 +9,7 @@
 
 <script>
     export default {
-        emits: ['onChanged'],
+        emits: ['update:valueSelect'],
         props: {
             options: {
                 type: Array,
@@ -47,9 +47,7 @@
             }
         },
         methods: {
-            optionsSelected(value){
-                this.$emit('onChanged', value)
-            }
+            //
         },
         computed: {
             normalizedSelectedValues: {
@@ -61,7 +59,7 @@
                         return this.valueSelect.split(",").map(val => Number(val.trim()));
                     }
                     if (typeof this.valueSelect === "number") {
-                        return [this.valueSelect]; // Converte número em array
+                        return this.valueSelect; // Converte número em array
                     }
                     return [];
                 },
