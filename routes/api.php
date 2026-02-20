@@ -43,6 +43,9 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
     });
     Route::apiResource('plans', PlanController::class);
 
+    Route::prefix('posts')->name('posts.')->group(function () {
+        Route::get('search', [PostController::class, 'search'])->name('search');
+    });
     Route::apiResource('posts', PostController::class);
     Route::apiResource('post-image', PostImageController::class);
 });

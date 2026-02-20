@@ -12,28 +12,45 @@
                 <div class="col-lg-1">
                     <h6>Posts</h6>
                 </div>
-                <div class="col-lg-1 col-lg-3">
+                <div class="col-lg-1 col-lg-2">
                     <admin-filter-select
                         :name="'Classificação Indicativa'"
                         :options="indications"
-                        :value-select="indicative_rating_id"
+                        :value-select="selectedIndicativeRating"
+                        @onChanged="filterIndicativeRating($event)"
                     ></admin-filter-select>
                 </div>
-                <div class="col-lg-1 col-lg-3">
+                <div class="col-lg-1 col-lg-2">
                     <admin-filter-input
                         :name="'Post...'"
                         :type="'text'"
                         :icon="'fa fa-search'"
+                        :value-input="inputPost"
+                        @input="searchInputPost($event)"
                     ></admin-filter-input>
                 </div>
-                <div class="col-lg-1 col-lg-3">
+                <div class="col-lg-1 col-lg-2">
                     <admin-filter-select
                         :name="'Categoria'"
                         :options="categories"
-                        :value-select="category_id"
+                        :value-select="selectedCategory"
+                        @onChanged="filterCategory($event)"
                     ></admin-filter-select>
                 </div>
-                <div class="col-lg-2 d-flex justify-content-end">
+                <div class="col-lg-1 col-lg-2">
+                    <admin-filter-select
+                        :name="'Status'"
+                        :options="['Ativo', 'Desativado']"
+                        :value-select="selectedStatus"
+                        @onChanged="filterSelectStatus($event)"
+                    ></admin-filter-select>
+                </div>
+                <div class="col-lg-1 col-lg-2" v-if="Object.keys(listSearch).length > 0">
+                    <button type="button" class="btn bg-gradient-primary" @click="clear()">
+                        Limpar filtros
+                    </button>
+                </div>
+                <div class="col-lg-1 col-lg-1">
                     <a :href="route('admin.posts.create')" class="btn bg-gradient-primary">
                         Cadastrar
                     </a>
@@ -134,6 +151,11 @@
                 post: {},
                 indications: [],
                 categories: [],
+                selectedStatus: '',
+                selectedIndicativeRating: '',
+                selectedCategory: '',
+                inputPost: '',
+                listSearch: {},
             }
         },
         methods: {
@@ -162,6 +184,107 @@
             destroy(){
                 this.$refs.formDelete.submit();
             },
+            filterIndicativeRating(event){
+                this.selectedIndicativeRating = event.target.value;
+                if(this.selectedIndicativeRating == ''){
+                    this.listPosts();
+                    return;
+                }
+                let params = {
+                    'search': {
+                        'indicative_rating_id' : this.selectedIndicativeRating
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.indicative_rating_id = this.selectedIndicativeRating
+                }
+                
+                this.listSearch = params;
+                this.search(params);
+            },
+            filterCategory(event){
+                this.selectedCategory = event.target.value;
+                if(this.selectedCategory == ''){
+                    this.listPosts();
+                    return;
+                }
+                let params = {
+                    'search': {
+                        'category_id' : this.selectedCategory
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.category_id = this.selectedCategory
+                }
+                
+                this.listSearch = params;
+                this.search(params);
+            },
+            filterSelectStatus(event){
+                this.selectedStatus = event.target.value;
+                if(this.selectedStatus == ''){
+                    this.listPlans();
+                    return;
+                }
+                let status = 0;
+
+                if (this.selectedStatus == 'Ativo') {
+                    status = 1
+                }
+
+                let params = {
+                    'search': {
+                        'status' : status
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.status = status
+                }
+                
+                this.listSearch = params;
+                this.search(params);
+            },
+            searchInputPost(event){
+                console.log(event.target.value);
+                this.inputPost = event.target.value;
+                if(this.inputPost == ''){
+                    this.listPlans();
+                    return;
+                }
+                let params = {
+                    'search': {
+                        'name' : this.inputPost
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.name = this.inputPost
+                }
+                
+                this.listSearch = params;
+                this.search(params);
+            },
+            search(params){
+                axios.get(route('api.admin.posts.search'), {params})
+                    .then((response) => {
+                        this.posts = response.data.data;
+                    })
+            },
+            clear(){
+                this.selectedIndicativeRating = '';
+                this.selectedStatus = '';
+                this.selectedCategory = '';
+                this.inputPost = '';
+                this.listSearch = {}
+                this.listPosts();
+            }
         },
         mounted() {
             this.listCategories();

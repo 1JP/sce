@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SearchRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -27,26 +28,22 @@ class PostController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Search a listing of the resource.
      */
-    public function edit(string $id)
+    public function search(SearchRequest $request)
     {
-        //
-    }
+        $validated = $request->validated();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        $posts = Post::when(isset($validated['search']['name']), function ($query) use ($validated){
+            $query->where('name', 'like', '%'.$validated['search']['name'].'%');
+        })->when(isset($validated['search']['status']), function ($query) use ($validated){
+            $query->where('active', '=', $validated['search']['status']);
+        })->when(isset($validated['search']['category_id']), function ($query) use ($validated){
+            $query->where('category_id', '=', $validated['search']['category_id']);
+        })->when(isset($validated['search']['indicative_rating_id']), function ($query) use ($validated){
+            $query->where('indicative_rating_id', '=', $validated['search']['indicative_rating_id']);
+        })->get();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+       return PostResource::collection($posts);
     }
 }
