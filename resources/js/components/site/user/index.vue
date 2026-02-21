@@ -28,7 +28,15 @@
 
     export default {
         props: {
-            
+            isRole: {
+                type: Boolean,
+                required: false,
+                default: false
+            },
+            user: {
+                type: Object,
+                default: () => []
+            }
         },
         data() {
             return {
@@ -42,23 +50,24 @@
                     },
                     {
                         'label': 'Área administrativa',
-                        'view': true,
+                        'view': !this.isRole,
                         'selected': false,
                         'route': '#'
                     },
                     {
                         'label': 'Seja ser um cliente?',
-                        'view': true,
+                        'view': this.isRole,
                         'selected': false,
                         'route': '#'
                     },
                     {
                         'label': 'Assinatura',
                         'view': true,
-                        'selected': false,
+                        'selected': this.isRole,
                         'route': '#'
                     },
-                ]
+                ],
+                token: ''
             };
         },
         methods: {
