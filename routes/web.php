@@ -63,7 +63,7 @@ Route::prefix('usuarios')->name('usuarios.')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('/pagamento', PaymentController::class);
-    Route::resource('/usuarios', SiteUserController::class)->except(['create', 'store']);
+    Route::get('/minha-conta', [SiteUserController::class, 'index']);
 });
 
 Route::get('/teste', function(){
