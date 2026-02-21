@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Plan;
 use Illuminate\Support\Facades\Auth;
 
 class BodyPaymentApiService
@@ -74,7 +75,7 @@ class BodyPaymentApiService
                 ]
             ],
             "name" => $data['name'],
-            "email" => 'joaopedro@gmail.com',//Auth::user()->email,
+            "email" => Auth::user()->email,
             "birth_date" => $data['birth_date'],
             "tax_id" => $data['cpf'],
             "phones" => [
@@ -82,6 +83,30 @@ class BodyPaymentApiService
                     "country" => "55",
                     "area" => $data['area'],
                     "number" => $data['phone']
+                ]
+            ]
+        ];
+
+        return $body;
+    }
+
+    public function bodyCreateSubscription(array $data)
+    {
+        $plan = Plan::find($data['plan_id']);
+
+        $body = [
+            "plan" => [
+                "id" => $plan->customer_id
+            ],
+            "customer" => [
+                "id" => $data['customer_id']
+            ],
+            "payment_method" => [
+                [
+                    "type" => "CREDIT_CARD",
+                    "card" => [
+                        "security_code" => $data['cvv']
+                    ]
                 ]
             ]
         ];

@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentRequest;
+use App\Models\Client;
+use App\Models\Subscription;
 use App\Services\BodyPaymentApiService;
 use App\Services\PaymentApi;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -60,21 +64,48 @@ class PaymentController extends Controller
         
         try {
             $validated = $request->validated();
+            $user = Auth::user();
+            $client = $user->client;
+            if (! $client) {
+                $bodyCustomer = $this->bodyPaymentApi->bodyCreateCustomer($validated);
+                $pagSeguroCustomer = $this->paymentApi->createCustomer($bodyCustomer);
 
-            $bodyCustomer = $this->bodyPaymentApi->bodyCreateCustomer($validated);
-            $pagSeguroCustomer = $this->paymentApi->createCustomer($bodyCustomer);
+                if (!isset($pagSeguroCustomer->id)) {
+                    return redirect()->route('pagamento.create')
+                        ->with('danger', 'Não foi possível cadastrar o novo cliente!');
+                }
 
-            if (!isset($pagSeguroCustomer->id)) {
-                dd($bodyCustomer ,$pagSeguroCustomer);
-                return redirect()->route('pagamento.create')->with('danger', 'Não foi possível cadastrar o novo cliente!');
+                $validated['customer_id'] = $pagSeguroCustomer->id;
+                $client = $user->client()->create(
+                    Arr::except($validated, ['number_card', 'plan_id', 'year', 'month'])
+                );
+            } else {
+                $validated['customer_id'] = $client->customer_id;
             }
+            
+            $bodySubscription = $this->bodyPaymentApi->bodyCreateSubscription($validated);
+            $pagSeguroSubscription = $this->paymentApi->createSubscription($bodySubscription);
 
-            $validated['customer_id'] = $pagSeguroCustomer->id;
-            dd($validated);
-            //return redirect()->route('pagamento.create')->with('success', 'Plano criada com sucesso!');
+            if (!isset($pagSeguroSubscription->id)) {
+                return redirect()->route('pagamento.create')
+                    ->with('danger', 'Não foi possível gerar a assinatura!');
+            }
+            
+            $status = $this->paymentApi->statusSubscription($pagSeguroSubscription->status);
+
+            Subscription::create([
+                'plan_id' => $validated['plan_id'],
+                'user_id' => Auth::user()->id,
+                'status' => $status,
+                'customer_id' => $pagSeguroSubscription->id
+            ]);
+            
+            $user->assignRole('Admin');
+
+            return redirect()->route('home')
+                ->with('success', 'Assinatura criada com sucesso!');
 
         } catch (\Exception $e) {
-            dd($e);
             return redirect()->route('pagamento.create')->with('danger', 'Não foi possível gerar a assinatura!');
         }
 

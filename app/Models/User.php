@@ -48,6 +48,11 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    public function client()
+    {
+        return $this->hasOne(Client::class);
+    }
+
     /**
      * Sets the `name` attribute and ensures it is not an integer.
      *
