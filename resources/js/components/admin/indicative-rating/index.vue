@@ -46,7 +46,7 @@
                         <component-td>
                             <div class="d-flex px-2 py-1">
                                 <div class="d-flex flex-column justify-content-center">
-                                    <h6 class="mb-0 text-sm">{{ indicative.indicative }}</h6>
+                                    <h6 class="mb-0 text-sm">{{ indicative.name }}</h6>
                                 </div>
                             </div>
                         </component-td>
@@ -76,9 +76,9 @@
                     <div class="form-group">
                         <component-input
                             :required="true"
-                            :input-type="'name'"
+                            :input-type="'text'"
                             :placeholder="'Nome'"
-                            :name-id="'indicative'"
+                            :name-id="'name'"
                             :value="name"
                             :class-input="classInput"
                             @input="valueInput($event)"
@@ -153,7 +153,7 @@
         methods: {
             selectIndicative(indicative){
                 this.indicative = indicative;
-                this.name = indicative.indicative;
+                this.name = indicative.name;
                 this.routeUpdate = route('admin.classificacao-indicativas.update', this.indicative.id);
                 this.routeDelete = route('admin.classificacao-indicativas.destroy', this.indicative.id);
                 this.description = this.indicative.description;
@@ -163,6 +163,12 @@
                     .then((response) => {
                         this.indications = response.data.data;
                     })
+            },
+            valueInput(event){
+                this.name = event.target.value;
+            },
+            valueTextArea(event){
+                this.description = event.target.value;
             },
             update(){
                 if(this.name == '' || this.description == ''){

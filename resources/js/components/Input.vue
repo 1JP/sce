@@ -1,5 +1,17 @@
 <template>
-    <input :class="['form-control', classInput]" :value="value" @blur="handleBlur($event)" @input="handleInput($event)" :required="required" :type="inputType" :placeholder="placeholder" :name="nameId" :maxlength="maxLength" :disabled="isDisabled">
+    <input :class="['form-control', classInput]" 
+        :value="value" 
+        @blur="handleBlur($event)" 
+        @input="handleInput($event)" 
+        :required="required" 
+        :type="inputType" 
+        :placeholder="placeholder" 
+        :name="nameId"
+        :checked="checked" 
+        :maxlength="maxLength" 
+        :disabled="isDisabled"
+    >
+    <slot/>
 </template>
 
 <script>
@@ -39,6 +51,10 @@
             classInput: {
                 required: false,
                 default: ''
+            },
+            checked: {
+                required: false,
+                default: false
             }
         },
         data () {

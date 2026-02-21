@@ -10,7 +10,7 @@
                             :required="true"
                             :input-type="'text'"
                             :placeholder="'Indicação'"
-                            :name-id="'indicative'"
+                            :name-id="'name'"
                             :value="name"
                             :class-input="classInput"
                             @input="valueInput($event)"

@@ -43,6 +43,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
     /**
      * Sets the `name` attribute and ensures it is not an integer.
      *

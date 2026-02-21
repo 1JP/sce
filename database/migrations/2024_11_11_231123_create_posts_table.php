@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('name', 100);
             $table->longText('description');
-            $table->decimal('note', 8 , 2);
+            $table->decimal('note', 8 , 2)->default('0.00');
             $table->timestamps();
         });
     }

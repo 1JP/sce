@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -15,6 +16,26 @@ class Post extends Model
      * @var array<int, string>
      */
     protected $guarded = [];
+
+    public function images()
+    {
+        return $this->hasMany(PostImage::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function indicative_rating()
+    {
+        return $this->belongsTo(IndicativeRating::class);
+    }
 
     /**
      * Sets the `name` attribute, formatting the user's name so that each word 

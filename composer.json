@@ -10,6 +10,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.6",
+        "rahulhaque/laravel-filepond": "11.0",
         "spatie/laravel-activitylog": "^4.9",
         "spatie/laravel-permission": "^6.9",
         "tightenco/ziggy": "^2.4"

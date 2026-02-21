@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class IndicativeRequest extends FormRequest
+class PostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,19 +24,10 @@ class IndicativeRequest extends FormRequest
         return [
             'name' => 'required|string',
             'description' => 'required|string',
-        ];
-    }
-
-    /**
-     * Get the custom messages for validation errors.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'name.required' => 'O nome da indicação é obrigatório.',
-            'description.required' => 'A descrição da indicação é obrigatório.',
+            'category_id' => 'required|exists:categories,id',
+            'indicative_rating_id' => 'required|exists:indicative_ratings,id',
+            'images' => 'nullable|array',
+            'active' => 'nulable',
         ];
     }
 }
