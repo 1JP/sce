@@ -6,8 +6,17 @@
                     :class-item="[menu.selected ? 'active' : 'list-group-item-action']"
                     :style="[menu.selected ? '' : 'background: #EDEBE4']"
                 >
-                    <a :href="menu.route" 
-                        @click="statusMenus(menu.label)">
+                    <a :href="menu.route"
+                        v-if="!menu.modal"
+                        @click="statusMenus(menu.label)"
+                    >
+                        {{ menu.label }}
+                    </a>
+                    <a :href="menu.route"
+                        v-else
+                        data-bs-toggle="modal" :data-bs-target="menu.name"
+                        @click="statusMenus(menu.label)"
+                    >
                         {{ menu.label }}
                     </a>
                 </list-group-item>
@@ -18,13 +27,23 @@
                 </list-group-item>
             </list-group>
         </div>
-        <div class="col-lg-9">
-        </div>
+        <site-my-account
+            :email="user.email" 
+            :route-form="route('usuarios.update', user.id)"
+        />
     </div>
+
+    <model :title="'Deseja ser um cliente?'" :name="'new-client'">
+        Deseja ser um cliente para o público comentar sobre o seu livro, filme, série, anime até mesmo seu mangá?
+        So clicar <b>Sim</b>
+        <template v-slot:footer>
+            <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</a>
+            <a :href="route('pagamento.create')" class="btn btn-primary">Sim</a>
+        </template>
+    </model>
 </template>
 
 <script>
-    import axios from 'axios';
 
     export default {
         props: {
@@ -46,25 +65,25 @@
                         'label': 'Minha conta',
                         'view': true,
                         'selected': true,
-                        'route': '#'
+                        'route': '#',
+                        'modal': false,
+                        'name': ''
                     },
                     {
                         'label': 'Área administrativa',
                         'view': !this.isRole,
                         'selected': false,
-                        'route': '#'
+                        'route': route('admin.dashboard'),
+                        'modal': false,
+                        'name': ''
                     },
                     {
                         'label': 'Seja ser um cliente?',
                         'view': this.isRole,
                         'selected': false,
-                        'route': '#'
-                    },
-                    {
-                        'label': 'Assinatura',
-                        'view': true,
-                        'selected': this.isRole,
-                        'route': '#'
+                        'route': '#',
+                        'modal': true,
+                        'name': '#new-client'
                     },
                 ],
                 token: ''
