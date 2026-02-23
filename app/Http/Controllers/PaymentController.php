@@ -102,12 +102,4 @@ class PaymentController extends Controller
         }
 
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        return view('site.payment.show');
-    }
 }

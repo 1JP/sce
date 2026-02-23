@@ -63,9 +63,9 @@ Route::prefix('usuarios')->name('usuarios.')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('/pagamento', PaymentController::class);
-    Route::get('/minha-conta', [SiteUserController::class, 'index']);
+    Route::get('/minha-conta', [SiteUserController::class, 'index'])->name('usuarios.index');
     Route::prefix('usuarios')->name('usuarios.')->group(function () {
-        Route::post('/update', [SiteUserController::class, 'update'])->name('update');
+        Route::put('/update/{user}', [SiteUserController::class, 'update'])->name('update');
     });
 });
 
