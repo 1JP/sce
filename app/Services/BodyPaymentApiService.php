@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Plan;
+use Illuminate\Support\Facades\Auth;
+
 class BodyPaymentApiService
 {
 
@@ -36,5 +39,78 @@ class BodyPaymentApiService
             "description" => $decription
         ];
 
+    }
+
+    public function bodyCreateCustomer(array $data)
+    {
+        $body = [
+            "address" => [
+                "street" => $data['street'],
+                "number" => $data['number'],
+                "locality" => $data['locality'],
+                "city" => $data['city'],
+                "region_code" => $data['region_code'],
+                "postal_code" => $data['postal_code'],
+                "country" => "BRA"
+            ],
+            "billing_info" => [
+                [
+                    "card" => [
+                        "holder" => [
+                            "phone" => [
+                                "country" => "55",
+                                "area" => $data['area'],
+                                "number" => $data['phone']
+                            ],
+                            "name" => $data['name'],
+                            "birth_date" => $data['birth_date'],
+                            "tax_id" => $data['cpf']
+                        ],
+                        "number" => $data['number_card'],
+                        "security_code" => $data['cvv'],
+                        "exp_year" => $data['year'],
+                        "exp_month" => $data['month']
+                    ],
+                    "type" =>"CREDIT_CARD"
+                ]
+            ],
+            "name" => $data['name'],
+            "email" => Auth::user()->email,
+            "birth_date" => $data['birth_date'],
+            "tax_id" => $data['cpf'],
+            "phones" => [
+                [
+                    "country" => "55",
+                    "area" => $data['area'],
+                    "number" => $data['phone']
+                ]
+            ]
+        ];
+
+        return $body;
+    }
+
+    public function bodyCreateSubscription(array $data)
+    {
+        $plan = Plan::find($data['plan_id']);
+
+        $body = [
+            "plan" => [
+                "id" => $plan->customer_id
+            ],
+            "customer" => [
+                "id" => $data['customer_id']
+            ],
+            "payment_method" => [
+                [
+                    "type" => "CREDIT_CARD",
+                    "card" => [
+                        "security_code" => $data['cvv']
+                    ]
+                ]
+            ]
+        ];
+
+        return $body;
     }
 }

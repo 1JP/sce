@@ -4,11 +4,13 @@
             <ul class="menu-list">
                 <li class="menu-item active">
                     <site-nav
+                        :route="routeHome"
                         :name="'Home'"
                     ></site-nav>
                 </li>
                 <li class="menu-item has-sub">
                     <site-nav
+                        :route="'#'"
                         :name="'Livros'"
                     ></site-nav>
                 </li>
@@ -26,7 +28,7 @@
     export default {
         data(){
             return {
-                
+                routeHome: route('home'),
             }
         }
     }

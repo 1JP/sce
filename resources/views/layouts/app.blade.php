@@ -11,6 +11,7 @@
         <meta name="keywords" content="">
         <meta name="description" content="">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link rel="icon" type="image/jpeg" href="{{ asset('site/img/logo-favicon.jpeg') }}">
         @routes
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
@@ -25,7 +26,9 @@
     </head>
     <body data-bs-spy="scroll" data-bs-target="#header" tabindex="0">
         <div id="app">
-            <site-header :name="' {{ Auth::user()->name ?? '' }} '"></site-header>
+            <site-header 
+                :name="' {{ Auth::user()->name ?? '' }} '" 
+                :logo="'{{ asset('site/img/logo-sce.jpeg') }}'" ></site-header>
             <div class="py-5">
                 <div class="container">
                     @include('partials.alert')
@@ -38,10 +41,7 @@
                         <div class="col-md-4">
                             <div class="footer-item">
                                 <div class="company-brand">
-                                    <img src="images/main-logo.png" alt="logo" class="footer-logo">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis sed ptibus liberolectus
-                                        nonet psryroin. Amet sed lorem posuere sit iaculis amet, ac urna. Adipiscing fames
-                                        semper erat ac in suspendisse iaculis.</p>
+                                    <img src="{{ asset('site/img/logo-sce.jpeg') }}" alt="logo" class="footer-logo">
                                 </div>
                             </div>
                         </div>

@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CategoryTypeController;
 use App\Http\Controllers\Api\IndicativeRatingController;
 use App\Http\Controllers\Api\PlanController;
+use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\PostImageController;
 use Illuminate\Http\Request;
@@ -49,6 +51,12 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
     Route::apiResource('posts', PostController::class);
     Route::apiResource('post-image', PostImageController::class);
 });
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('users', UserController::class);
+});
+
+Route::apiResource('roles', RoleController::class);
 
 Route::post('/sanctum/token', function (Request $request) {
     $request->validate([

@@ -7,6 +7,7 @@ use App\Models\CategoryType;
 use App\Models\IndicativeRating;
 use App\Models\Plan;
 use App\Models\PostImage;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -30,5 +31,6 @@ class AppServiceProvider extends ServiceProvider
         Route::model('classificacao_indicativa', IndicativeRating::class);
         Route::model('plano', Plan::class);
         Route::model('post_image', PostImage::class);
+        Route::model('usuario', User::class);
     }
 }

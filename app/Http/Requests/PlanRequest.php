@@ -44,6 +44,7 @@ class PlanRequest extends FormRequest
             'value' => str_replace(['.', ','], ['', '.'], $this->value)
         ]);
     }
+    
     /**
      * Get the custom messages for validation errors.
      *

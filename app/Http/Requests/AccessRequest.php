@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SignInRequest extends FormRequest
+class AccessRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,18 +22,20 @@ class SignInRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|exists:users,email',
-            'password' => 'required|string|min:8',
+            'email' => 'required|string|unique:users,email'
         ];
     }
 
-    public function messages(): array
+    /**
+     * Get the custom messages for validation errors.
+     *
+     * @return array
+     */
+    public function messages()
     {
         return [
-            'email.exists' => 'E-mail não existe.',
-            'email.required' => 'Por favor insira um email.',
-            'password.required' => 'Por favor insira uma senha.',
-            'password.min' => 'Sua senha deve conter no mínimo 8 caracteres.',
+            'email.required' => 'O e-mail é obrigatório.',
+            'email.unique' => 'Já existe esse e-mail cadastrado',
         ];
     }
 }

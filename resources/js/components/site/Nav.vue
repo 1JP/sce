@@ -1,5 +1,5 @@
 <template>
-    <a href="#pages" class="nav-link">
+    <a :href="route" class="nav-link">
         {{ name }}
     </a>
     <ul v-if="name != 'Home'">
@@ -24,6 +24,10 @@
                 type: String,
                 required: true,
             },
+            route: {
+                type: String,
+                required: true,
+            }
         },
         data(){
             return {

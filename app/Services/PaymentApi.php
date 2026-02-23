@@ -191,6 +191,25 @@ class PaymentApi
         return json_decode($response);
     }
 
+    public function statusSubscription(String $status)
+    {
+        $arrayStatus = [
+            'AUTHORIZED' => 'ACTIVE',
+            'PAID' => 'ACTIVE',
+            'ACTIVE' => 'ACTIVE',
+            'DECLINED' => 'OVERDUE',
+            'OVERDUE' => 'OVERDUE',
+            'EXPIRED' => 'EXPIRED',
+            'CANCELED' => 'CANCELED',
+            'SUSPENDED' => 'SUSPENDED',
+            'TRIAL' => 'TRIAL',
+            'PENDING' => 'PENDING', 
+            'PENDING_ACTION' => 'PENDING_ACTION'
+        ];
+        
+        return $arrayStatus[$status];
+    }
+    
     public function exec($method, $endpoint, $body = null, $headers = [])
     {
         $headers[] = 'Content-Type: application/json';

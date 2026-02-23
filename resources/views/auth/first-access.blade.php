@@ -6,12 +6,15 @@
       <div class="row text-left">
         <div class="p-5 col-lg-6 col-10 mx-auto bg-light border-0 shadow-sm">
             <h3 class="mb-4 pb-4">Primeiro Acesso</h3>
-            <form class="" method="POST" action="#">
+            <form class="" method="POST" action="{{ route('create.first-access') }}">
+              @csrf
                 <div class="form-group"> 
                     <label>E-mail<br></label>
-                    <input name='email' type="email" class="form-control" placeholder="E-mail" id="form14"> 
+                    <input name='email' type="email" required class="form-control" placeholder="E-mail"> 
                 </div>
-                <button type='submit' class="btn btn-primary btn-block rounded w-100" >Enviar link de primeiro acesso</button>
+                <button type='submit' class="btn btn-primary btn-block rounded w-100" >
+                    Enviar link de primeiro acesso
+                </button>
             </form>
         </div>
       </div>
