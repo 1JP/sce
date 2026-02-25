@@ -1,4 +1,4 @@
-@extends('layouts.email')
+@extends('layouts.email-admin')
 
 @section('content')
 <table bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="0" width="600" id="emailBody">
@@ -117,7 +117,10 @@
                                                                           -->
                                           <h1 style="color:#000000;line-height:125%;font-family:Verdana,Arial,sans-serif;font-weight:normal;margin-top:30px;margin-bottom:3px;margin-left:30px;margin-right:30px;text-align:center;">Primeiro Acesso</h1>
                                           <div style="text-align: center; font-family: Verdana, Arial, sans-serif; font-size: 16px; margin-bottom: 0px; margin-top: 20px; margin-left:30px; margin-right:30px; color: rgb(95, 95, 95); line-height: 135%;">Olá, {{ $email }} </div>
-                                          <div style="text-align: center; font-family: Verdana, Arial, sans-serif; font-size: 16px; margin-bottom: 0px; margin-top: 20px; margin-left:30px; margin-right:30px; color: rgb(95, 95, 95); line-height: 135%;">Bem-vindo ao SCE! Cadastre-se agora e comece a dar sua opinião sobre os conteúdos de entretenimento que mais fazem sucesso no Brasil.</div>
+                                          <div style="text-align: center; font-family: Verdana, Arial, sans-serif; font-size: 16px; margin-bottom: 0px; margin-top: 20px; margin-left:30px; margin-right:30px; color: rgb(95, 95, 95); line-height: 135%;">
+                                            Bem-vindo ao SCE! Como membro da área admin, você terá acesso a funcionalidades gerar relatórios, editar post's.
+                                            Caso aceite esta responsabilidade, basta clicar no link abaixo para confirmar seu acesso:
+                                          </div>
                                         </td>
                                       </tr>
                                     </tbody>
