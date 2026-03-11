@@ -161,7 +161,10 @@
                             <tbody>
                               <tr>
                                 <td align="center" valign="middle" class="buttonContent" style="padding-top:15px;padding-bottom:15px;padding-right:15px;padding-left:15px;">
-                                  <a style="color:#FFFFFF;text-decoration:none;font-family:Verdana,Arial,sans-serif;font-size:13px;line-height:135%;text-transform: uppercase;" href="{{ route('usuarios.create', $token) }}" target="_blank">Cadastrar</a>
+                                  <a href="{{ route('ative-member', ['email' => $email, 'token' => $token]) }}" 
+                                    style="color:#FFFFFF;padding:10px 20px;text-decoration:none;border-radius:4px;display:inline-block;">
+                                    Aceitar
+                                  </a>
                                 </td>
                               </tr>
                             </tbody>

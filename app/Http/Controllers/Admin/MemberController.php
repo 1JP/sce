@@ -105,11 +105,28 @@ class MemberController extends Controller
         $token = Str::random(32);
 
         PasswordResetToken::create([
-            'token' => $token,
-            'email' => Hash::make($email)
+            'token' => Hash::make($token),
+            'email' => $email
         ]);
 
         Mail::to($email)
             ->send(new MemberAccess($email, $token));
+    }
+
+    public function ative($email, $token)
+    {
+        $record = PasswordResetToken::where('email', $email)->latest()->first();
+
+        if (!$record || !Hash::check($token, $record->token)) {
+            return redirect()->route('login')->with('danger', 'Invalid or expired token.');
+        }
+
+        $user = User::where('email', $record->email)->first();
+
+        if(! $user){
+            return redirect()->route('home')->with('danger', 'Usuário não encontrado');
+        }
+
+        
     }
 }

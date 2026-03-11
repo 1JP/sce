@@ -34,6 +34,8 @@ class MemberRequest extends FormRequest
             'locality' => 'string',
             'city' => 'string',
             'region_code' => 'string',
+            'country' => 'string',
+            'area' => 'string',
         ];
 
         if ($this->isMethod('POST')) {
@@ -52,8 +54,12 @@ class MemberRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
+        $phone = preg_replace('/\D/', '', $this->phone);
+        $area = substr($phone, 0, 2);
+        $number = substr($phone, 2);
+        
         $this->merge([
-            'cpf' => '***.***.***-**',
+            'cpf' => '***********',
             'password' => '123457',
             'postal_code' => '35720000',
             'birth_date' => '1995-10-10',
@@ -61,7 +67,10 @@ class MemberRequest extends FormRequest
             'number' => '180',
             'locality' => '*********',
             'city' => 'Matozinhos',
-            'region_code' => 'MG'
+            'region_code' => 'MG',
+            'country' => '55',
+            'area' => $area,
+            'phone' => $number,
         ]);
     }
 

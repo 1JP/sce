@@ -499,7 +499,7 @@
                                           <tr>
                                             <td valign="top" align="center">
                                               <!-- CONTENT TABLE // -->
-                                              <div style="text-align: center; font-family: Verdana, Arial, sans-serif; font-size: 12px; margin-left:30px;margin-right:30px;margin-bottom:5px; color:#999999; line-height: 135%;">SCE <br>MATOZINHOS - MG / CEP 35720-000</div>
+                                              <div style="text-align: center; font-family: Verdana, Arial, sans-serif; font-size: 12px; margin-left:30px;margin-right:30px;margin-bottom:5px; color:#F3F2EC; line-height: 135%;">SCE <br>MATOZINHOS - MG / CEP 35720-000</div>
                                               <div style="text-align: center; font-family: Verdana, Arial, sans-serif; font-size: 12px; margin-left:30px;margin-right:30px;margin-bottom:30px; color:#F3F2EC; line-height: 135%;"></div>
                                             </td>
                                           </tr>
