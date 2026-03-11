@@ -16,6 +16,11 @@ class Client extends Model
      */
     protected $guarded = [];
 
+    public function members()
+    {
+        return $this->belongsToMany(User::class, 'members');
+    }
+
     /**
      * Sets the `street` attribute, ensuring it is not an integer and has a maximum length of 100 characters.
      *

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MemberRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class MemberController extends Controller
 {
@@ -33,9 +37,19 @@ class MemberController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(MemberRequest $request)
     {
-        //
+        try {
+            $validated = $request->validated();
+            $validated['password'] = Hash::make($validated['password']);
+            $user = User::create($validated);
+            $user->assignRole('Membros');
+            
+            Auth::user()->client->members()->syncWithoutDetaching($user->id);
+            return redirect()->route('admin.membros.index')->with('success', 'Membro criada com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.membros.index')->with('danger', 'Não foi possível criar a Membro!');
+        }
     }
 
     /**
