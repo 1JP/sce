@@ -61,6 +61,7 @@ app.component('admin-post-show', require('./components/admin/post/show.vue').def
 app.component('admin-post-edit', require('./components/admin/post/edit.vue').default);
 app.component('admin-member-index', require('./components/admin/member/index.vue').default);
 app.component('admin-member-create', require('./components/admin/member/create.vue').default);
+app.component('admin-member-active', require('./components/admin/member/active.vue').default);
 
 app.component('component-td', require('./components/table/Td.vue').default);
 app.component('component-span-status', require('./components/SpanStatus.vue').default);

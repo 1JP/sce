@@ -29,7 +29,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
 
 Route::get('/primeiro-acesso', [AccessController::class, 'index'])->name('first-access');
 Route::post('/send-primeiro-acesso', [AccessController::class, 'store'])->name('create.first-access');
-Route::get('/ativacao-membro/{email}/{token}', [MemberController::class, 'ative'])->name('ative-member');
+Route::get('/ativacao-membro/{email}/{token}', [MemberAccessController::class, 'index'])->name('ative-member');
+Route::post('/primeiro-acesso-membro', [MemberAccessController::class, 'store'])->name('store-ative-member');
 
 Route::get('/esqueci-minha-senha', [LoginController::class, 'forgotPassword'])->name('forgot-password');
 

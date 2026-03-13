@@ -100,7 +100,7 @@ class MemberController extends Controller
      *
      * @param string $email The email address of the member to receive the token.
      */
-    private function sendEmail($email)
+    private function sendEmail(string $email)
     {
         $token = Str::random(32);
 
@@ -112,21 +112,5 @@ class MemberController extends Controller
         Mail::to($email)
             ->send(new MemberAccess($email, $token));
     }
-
-    public function ative($email, $token)
-    {
-        $record = PasswordResetToken::where('email', $email)->latest()->first();
-
-        if (!$record || !Hash::check($token, $record->token)) {
-            return redirect()->route('login')->with('danger', 'Invalid or expired token.');
-        }
-
-        $user = User::where('email', $record->email)->first();
-
-        if(! $user){
-            return redirect()->route('home')->with('danger', 'Usuário não encontrado');
-        }
-
-        
-    }
+    
 }
