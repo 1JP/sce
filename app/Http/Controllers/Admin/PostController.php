@@ -36,6 +36,8 @@ class PostController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Post::class);
+
         return view('admin.post.create');
     }
 
@@ -44,9 +46,7 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-        if (Gate::denies('create', Auth::user())) {
-            abort(403);
-        }
+        $this->authorize('create', Auth::user());
 
         try {
             $validated = $request->validated();
@@ -73,6 +73,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $this->authorize('view', $post);
+
         return view('admin.post.show', compact('post'));
     }
 
@@ -81,6 +83,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        $this->authorize('update', $post);
+
         $post->images = $post->images->map(function($item){
             $item->link = asset('storage').'/'.$item->name;
             return $item;
@@ -94,9 +98,7 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post)
     {
-        if (Gate::denies('update', Auth::user())) {
-            abort(403);
-        }
+        $this->authorize('update', $post);
 
         try {
             $validated = $request->validated();
@@ -130,9 +132,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        if (Gate::denies('delete', Auth::user())) {
-            abort(403);
-        }
+        $this->authorize('delete', $post);
 
         try {
             if($post->images()->count() > 0){
