@@ -23,6 +23,7 @@
         <div class="col-12">
             <admin-post-index 
                 :ths='@json($ths)'
+                :created='{{ Auth::user()->isAdminOrRoot() }}'
             />
         </div>
     </div>

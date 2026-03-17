@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -15,7 +17,14 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('name', 'ASC')->get();
+        $user = Auth::user();
+
+        $posts = match (true) {
+            $user->hasRole('Membros') => $user->administrator[0]->user?->posts ?? collect(),
+            $user->hasRole('Admin') => $user->posts,
+            $user->hasRole('Root') => Post::orderBy('name')->get()
+        };
+
         return PostResource::collection($posts);
     }
 
@@ -24,6 +33,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $this->authorize('view', $post);
+
         return PostResource::make($post);
     }
 
@@ -32,9 +43,18 @@ class PostController extends Controller
      */
     public function search(SearchRequest $request)
     {
+        $user = Auth::user();
         $validated = $request->validated();
+        
+        $posts = Post::when($user->isAdmin(), function($query) use ($user){
+            $query->where('user_id', $user->id);
+        })
+        ->when($user->isMember(), function($query) use ($user){
+            $administrator = $user->administrator()->first()->user;
 
-        $posts = Post::when(isset($validated['search']['name']), function ($query) use ($validated){
+            $query->where('user_id', $administrator->id);
+        })
+        ->when(isset($validated['search']['name']), function ($query) use ($validated){
             $query->where('name', 'like', '%'.$validated['search']['name'].'%');
         })->when(isset($validated['search']['status']), function ($query) use ($validated){
             $query->where('active', '=', $validated['search']['status']);

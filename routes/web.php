@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Auth\AccessController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\MemberAccessController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReportController;

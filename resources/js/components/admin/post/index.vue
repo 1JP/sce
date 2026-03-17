@@ -50,7 +50,7 @@
                         Limpar filtros
                     </button>
                 </div>
-                <div class="col-lg-1 col-lg-1">
+                <div class="col-lg-1 col-lg-1" v-if="created">
                     <a :href="route('admin.posts.create')" class="btn bg-gradient-primary">
                         Cadastrar
                     </a>
@@ -102,7 +102,7 @@
                             <component-dropdown :name="'post-dropdown'">
                                 <component-dropdown-item name="Visualizar" :route="route('admin.posts.show', post.id)"></component-dropdown-item>
                                 <component-dropdown-item name="Editar" :route="route('admin.posts.edit', post.id)"></component-dropdown-item>
-                                <component-dropdown-item name="Excluir" target="#destoryPost" @click="selectPost(post)"></component-dropdown-item>
+                                <component-dropdown-item name="Excluir" target="#destoryPost" @click="selectPost(post)" v-if="created"></component-dropdown-item>
                                 <li><hr class="dropdown-divider"></li>
                                 <component-dropdown-item name="Relatório Geral" :route="route('admin.report.general')"></component-dropdown-item>
                                 <component-dropdown-item name="Relatório de Comentarios" :route="route('admin.report.comment')"></component-dropdown-item>
@@ -140,6 +140,10 @@
                 type: Array,
                 default: () => []
             },
+            created: {
+                type: Boolean,
+                default: false
+            }
         },
         data(){
             return {
