@@ -20,9 +20,4 @@
         </div>
     </div>
 </div>
-<fixed-bottom
-    :cancel="'{{ route('admin.posts.index') }}'"
-    :route="'{{ route('admin.posts.edit', $post->id) }}'"
-    :name="'Editar'"
-></fixed-bottom>
 @endsection
