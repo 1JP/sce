@@ -3,7 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MemberRequest;
+use App\Mail\MemberAccess;
+use App\Models\PasswordResetToken;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class MemberController extends Controller
 {
@@ -33,9 +41,22 @@ class MemberController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(MemberRequest $request)
     {
-        //
+        try {
+            $validated = $request->validated();
+            $validated['password'] = Hash::make($validated['password']);
+            $user = User::create($validated);
+            $user->assignRole('Membros');
+            
+            Auth::user()->client->members()->syncWithoutDetaching($user->id);
+
+            $this->sendEmail($user->email);
+
+            return redirect()->route('admin.membros.index')->with('success', 'Membro criada com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.membros.index')->with('danger', 'Não foi possível criar a Membro!');
+        }
     }
 
     /**
@@ -69,4 +90,27 @@ class MemberController extends Controller
     {
         //
     }
+
+    /**
+     * Sends an access email to a new member.
+     *
+     * This function generates a random token, stores it (hashed) in the
+     * PasswordResetToken table associated with the member's email, and
+     * then sends an email containing the token using the MemberAccess mailable.
+     *
+     * @param string $email The email address of the member to receive the token.
+     */
+    private function sendEmail(string $email)
+    {
+        $token = Str::random(32);
+
+        PasswordResetToken::create([
+            'token' => Hash::make($token),
+            'email' => $email
+        ]);
+
+        Mail::to($email)
+            ->send(new MemberAccess($email, $token));
+    }
+    
 }

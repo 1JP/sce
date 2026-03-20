@@ -53,6 +53,32 @@ class User extends Authenticatable
         return $this->hasOne(Client::class);
     }
 
+    public function administrator()
+    {
+        return $this->belongsToMany(Client::class, 'members', 'user_id', 'client_id')
+            ->withPivot('user_id', 'client_id')
+            ->limit(1);
+    }
+
+    public function isRoot(): bool
+    {
+        return $this->hasRole('Root');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('Admin');
+    }
+
+    public function isMember(): bool
+    {
+        return $this->hasRole('Membros');
+    }
+
+    public function isAdminOrRoot(): bool
+    {
+        return $this->hasRole(['Admin', 'Root']);
+    }
     /**
      * Sets the `name` attribute and ensures it is not an integer.
      *

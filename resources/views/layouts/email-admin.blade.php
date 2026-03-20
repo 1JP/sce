@@ -5,13 +5,13 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="format-detection" content="telephone=no"> <!-- disable auto telephone linking in iOS -->
-  <link rel="icon" type="image/jpeg" href="{{ asset('site/img/logo-favicon.jpeg') }}">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="icon" type="image/png" href="{{ asset('admin/img/favicon.png') }}">
   <title>SCE</title>
   <style type="text/css">
     /* RESET STYLES */
     html {
-      background-color: #F7F7F7;
+      background-color: #596CFF;
       margin: 0;
       padding: 0;
     }
@@ -183,11 +183,11 @@
 
     body,
     #bodyTable {
-      background-color: #F7F7F7;
+      background-color: #596CFF;
     }
 
     #emailHeader {
-      background-color: #F7F7F7;
+      background-color: #596CFF;
     }
 
     #emailBody {
@@ -195,7 +195,7 @@
     }
 
     #emailFooter {
-      background-color: #F7F7F7;
+      background-color: #596CFF;
     }
 
     .nestedContainer {
@@ -430,7 +430,7 @@
 		<![endif]-->
 </head>
 
-<body bgcolor="#F7F7F7" leftmargin="0" marginheight="0" marginwidth="0" offset="0" topmargin="0">
+<body bgcolor="#596CFF" leftmargin="0" marginheight="0" marginwidth="0" offset="0" topmargin="0">
     <!-- CENTER THE EMAIL // -->
   <!--
 		1.  The center tag should normally put all the
@@ -442,7 +442,7 @@
 			the email starts from this center, so we try to
 			apply necessary styling e.g. background-color.
 		-->
-  <center style="background-color:#F7F7F7;">
+  <center style="background-color:#596CFF;">
     <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable" style="table-layout: fixed;max-width:100% !important;width: 100% !important;min-width: 100% !important;">
       <tbody>
         <tr>
@@ -453,7 +453,7 @@
 							Its width can be set to 100% for a color band
 							that spans the width of the page.
 						-->
-            <table bgcolor="#F7F7F7" border="0" cellpadding="0" cellspacing="0" width="600" id="emailHeader">
+            <table bgcolor="#596CFF" border="0" cellpadding="0" cellspacing="0" width="600" id="emailHeader">
               <!-- HEADER ROW // -->
               <tbody>
                 <!-- // END -->
@@ -474,7 +474,7 @@
 							Its width can be set to 100% for a color band
 							that spans the width of the page.
 						-->
-            <table bgcolor="#F7F7F7" border="0" cellpadding="0" cellspacing="0" width="600" id="emailFooter">
+            <table bgcolor="#596CFF" border="0" cellpadding="0" cellspacing="0" width="600" id="emailFooter">
                 <!-- FOOTER ROW // -->
                 <!--
                                   To move or duplicate any of the design patterns
@@ -499,7 +499,7 @@
                                           <tr>
                                             <td valign="top" align="center">
                                               <!-- CONTENT TABLE // -->
-                                              <div style="text-align: center; font-family: Verdana, Arial, sans-serif; font-size: 12px; margin-left:30px;margin-right:30px;margin-bottom:5px; color:#999999; line-height: 135%;">SCE <br>MATOZINHOS - MG / CEP 35720-000</div>
+                                              <div style="text-align: center; font-family: Verdana, Arial, sans-serif; font-size: 12px; margin-left:30px;margin-right:30px;margin-bottom:5px; color:#F3F2EC; line-height: 135%;">SCE <br>MATOZINHOS - MG / CEP 35720-000</div>
                                               <div style="text-align: center; font-family: Verdana, Arial, sans-serif; font-size: 12px; margin-left:30px;margin-right:30px;margin-bottom:30px; color:#F3F2EC; line-height: 135%;"></div>
                                             </td>
                                           </tr>

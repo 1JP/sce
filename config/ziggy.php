@@ -11,6 +11,8 @@ return [
         'usuarios.*',
         'first-access',
         'auth.*',
-        'forgot-password'
+        'forgot-password',
+        'login',
+        'store-ative-member'
     ],
 ];

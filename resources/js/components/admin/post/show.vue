@@ -5,6 +5,7 @@
         :class-header="'pb-0'"
         :card-body="true"
         :class-body="'px-0 pt-0 pb-2'"
+        :card-footer="true"
     >
         <template v-slot:header>
             <div class="row">
@@ -65,6 +66,16 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </template>
+        <template v-slot:footer>
+            <div class="row">
+                <div class="col-lg-12 d-flex p-3 ml-auto justify-content-end align-items-center flex-row">
+                    <a class="btn btn-outline-primary m-1" :href="route('admin.posts.index')">Cancelar</a>
+                    <a class="btn btn-primary m-1" :href="route('admin.posts.edit', post.id)">
+                        Editar
+                    </a>
                 </div>
             </div>
         </template>

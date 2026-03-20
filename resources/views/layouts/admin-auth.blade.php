@@ -29,29 +29,7 @@
 <body class="g-sidenav-show   bg-gray-100">
     <div id="app">
         <div class="min-height-300 bg-primary position-absolute w-100"></div>
-        <admin-navbar
-            :navs='{!! json_encode([
-                ["route" => route("admin.dashboard"), "icon" => "ni ni-tv-2", "name" => "Dashboard", "view" => true],
-                ["route" => route("admin.categorias.index"), "icon" => "ni ni-archive-2", "name" => "Categorias", "view" => Auth::user()->hasRole('Root')],
-                ["route" => route("admin.tipos-de-categorias.index"), "icon" => "ni ni-archive-2", "name" => "Tipos de Categorias", "view" => Auth::user()->hasRole('Root')],
-                ["route" => route("admin.posts.index"), "icon" => "ni ni-bullet-list-67", "name" => "Posts", "view" => true],
-                ["route" => route("admin.planos.index"), "icon" => "ni ni-bullet-list-67", "name" => "Planos", "view" => Auth::user()->hasRole('Root')],
-                ["route" => route("admin.classificacao-indicativas.index"), "icon" => "ni ni-istanbul", "name" => "Classificação Indicativas", "view" => Auth::user()->hasRole('Root')],
-                ["route" => route("admin.assinaturas.index"), "icon" => "ni ni-credit-card", "name" => "Assinatura", "view" => Auth::user()->hasRole('Admin')],
-                ["route" => route("admin.clientes.index"), "icon" => "ni ni-user-run", "name" => "Clientes", "view" => Auth::user()->hasRole('Root')],
-                ["route" => route("admin.membros.index"), "icon" => "ni ni-badge", "name" => "Membros", "view" => Auth::user()->hasRole('Admin')],
-                ["route" => route("admin.logs.index"), "icon" => "ni ni-folder-17", "name" => "Logs", "view" => Auth::user()->hasRole('Root')],
-                ["route" => route("admin.perimissoes.index"), "icon" => "ni ni-settings-gear-65", "name" => "Permissões", "view" => Auth::user()->hasRole('Root')],
-            ]) !!}'
-            :accounts='{!! json_encode([
-                ["route" => route("admin.profiles.index"), "icon" => "ni ni-single-02", "name" => 'Profile', "view" => true]
-            ])!!}'
-        ></admin-navbar>
-    
         <main class="main-content position-relative border-radius-lg ">
-            <admin-header>
-                @yield('breadcrumb')
-            </admin-header>
             <div class="container-fluid py-4">
                 @include('partials.alert')
                 @yield('content')

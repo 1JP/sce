@@ -24,7 +24,7 @@ class AccessController extends Controller
      */
     public function store(AccessRequest $request)
     {
-        
+
         try {
             
             $token = Str::random(32);
@@ -40,7 +40,7 @@ class AccessController extends Controller
             return redirect()->route('login')->with('success', 'Foi enviado um e-mail para '.$request->validated()['email'].' cadastrar seus dados');
             
         } catch (\Exception $e) {
-            return redirect()->route('admin.categorias.index')->with('danger', 'Não foi possível alterada a categoria!');
+            return redirect()->route('first-access')->with('danger', 'Não foi possível fazer o primeiro acesso!');
         }
         
     }
