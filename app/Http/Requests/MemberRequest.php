@@ -43,7 +43,9 @@ class MemberRequest extends FormRequest
         }
     
         if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
-            $rules['email'] = 'required|string|email|unique:users,email,' . Auth::user()->id;
+            $userId = $this->route('membro')->id;
+            
+            $rules['email'] = 'required|string|email|unique:users,email,' . $userId;
         }
 
         return $rules;

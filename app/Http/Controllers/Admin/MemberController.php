@@ -7,7 +7,7 @@ use App\Http\Requests\MemberRequest;
 use App\Mail\MemberAccess;
 use App\Models\PasswordResetToken;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -20,6 +20,8 @@ class MemberController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Auth::user());
+
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Nome'],
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2', 'name' => 'E-mail'],
@@ -43,6 +45,8 @@ class MemberController extends Controller
      */
     public function store(MemberRequest $request)
     {
+        $this->authorize('create', Auth::user());
+
         try {
             $validated = $request->validated();
             $validated['password'] = Hash::make($validated['password']);
@@ -78,17 +82,28 @@ class MemberController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(MemberRequest $request, User $member)
     {
-        //
+        $this->authorize('update', Auth::user());
+
+        try {
+            $validated = $request->validated();
+
+            $member->update(Arr::except($validated, ['password']));
+
+            return redirect()->route('admin.membros.index')->with('success', 'Membro alterado com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.membros.index')->with('danger', 'Não foi possível alterar a Membro!');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $member)
     {
-        //
+        $this->authorize('delete', Auth::user());
+
     }
 
     /**
