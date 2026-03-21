@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CategoryTypeController;
 use App\Http\Controllers\Api\IndicativeRatingController;
+use App\Http\Controllers\Api\MemberController;
 use App\Http\Controllers\Api\PlanController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
@@ -50,6 +51,11 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
     });
     Route::apiResource('posts', PostController::class);
     Route::apiResource('post-image', PostImageController::class);
+
+    Route::prefix('members')->name('members.')->group(function () {
+        Route::get('search', [MemberController::class, 'search'])->name('search');
+    });
+    Route::apiResource('members', MemberController::class);
 });
 
 Route::middleware('auth:sanctum')->group(function () {

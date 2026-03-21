@@ -32,5 +32,7 @@ class AppServiceProvider extends ServiceProvider
         Route::model('plano', Plan::class);
         Route::model('post_image', PostImage::class);
         Route::model('usuario', User::class);
+        Route::model('member', User::class);
+        Route::model('membro', User::class);
     }
 }
