@@ -15,6 +15,9 @@ class MemberController extends Controller
     public function index()
     {
         $user = Auth::user();
+        if(!$user->hasRole(['Root', 'Admin'])){
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
 
         return UserResource::collection($user->client->members);
     }
@@ -24,8 +27,13 @@ class MemberController extends Controller
      */
     public function search(SearchRequest $request)
     {
-        $validated = $request->validated();
         $user = Auth::user();
+        
+        if(!$user->hasRole(['Root', 'Admin'])){
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $validated = $request->validated();
 
         $members = $user->client->members()->when(isset($validated['search']['name']), function ($query) use ($validated) {
             $query->where('name', 'like', '%'.$validated['search']['name'].'%');

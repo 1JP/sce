@@ -20,8 +20,12 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', Auth::user());
+        $user = Auth::user();
 
+        if(!$user->hasRole(['Root', 'Admin'])){
+            abort(403);
+        }
+        
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Nome'],
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2', 'name' => 'E-mail'],
@@ -45,7 +49,11 @@ class MemberController extends Controller
      */
     public function store(MemberRequest $request)
     {
-        $this->authorize('create', Auth::user());
+        $user = Auth::user();
+
+        if(!$user->hasRole(['Root', 'Admin'])){
+            abort(403);
+        }
 
         try {
             $validated = $request->validated();
@@ -84,7 +92,11 @@ class MemberController extends Controller
      */
     public function update(MemberRequest $request, User $member)
     {
-        $this->authorize('update', Auth::user());
+        $user = Auth::user();
+
+        if (!$user->client->members()->where('user_id', $member->id)->first()) {
+            abort(403);
+        }
 
         try {
             $validated = $request->validated();
@@ -102,8 +114,12 @@ class MemberController extends Controller
      */
     public function destroy(User $member)
     {
-        $this->authorize('delete', Auth::user());
+        $user = Auth::user();
 
+        if (!$user->client->members()->where('user_id', $member->id)->first()) {
+            abort(403);
+        }
+        
         try {
             $user = Auth::user();
 
