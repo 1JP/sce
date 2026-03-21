@@ -93,7 +93,7 @@ class MemberController extends Controller
 
             return redirect()->route('admin.membros.index')->with('success', 'Membro alterado com sucesso!');
         } catch (\Exception $e) {
-            return redirect()->route('admin.membros.index')->with('danger', 'Não foi possível alterar a Membro!');
+            return redirect()->route('admin.membros.index')->with('danger', 'Não foi possível alterar o Membro!');
         }
     }
 
@@ -104,6 +104,22 @@ class MemberController extends Controller
     {
         $this->authorize('delete', Auth::user());
 
+        try {
+            $user = Auth::user();
+
+            $members = $user->client->members()->where('id', $member->id)->first();
+
+            if($members){
+                $user->client->members()->detach($member->id);
+                $member->removeRole('Membros');
+                $member->assignRole('Usuario');
+                return redirect()->route('admin.membros.index')->with('success', 'Membro excluido com sucesso!');
+            }
+
+            return redirect()->route('admin.membros.index')->with('danger', 'Você não tem permissão para acessar este recurso.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.membros.index')->with('danger', 'Não foi possível excluir o Membro!');
+        }
     }
 
     /**

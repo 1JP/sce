@@ -72,7 +72,7 @@
                         <component-td :class="'align-middle'">
                             <component-dropdown :name="'dropdown-index-client'">
                                 <component-dropdown-item name="Editar" target="#editMembroModal" @click="selectMember(member)"></component-dropdown-item>
-                                <component-dropdown-item name="Excluir" target="#destroyMemberModal"></component-dropdown-item>
+                                <component-dropdown-item name="Excluir" target="#destoryMember" @click="selectMember(member)"></component-dropdown-item>
                             </component-dropdown>
                         </component-td>
                     </admin-tr>
@@ -132,6 +132,22 @@
         <template v-slot:footer>
             <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn bg-gradient-primary" @click="save()">Editar</button>
+        </template>
+    </model>
+
+    <model :title="'Excluir Membro'" :name="'destoryMember'">
+        <div class="py-3 text-center">
+            <i class="ni ni-bell-55 ni-3x"></i>
+            <h4 class="text-gradient text-danger mt-4">Deseja excluir esse membro?</h4>
+            <p>Este membro será excluído e, portanto, não poderá mais acessar a área administrativa nem utilizar as funcionalidades de membro.</p>
+        </div>
+        <form method="POST" :action="routeDelete" ref="formDelete">
+            <input type="hidden" name="_token" :value="token"/>
+            <input type="hidden" name="_method" value="DELETE" />
+        </form>
+        <template v-slot:footer>
+            <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn bg-gradient-danger" @click="destroy()">Excluir</button>
         </template>
     </model>
 </template>
@@ -285,7 +301,10 @@
                 this.inputEmail = '',
                 this.listSearch = {}
                 this.listMembers();
-            }
+            },
+            destroy(){
+                this.$refs.formDelete.submit();
+            },
         },
         mounted() {
             this.listMembers()
