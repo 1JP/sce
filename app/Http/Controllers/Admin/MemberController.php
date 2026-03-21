@@ -7,7 +7,7 @@ use App\Http\Requests\MemberRequest;
 use App\Mail\MemberAccess;
 use App\Models\PasswordResetToken;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -20,6 +20,12 @@ class MemberController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+
+        if(!$user->hasRole(['Root', 'Admin'])){
+            abort(403);
+        }
+        
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Nome'],
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2', 'name' => 'E-mail'],
@@ -43,6 +49,12 @@ class MemberController extends Controller
      */
     public function store(MemberRequest $request)
     {
+        $user = Auth::user();
+
+        if(!$user->hasRole(['Root', 'Admin'])){
+            abort(403);
+        }
+
         try {
             $validated = $request->validated();
             $validated['password'] = Hash::make($validated['password']);
@@ -78,17 +90,52 @@ class MemberController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(MemberRequest $request, User $member)
     {
-        //
+        $user = Auth::user();
+
+        if (!$user->client->members()->where('user_id', $member->id)->first()) {
+            abort(403);
+        }
+
+        try {
+            $validated = $request->validated();
+
+            $member->update(Arr::except($validated, ['password']));
+
+            return redirect()->route('admin.membros.index')->with('success', 'Membro alterado com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.membros.index')->with('danger', 'Não foi possível alterar o Membro!');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $member)
     {
-        //
+        $user = Auth::user();
+
+        if (!$user->client->members()->where('user_id', $member->id)->first()) {
+            abort(403);
+        }
+        
+        try {
+            $user = Auth::user();
+
+            $members = $user->client->members()->where('id', $member->id)->first();
+
+            if($members){
+                $user->client->members()->detach($member->id);
+                $member->removeRole('Membros');
+                $member->assignRole('Usuario');
+                return redirect()->route('admin.membros.index')->with('success', 'Membro excluido com sucesso!');
+            }
+
+            return redirect()->route('admin.membros.index')->with('danger', 'Você não tem permissão para acessar este recurso.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.membros.index')->with('danger', 'Não foi possível excluir o Membro!');
+        }
     }
 
     /**
