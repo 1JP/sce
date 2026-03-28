@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentRequest;
-use App\Models\Client;
 use App\Models\Subscription;
 use App\Services\BodyPaymentApiService;
 use App\Services\PaymentApi;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {

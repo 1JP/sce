@@ -53,6 +53,11 @@ class User extends Authenticatable
         return $this->hasOne(Client::class);
     }
 
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
+    }
+
     public function administrator()
     {
         return $this->belongsToMany(Client::class, 'members', 'user_id', 'client_id')
@@ -79,6 +84,8 @@ class User extends Authenticatable
     {
         return $this->hasRole(['Admin', 'Root']);
     }
+
+
     /**
      * Sets the `name` attribute and ensures it is not an integer.
      *

@@ -181,6 +181,16 @@ class PaymentApi
         return json_decode($response);
     }
 
+    public function invoices(string $invoice_id)
+    {
+        $endpoint = "invoices/".$invoice_id."/payments";
+        $headers = [];
+        $body = null;
+
+        $response = PaymentApi::exec('GET', $endpoint, $body, $headers);
+        return json_decode($response);
+    }
+
     public function notifications()
     {
         $endpoint = "preferences/notifications";

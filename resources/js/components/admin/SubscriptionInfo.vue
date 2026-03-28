@@ -5,11 +5,11 @@
         </h6>
         <span class="text-xs">#FA-{{ id }}</span>
     </div>
+    <div class="d-flex align-items-center text-sm" :class="classStatus(status)">
+       {{ formatStatus(status) }}
+    </div>
     <div class="d-flex align-items-center text-sm">
         R$ {{ value }}
-        <a :href="route" class="btn btn-link text-dark text-sm mb-0 px-0 ms-4">
-            <i class="fa fa-file-pdf-o text-lg me-1"></i> PDF
-        </a>
     </div>
 </template>
 
@@ -28,10 +28,42 @@
                 type: String,
                 required: true,
             },
-            route:{
+            status:{
                 type: String,
                 required: true,
             },
         },
+        methods: {
+            classStatus(status) {
+                switch (status) {
+                    case 'DENIED':
+                    case 'UNPAID':
+                        return 'text-danger'
+
+                    case 'APPROVED':
+                        return 'text-success'
+
+                    case 'IN_ANALYSIS':
+                    case 'PENDING':
+                        return 'text-warning'
+                    case 'REFUNDED':
+                        return 'text-info'
+                    default:
+                        return ''
+                }
+            },
+            formatStatus(status) {
+                const map = {
+                    APPROVED: 'Aprovado',
+                    DENIED: 'Negado',
+                    PENDING: 'Pendente',
+                    IN_ANALYSIS: 'Em análise',
+                    REFUNDED: 'Reembolsado',
+                    UNPAID: 'Não pago'
+                }
+
+                return map[status] || status
+            }
+        }
     }
 </script>

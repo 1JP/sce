@@ -27,6 +27,14 @@ class PlanController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(Plan $plan)
+    {
+        return PlanResource::make($plan);
+    }
+
+    /**
      * Search a listing of the resource.
      */
     public function search(SearchRequest $request)

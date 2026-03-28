@@ -4,15 +4,25 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SubscriptionController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('admin.subscription.index');
+        $user = Auth::user();
+
+        if(!$user->hasRole(['Root', 'Admin'])){
+            abort(403);
+        }
+        
+        $subscription = $user->subscription;
+
+        return view('admin.subscription.index', compact('subscription'));
     }
 
     /**
