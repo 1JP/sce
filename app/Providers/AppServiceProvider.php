@@ -7,6 +7,7 @@ use App\Models\CategoryType;
 use App\Models\IndicativeRating;
 use App\Models\Plan;
 use App\Models\PostImage;
+use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -34,5 +35,7 @@ class AppServiceProvider extends ServiceProvider
         Route::model('usuario', User::class);
         Route::model('member', User::class);
         Route::model('membro', User::class);
+        Route::model('assinatura', Subscription::class);
+        Route::model('pagamento', Subscription::class);
     }
 }

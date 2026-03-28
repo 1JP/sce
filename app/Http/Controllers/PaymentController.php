@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentRequest;
-use App\Models\Client;
+use App\Models\Plan;
 use App\Models\Subscription;
 use App\Services\BodyPaymentApiService;
 use App\Services\PaymentApi;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
@@ -53,7 +53,6 @@ class PaymentController extends Controller
      */
     public function store(PaymentRequest $request)
     {
-        
         try {
             $validated = $request->validated();
             $user = Auth::user();
@@ -101,5 +100,78 @@ class PaymentController extends Controller
             return redirect()->route('pagamento.create')->with('danger', 'Não foi possível gerar a assinatura!');
         }
 
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(PaymentRequest $request, Subscription $subscription)
+    {
+        try {
+            $validated = $request->validated();
+            $plan = Plan::find($validated['plan_id']);
+            $user = Auth::user();
+
+            $getPlan = $this->paymentApi->getPlan($plan->customer_id);
+            if ($getPlan->status != 'ACTIVE') {
+                return redirect()->route('admin.assinaturas.edit', $subscription->id)
+                    ->with('info', 'O plano escolhido não esta ativo');
+            }
+
+            $pagSeguroSubscriptionCancel = $this->paymentApi->cancelSubscription($subscription->customer_id);
+            
+            if (count((array) $pagSeguroSubscriptionCancel) > 1) {
+                return redirect()->route('admin.assinaturas.edit', $subscription->id)
+                    ->with('danger', 'Falha ao cancelar a assinatura atual. A criação de uma nova assinatura com os dados atualizados não foi realizada.');
+            }
+
+            $validated['customer_id'] = $user->client->customer_id;
+            $bodySubscription = $this->bodyPaymentApi->bodyCreateSubscription($validated);
+            $pagSeguroSubscription = $this->paymentApi->createSubscription($bodySubscription);
+            if (!isset($pagSeguroSubscription->id)) {
+                return redirect()->route('admin.assinaturas.edit', $subscription->id)
+                    ->with('danger', 'Não foi possível gerar a assinatura!');
+            }
+            
+            $status = $this->paymentApi->statusSubscription($pagSeguroSubscription->status);
+
+            $subscription->update([
+                'plan_id' => $validated['plan_id'],
+                'status' => $status,
+                'customer_id' => $pagSeguroSubscription->id
+            ]);
+
+            return redirect()->route('admin.assinaturas.index')
+                ->with('success', 'Assinatura alterada com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.assinaturas.edit', $subscription->id)->with('danger', 'Não foi possível gerar a assinatura!');
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Subscription $subscription)
+    {
+        try {
+            $pagSeguroSubscriptionCancel = $this->paymentApi->cancelSubscription($subscription->customer_id);
+            
+            if (count((array) $pagSeguroSubscriptionCancel) > 1) {
+                return redirect()->route('admin.assinaturas.index')
+                    ->with('danger', 'Falha ao cancelar a assinatura atual.');
+            }
+
+            $status = $this->paymentApi->statusSubscription('CANCELED');
+
+            $subscription->update([
+                'status' => $status
+            ]);
+
+            return redirect()->route('admin.assinaturas.index')
+                ->with('success', 'Assinatura excluida com sucesso!');
+        }catch (\Exception $e) {
+            return redirect()->route('admin.assinaturas.index')
+                ->with('danger', 'Falha ao cancelar a assinatura atual.');
+        }
     }
 }

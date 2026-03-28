@@ -22,3 +22,6 @@ yarn-error.log
 /.zed
 composer.lock
 package-lock.json
+public/js/app.js
+public/js/resources_js_components_site_ReplyComment_vue.js
+public/mix-manifest.json

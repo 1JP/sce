@@ -13,7 +13,7 @@ class SubscriptionPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['Root', 'Cliente']);
+        return $user->hasRole(['Root', 'Admin']);
     }
 
     /**
@@ -21,7 +21,7 @@ class SubscriptionPolicy
      */
     public function view(User $user, Subscription $subscription): bool
     {
-        return $user->hasRole(['Root', 'Cliente']) || $user->id == $subscription->id;
+        return $user->hasRole(['Root', 'Admin']) || $user->id == $subscription->id;
     }
 
     /**
@@ -37,7 +37,7 @@ class SubscriptionPolicy
      */
     public function update(User $user, Subscription $subscription): bool
     {
-        return $user->hasRole(['Root', 'Cliente']) || $user->id == $subscription->user_id;
+        return $user->hasRole(['Root', 'Admin']) || $user->id == $subscription->user_id;
     }
 
     /**
@@ -45,7 +45,7 @@ class SubscriptionPolicy
      */
     public function delete(User $user, Subscription $subscription): bool
     {
-        return $user->hasRole(['Root', 'Cliente']) || $user->id == $subscription->user_id;
+        return $user->hasRole(['Root', 'Admin']) || $user->id == $subscription->user_id;
     }
 
     /**

@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\PostImageController;
+use App\Http\Controllers\Api\SubscriptionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
@@ -56,6 +57,11 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
         Route::get('search', [MemberController::class, 'search'])->name('search');
     });
     Route::apiResource('members', MemberController::class);
+
+    Route::prefix('subscription')->name('subscription.')->group(function () {
+        Route::get('invoices/{customer_id}', [SubscriptionController::class, 'invoices'])->name('invoices');
+    });
+    Route::apiResource('subscription', SubscriptionController::class);
 });
 
 Route::middleware('auth:sanctum')->group(function () {

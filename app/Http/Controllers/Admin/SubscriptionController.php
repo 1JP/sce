@@ -3,16 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SubscriptionController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('admin.subscription.index');
+        $user = Auth::user();
+
+        $this->authorize('viewAny', $user);
+        
+        $subscription = $user->subscription;
+
+        return view('admin.subscription.index', compact('subscription'));
     }
 
     /**
@@ -42,24 +51,10 @@ class SubscriptionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Subscription $subscription)
     {
-        return view('admin.subscription.edit');
-    }
+        $this->authorize('update', $subscription);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('admin.subscription.edit', compact('subscription'));
     }
 }

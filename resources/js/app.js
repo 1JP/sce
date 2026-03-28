@@ -62,6 +62,7 @@ app.component('admin-post-edit', require('./components/admin/post/edit.vue').def
 app.component('admin-member-index', require('./components/admin/member/index.vue').default);
 app.component('admin-member-create', require('./components/admin/member/create.vue').default);
 app.component('admin-member-active', require('./components/admin/member/active.vue').default);
+app.component('admin-subscription-index', require('./components/admin/subscription/index.vue').default);
 
 app.component('component-td', require('./components/table/Td.vue').default);
 app.component('component-span-status', require('./components/SpanStatus.vue').default);
@@ -93,9 +94,9 @@ app.component('site-children-comment', require('./components/site/ChildrenCommen
 app.component('site-create-user', require('./components/site/user/create.vue').default);
 app.component('site-my-account', require('./components/site/user/my-account.vue').default)
 app.component('site-index-user', require('./components/site/user/index.vue').default);
-app.component('site-create-payment', require('./components/site/payment/create.vue').default)
-app.component('site-summary-payment', require('./components/site/payment/summary.vue').default)
 
+app.component('create-payment', require('./components/payment/create.vue').default)
+app.component('summary-payment', require('./components/payment/summary.vue').default)
 app.component('list-group', require('./components/ListGroup.vue').default);
 app.component('list-group-item', require('./components/ListGroup-item.vue').default);
 app.component('fixed-bottom', require('./components/FixedBottom.vue').default);
