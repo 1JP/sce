@@ -1,6 +1,7 @@
 <template>
     <form class="text-left" :action="routeForm" method="POST" ref="formPayment">
         <input type="hidden" name="_token" :value="token"/>
+        <input type="hidden" name="_method" value="PATCH" v-if="methodForm" />
         <component-card
             :card-body="true"
             style="background: rgb(237, 235, 228);"
@@ -222,7 +223,9 @@
                         />
                     </div>
                 </div>
-                <button type='button' @click="save()" class="btn btn-primary btn-block rounded w-100" >Criar assinatura</button>
+                <button type='button' @click="save()" class="btn btn-primary btn-block rounded w-100" >
+                    {{ labelButton }}
+                </button>
             </template>
         </component-card>
     </form>
@@ -230,15 +233,20 @@
   
 <script>
     import axios from 'axios';
-    import { usePaymentStore } from '../../../stores/paymentStore';
+    import { usePaymentStore } from '../../stores/paymentStore';
 
     export default {
         props: {
-            
+            subscription: {
+                type: Object,
+                required: false,
+            },
         },
         data() {
             return {
                 routeForm: route('pagamento.store'),
+                labelButton: 'Criar assinatura',
+                methodForm: false,
                 viacep: {},
                 token: '',
                 classBirthDate: '',
@@ -280,7 +288,18 @@
                 axios.get(route('api.admin.plans.index'))
                     .then((response) => {
                         this.plans = response.data.data;
+                        this.editSubscription()
                     })
+            },
+            editSubscription(){
+                if (this.subscription) {
+                    this.plan_id = this.subscription.plan_id;
+                    this.labelButton = 'Editar assinatura'
+                    let selectedPlan = this.plans.find(plan => String(plan.id) === String(this.plan_id));
+                    this.createPayment(selectedPlan);
+                    this.routeForm = route('pagamento.update', this.subscription.id)
+                    this.methodForm = true;
+                }
             },
             async getAddressByCep (cep) {
                 if (cep.length >= 9) {

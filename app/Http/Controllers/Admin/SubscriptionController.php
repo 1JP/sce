@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,9 +17,7 @@ class SubscriptionController extends Controller
     {
         $user = Auth::user();
 
-        if(!$user->hasRole(['Root', 'Admin'])){
-            abort(403);
-        }
+        $this->authorize('viewAny', $user);
         
         $subscription = $user->subscription;
 
@@ -52,24 +51,10 @@ class SubscriptionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Subscription $subscription)
     {
-        return view('admin.subscription.edit');
-    }
+        $this->authorize('update', $subscription);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('admin.subscription.edit', compact('subscription'));
     }
 }

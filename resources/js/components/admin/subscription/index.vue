@@ -117,9 +117,13 @@
             <h4 class="text-gradient text-danger mt-4">Deseja excluir essa assinatura?</h4>
             <p>Todos os posts relacionados a essa assinatura será excluidos também</p>
         </div>
+        <form method="POST" :action="route('pagamento.destroy', subscription.id)" ref="formDelete">
+            <input type="hidden" name="_token" :value="token"/>
+            <input type="hidden" name="_method" value="DELETE" />
+        </form>
         <template v-slot:footer>
             <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn bg-gradient-danger">Excluir</button>
+            <button type="button" class="btn bg-gradient-danger" @click="destroy()">Excluir</button>
         </template>
     </model>
 </template>
@@ -155,7 +159,10 @@
                             internalId: `${i}-${Math.random().toString(36).substr(2, 5)}`
                         }));
                     })
-            }
+            },
+            destroy(){
+                this.$refs.formDelete.submit();
+            },
         },
         mounted() {
             this.token = document.head.querySelector('meta[name="csrf-token"]')?.content;

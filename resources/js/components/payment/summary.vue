@@ -63,7 +63,7 @@
 
 <script setup>
     import { storeToRefs } from 'pinia'
-    import { usePaymentStore } from '../../../stores/paymentStore'
+    import { usePaymentStore } from '../../stores/paymentStore'
 
     const paymentStore = usePaymentStore()
     const { paymentData } = storeToRefs(paymentStore)
