@@ -273,7 +273,7 @@
             async getAddressByCep (cep) {
                 if (cep.length >= 9) {
                     let fixedCep = cep.replace('-', '')
-                    await axios.get(`https://viacep.com.br/ws/${fixedCep}/json/`)
+                    await axios.get(route('api.viacep.getAddressByCep', fixedCep))
                         .then(response => this.viacep = response.data)
                         .catch(function(error) {
                             console.log(error.request)

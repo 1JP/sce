@@ -8,7 +8,6 @@ use App\Models\Post;
 use Illuminate\Support\Arr;
 use RahulHaque\Filepond\Facades\Filepond;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller

@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\PostImageController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\SubscriptionController;
+use \App\Http\Controllers\Api\ViaCepController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
@@ -90,3 +91,5 @@ Route::post('/sanctum/token', function (Request $request) {
 
     return $user->createToken($request->device_name)->plainTextToken;
 });
+
+Route::get('/viacep/{cep}', [ViaCepController::class, 'getAddressByCep'])->name('viacep.getAddressByCep');
