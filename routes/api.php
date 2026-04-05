@@ -9,7 +9,9 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\PostImageController;
+use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\SubscriptionController;
+use \App\Http\Controllers\Api\ViaCepController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
@@ -62,6 +64,8 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
         Route::get('invoices/{customer_id}', [SubscriptionController::class, 'invoices'])->name('invoices');
     });
     Route::apiResource('subscription', SubscriptionController::class);
+
+    Route::apiResource('settings', SettingController::class);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -87,3 +91,5 @@ Route::post('/sanctum/token', function (Request $request) {
 
     return $user->createToken($request->device_name)->plainTextToken;
 });
+
+Route::get('/viacep/{cep}', [ViaCepController::class, 'getAddressByCep'])->name('viacep.getAddressByCep');
