@@ -53,7 +53,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('/perimissoes', PermissionController::class);
     Route::resource('/configuracoes', SettingController::class);
     Route::resource('/profiles', ProfileController::class);
-    
 });
 
 Route::get("/", [HomeController::class, 'index'])->name('home');
