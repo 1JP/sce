@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subscription extends Model
 {
-    use HasFactory;
+    use HasFactory, AppLogModel;
 
     public const ACTIVE = 'ACTIVE';
     public const EXPIRED = 'EXPIRED';

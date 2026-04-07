@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Plan extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, AppLogModel, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
