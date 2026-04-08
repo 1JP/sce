@@ -13,7 +13,7 @@ class ClientPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['Root', 'Cliente']);
+        return $user->hasRole(['Root', 'Admin']);
     }
 
     /**
@@ -21,7 +21,7 @@ class ClientPolicy
      */
     public function view(User $user, Client $client): bool
     {
-        return $user->hasRole(['Root', 'Cliente']) && $user->id == $client->user_id;
+        return $user->hasRole(['Root', 'Admin']) && $user->id == $client->user_id;
     }
 
     /**

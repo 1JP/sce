@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SettingResource;
 use App\Models\Setting;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SettingController extends Controller
 {
@@ -14,25 +14,11 @@ class SettingController extends Controller
      */
     public function index()
     {
+        $this->authorize('create', Auth::user());
+
         $settings = Setting::all();
 
         return SettingResource::collection($settings);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
 }
