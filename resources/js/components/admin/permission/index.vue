@@ -17,10 +17,15 @@
                             :name="'Permissão...'"
                             :type="'text'"
                             :icon="'fa fa-search'"
+                            :value-input="inputRole"
+                            @input="searchInputRole($event)"
                         ></admin-filter-input>
                     </div>
                 </div>
                 <div class="col-lg-5 d-flex justify-content-end">
+                    <button type="button" class="btn bg-gradient-primary h-50 me-2" @click="clear()" v-if="Object.keys(listSearch).length > 0">
+                        Limpar filtros
+                    </button>
                     <button type="button" class="btn bg-gradient-primary h-50" data-bs-toggle="modal" data-bs-target="#createPermissionModal">
                         Cadastrar
                     </button>
@@ -129,7 +134,8 @@
                 listSearch: {},
                 routeUpdate: route('admin.permissoes.update', ':id'),
                 routeDelete: route('admin.permissoes.destroy', ':id'),
-                classInput: ''
+                classInput: '',
+                inputRole: '',
             }
         },
         methods: {
@@ -165,31 +171,32 @@
                 this.$refs.formDelete.submit();
             },
             searchInputRole(value) {
-                this.name = value.target.value;
+                this.inputRole = value.target.value;
                 let params = {
                     'search': {
-                        'name' : this.name
+                        'name' : this.inputRole
                     }
                 };
                 
                 if(Object.keys(this.listSearch).length > 0){
                     params.search = Object.assign({}, params.search, this.listSearch.search);
-                    params.search.name = this.name
+                    params.search.name = this.inputRole
                 }
                 
                 this.listSearch = params;
                 this.search(this.listSearch)
             },
             search(params){
-                axios.get(route('api.admin.logs.search'), {params})
+                axios.get(route('api.admin.roles.search'), {params})
                     .then((response) => {
-                        this.logs = response.data.data
+                        this.roles = response.data.data
                         this.pagination = response.data.meta
                     })
             },
             clear(){
-                this.name = '',
+                this.inputRole = '',
                 this.listSearch = {}
+                this.permissions();
             }
         },
         mounted() {

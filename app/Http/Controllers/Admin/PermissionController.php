@@ -15,7 +15,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //$this->authorize('viewAny', Auth::user());
+        $this->authorize('viewAny', Auth::user());
 
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Permissão'],
@@ -39,6 +39,8 @@ class PermissionController extends Controller
      */
     public function store(RoleRequest $request)
     {
+        $this->authorize('create', Auth::user());
+
         try {
             Role::create($request->validated());
 
@@ -61,6 +63,8 @@ class PermissionController extends Controller
      */
     public function update(RoleRequest $request, Role $role)
     {
+        $this->authorize('update', Auth::user());
+
         try {
             $role->update($request->validated());
 
@@ -75,6 +79,8 @@ class PermissionController extends Controller
      */
     public function destroy(Role $role)
     {
+        $this->authorize('delete', Auth::user());
+
         try {
             $role->delete();
 

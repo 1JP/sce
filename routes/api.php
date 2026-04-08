@@ -71,6 +71,9 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
         Route::get('search', [LogController::class, 'search'])->name('search');
     });
     Route::apiResource('logs', LogController::class);
+    Route::prefix('roles')->name('roles.')->group(function () {
+        Route::get('search', [RoleController::class, 'search'])->name('search');
+    });
     Route::apiResource('roles', RoleController::class);
 });
 
