@@ -67,6 +67,9 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
     Route::apiResource('subscription', SubscriptionController::class);
     Route::apiResource('settings', SettingController::class);
 
+    Route::prefix('logs')->name('logs.')->group(function () {
+        Route::get('search', [LogController::class, 'search'])->name('search');
+    });
     Route::apiResource('logs', LogController::class);
 });
 

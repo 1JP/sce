@@ -15,7 +15,9 @@
                     <div class="form-group">
                         <admin-filter-select
                             :name="'Ação'"
-                            :options="[]"
+                            :options="actions"
+                            :value-select="action"
+                            @onChanged="filterSelect($event)"
                         ></admin-filter-select>
                     </div>
                 </div>
@@ -25,6 +27,8 @@
                             :name="'Usuário...'"
                             :type="'text'"
                             :icon="'fa fa-search'"
+                            :value-input="name"
+                            @input="searchInputUser($event)"
                         ></admin-filter-input>
                     </div>
                 </div>
@@ -32,6 +36,8 @@
                     <div class="form-group input-group">
                         <admin-filter-input
                             :type="'date'"
+                            :value-input="from"
+                            @input="searchInputFrom($event)"
                         >
                         De:
                         </admin-filter-input>
@@ -41,10 +47,17 @@
                     <div class="form-group input-group">
                         <admin-filter-input
                             :type="'date'"
+                            :value-input="to"
+                            @input="searchInputTo($event)"
                         >
                         Para:
                         </admin-filter-input>
                     </div>
+                </div>
+                <div class="col-lg-12 col-lg-5 d-flex justify-content-end align-items-center">
+                    <button type="button" class="btn bg-gradient-primary me-2" @click="clear()" v-if="Object.keys(listSearch).length > 0">
+                        Limpar filtros
+                    </button>
                 </div>
             </div>
         </template>
@@ -105,6 +118,16 @@
                 token: '',
                 logs: [],
                 pagination: null,
+                action: '',
+                actions: [
+                    'Criado',
+                    'Atualizado',
+                    'Deletado',
+                ],
+                name: '',
+                from: '',
+                to: '',
+                listSearch: {}
             }
         },
         methods: {
@@ -127,6 +150,86 @@
                         return '';
                 }
             },
+            filterSelect(value) {
+                this.action = value.target.value;
+                let params = {
+                    'search': {
+                        'action' : this.action
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.action = this.action
+                }
+                
+                this.listSearch = params;
+                this.search(this.listSearch)
+            },
+            searchInputUser(value) {
+                this.name = value.target.value;
+                let params = {
+                    'search': {
+                        'name' : this.name
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.name = this.name
+                }
+                
+                this.listSearch = params;
+                this.search(this.listSearch)
+            },
+            searchInputFrom(value) {
+                this.from = value.target.value;
+                let params = {
+                    'search': {
+                        'from' : this.from
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.from = this.from
+                }
+                
+                this.listSearch = params;
+                this.search(this.listSearch)
+            },
+            searchInputTo(value) {
+                this.to = value.target.value;
+                let params = {
+                    'search': {
+                        'to' : this.to
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.to = this.to
+                }
+                
+                this.listSearch = params;
+                this.search(this.listSearch)
+            },
+            search(params){
+                console.log(params)
+                axios.get(route('api.admin.logs.search'), {params})
+                    .then((response) => {
+                        this.logs = response.data.data
+                        this.pagination = response.data.meta
+                    })
+            },
+            clear(){
+                this.action = '',
+                this.name = '',
+                this.from = '',
+                this.to = '',
+                this.listSearch = {}
+                this.activity();
+            }
         },
         mounted() {
             this.activity();
