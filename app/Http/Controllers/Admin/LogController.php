@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Spatie\Activitylog\Models\Activity;
+use Illuminate\Support\Facades\Auth;
 
 class LogController extends Controller
 {
@@ -12,6 +13,8 @@ class LogController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Auth::user());
+
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Usuário'],
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2', 'name' => 'Ação'],
@@ -26,9 +29,19 @@ class LogController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Activity $activity)
     {
-        return view('admin.log.show');
+        $this->authorize('view', Auth::user());
+
+        $causer_name = 'Sistema';
+        if (!empty($activity->causer_type)) {
+            $causer_name = $activity->causer->name;
+        }
+        $activity->causer_name = $causer_name;
+        $activity->properties = json_decode($activity->properties, true);
+        $activity->created = $activity->created_at->format('d-m-Y H:i:s');
+        
+        return view('admin.log.show', compact('activity'));
     }
 
 }

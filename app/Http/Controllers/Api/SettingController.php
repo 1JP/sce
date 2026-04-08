@@ -14,7 +14,7 @@ class SettingController extends Controller
      */
     public function index()
     {
-        $this->authorize('create', Auth::user());
+        $this->authorize('viewAny', Auth::user());
 
         $settings = Setting::all();
 

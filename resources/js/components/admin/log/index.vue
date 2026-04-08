@@ -81,7 +81,7 @@
                         </component-td>
                         <component-td :class="'align-middle'">
                             <component-dropdown :name="'dropdown-index'">
-                                <component-dropdown-item name="Visualizar" :route="route('admin.logs.show', log.id)"></component-dropdown-item>
+                                <component-dropdown-item name="Visualizar" :route="route('admin.logs.show', log.id)"/>
                             </component-dropdown>
                         </component-td>
                     </admin-tr>
