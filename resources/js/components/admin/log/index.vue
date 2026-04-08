@@ -215,7 +215,6 @@
                 this.search(this.listSearch)
             },
             search(params){
-                console.log(params)
                 axios.get(route('api.admin.logs.search'), {params})
                     .then((response) => {
                         this.logs = response.data.data

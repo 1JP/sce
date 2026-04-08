@@ -66,6 +66,8 @@ app.component('admin-subscription-index', require('./components/admin/subscripti
 app.component('admin-settings-create', require('./components/admin/setting/create.vue').default);
 app.component('admin-log-index', require('./components/admin/log/index.vue').default);
 app.component('admin-log-show', require('./components/admin/log/show.vue').default);
+app.component('admin-permission-index', require('./components/admin/permission/index.vue').default);
+app.component('admin-permission-create', require('./components/admin/permission/create.vue').default);
 
 app.component('component-td', require('./components/table/Td.vue').default);
 app.component('component-span-status', require('./components/SpanStatus.vue').default);

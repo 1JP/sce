@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Spatie\Activitylog\Models\Activity;
+use Spatie\Permission\Models\Role;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -39,5 +40,7 @@ class AppServiceProvider extends ServiceProvider
         Route::model('assinatura', Subscription::class);
         Route::model('pagamento', Subscription::class);
         Route::model('log', Activity::class);
+        Route::model('role', Role::class);
+        Route::model('permisso', Role::class);
     }
 }

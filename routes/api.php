@@ -71,13 +71,12 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
         Route::get('search', [LogController::class, 'search'])->name('search');
     });
     Route::apiResource('logs', LogController::class);
+    Route::apiResource('roles', RoleController::class);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class);
 });
-
-Route::apiResource('roles', RoleController::class);
 
 Route::post('/sanctum/token', function (Request $request) {
     $request->validate([
