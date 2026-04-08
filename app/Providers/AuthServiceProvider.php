@@ -15,12 +15,16 @@ use App\Policies\CategoryPolicy;
 use App\Policies\CategoryTypePolicy;
 use App\Policies\ClientPolicy;
 use App\Policies\IndicativeRatingPolicy;
+use App\Policies\LogPolicy;
 use App\Policies\PlanPolicy;
 use App\Policies\PostPolicy;
+use App\Policies\RolesPolicy;
 use App\Policies\SettingPolicy;
 use App\Policies\SubscriptionPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Spatie\Activitylog\Models\Activity;
+use Spatie\Permission\Models\Role;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -39,6 +43,8 @@ class AuthServiceProvider extends ServiceProvider
         Subscription::class => SubscriptionPolicy::class,
         Client::class => ClientPolicy::class,
         Setting::class => SettingPolicy::class,
+        Role::class => RolesPolicy::class,
+        Activity::class => LogPolicy::class,
     ];
 
     /**

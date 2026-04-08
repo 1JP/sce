@@ -19,10 +19,6 @@ class RolesEnum
             'guard_name' => 'web',
         ],
         [
-            'name' => 'Cliente',
-            'guard_name' => 'web',
-        ],
-        [
             'name' => 'Root',
             'guard_name' => 'web',
         ],

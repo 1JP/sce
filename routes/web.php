@@ -50,7 +50,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('/clientes', ClientController::class);
     Route::resource('/membros', MemberController::class);
     Route::resource('/logs', LogController::class);
-    Route::resource('/perimissoes', PermissionController::class);
+    Route::resource('/permissoes', PermissionController::class);
     Route::resource('/configuracoes', SettingController::class);
     Route::resource('/profiles', ProfileController::class);
 });

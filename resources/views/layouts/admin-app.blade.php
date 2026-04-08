@@ -41,7 +41,7 @@
                 ["route" => route("admin.clientes.index"), "icon" => "ni ni-user-run", "name" => "Clientes", "view" => Auth::user()->hasRole('Root')],
                 ["route" => route("admin.membros.index"), "icon" => "ni ni-badge", "name" => "Membros", "view" => Auth::user()->hasRole('Admin')],
                 ["route" => route("admin.logs.index"), "icon" => "ni ni-folder-17", "name" => "Logs", "view" => Auth::user()->hasRole('Root')],
-                ["route" => route("admin.perimissoes.index"), "icon" => "ni ni-settings-gear-65", "name" => "Permissões", "view" => Auth::user()->hasRole('Root')],
+                ["route" => route("admin.permissoes.index"), "icon" => "ni ni-settings-gear-65", "name" => "Permissões", "view" => Auth::user()->hasRole('Root')],
             ]) !!}'
             :accounts='{!! json_encode([
                 ["route" => route("admin.profiles.index"), "icon" => "ni ni-single-02", "name" => 'Profile', "view" => true]

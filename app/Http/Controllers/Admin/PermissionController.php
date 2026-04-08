@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RoleRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 
 class PermissionController extends Controller
 {
@@ -12,6 +15,8 @@ class PermissionController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Auth::user());
+
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Permissão'],
             ['class' => 'text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Usuários'],
@@ -32,17 +37,17 @@ class PermissionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
-        //
-    }
+        $this->authorize('create', Auth::user());
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        try {
+            Role::create($request->validated());
+
+            return redirect()->route('admin.permissoes.index')->with('success', 'Permissão criada com sucesso!');
+        }   catch (\Exception $e) {
+            return redirect()->route('admin.permissoes.index')->with('danger', 'Não foi possível criar a permissão!');
+        }
     }
 
     /**
@@ -56,16 +61,32 @@ class PermissionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(RoleRequest $request, Role $role)
     {
-        //
+        $this->authorize('update', Auth::user());
+
+        try {
+            $role->update($request->validated());
+
+            return redirect()->route('admin.permissoes.index')->with('success', 'Permissão atualizada com sucesso!');
+        }   catch (\Exception $e) {
+            return redirect()->route('admin.permissoes.index')->with('danger', 'Não foi possível atualizar a permissão!');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Role $role)
     {
-        //
+        $this->authorize('delete', Auth::user());
+
+        try {
+            $role->delete();
+
+            return redirect()->route('admin.permissoes.index')->with('success', 'Permissão excluída com sucesso!');
+        }   catch (\Exception $e) {
+            return redirect()->route('admin.permissoes.index')->with('danger', 'Não foi possível excluir a permissão!');
+        }
     }
 }
