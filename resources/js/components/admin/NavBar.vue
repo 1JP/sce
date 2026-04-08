@@ -25,6 +25,7 @@
                         :route="account.route"
                         :icon="account.icon"
                         :name="account.name"
+                        :view="account.view"
                     />
                 </li>
             </ul>

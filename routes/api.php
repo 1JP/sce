@@ -11,7 +11,8 @@ use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\PostImageController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\SubscriptionController;
-use \App\Http\Controllers\Api\ViaCepController;
+use App\Http\Controllers\Api\ViaCepController;
+use App\Http\Controllers\Api\LogController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
@@ -64,8 +65,12 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
         Route::get('invoices/{customer_id}', [SubscriptionController::class, 'invoices'])->name('invoices');
     });
     Route::apiResource('subscription', SubscriptionController::class);
-
     Route::apiResource('settings', SettingController::class);
+
+    Route::prefix('logs')->name('logs.')->group(function () {
+        Route::get('search', [LogController::class, 'search'])->name('search');
+    });
+    Route::apiResource('logs', LogController::class);
 });
 
 Route::middleware('auth:sanctum')->group(function () {

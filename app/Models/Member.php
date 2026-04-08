@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Member extends Pivot
 {
-    use HasFactory;
+    use HasFactory, AppLogModel;
 
     protected $table = 'members';
 

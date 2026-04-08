@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, AppLogModel, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

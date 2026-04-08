@@ -14,6 +14,8 @@ class SettingController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Auth::user());
+        
         return view('admin.setting.create');
     }
 

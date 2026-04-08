@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Deslink extends Model
 {
-    use HasFactory;
+    use HasFactory, AppLogModel;
 
     /**
      * The attributes that are mass assignable.

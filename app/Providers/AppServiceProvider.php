@@ -11,6 +11,7 @@ use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Spatie\Activitylog\Models\Activity;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,5 +38,6 @@ class AppServiceProvider extends ServiceProvider
         Route::model('membro', User::class);
         Route::model('assinatura', Subscription::class);
         Route::model('pagamento', Subscription::class);
+        Route::model('log', Activity::class);
     }
 }
