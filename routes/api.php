@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\SubscriptionController;
 use App\Http\Controllers\Api\ViaCepController;
 use App\Http\Controllers\Api\LogController;
+use App\Http\Controllers\Api\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
@@ -75,6 +76,8 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
         Route::get('search', [RoleController::class, 'search'])->name('search');
     });
     Route::apiResource('roles', RoleController::class);
+
+    Route::apiResource('profiles', ProfileController::class);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
