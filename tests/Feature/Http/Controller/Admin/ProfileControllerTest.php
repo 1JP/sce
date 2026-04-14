@@ -56,7 +56,6 @@ class ProfileControllerTest extends TestCase
     /**
      * It should update the authenticated user's profile without changing the password.
      */
-    /** @test */
     public function test_store_updates_profile_without_changing_password()
     {
         $oldPassword = $this->user->password;

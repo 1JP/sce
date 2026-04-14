@@ -37,7 +37,7 @@ class ClientPolicy
      */
     public function update(User $user, Client $client): bool
     {
-        return $user->hasRole(['Root']) || $user->id == $client->user_id;
+        return $user->hasRole(['Root', 'Admin']) || $user->id == $client->user_id;
     }
 
     /**

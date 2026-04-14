@@ -3,10 +3,17 @@
 namespace App\Services;
 
 use App\Models\Plan;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 
 class BodyPaymentApiService
 {
+    private Boolean $sandbox;
+
+    public function __construct() {
+        $sandboxBody = Setting::where('name', 'sandbox-payment')->first();
+        $this->sandbox = $sandboxBody->body == "1" ? true : false;
+    }
 
     /**
      * Create a plan body for a payment system.
@@ -29,8 +36,8 @@ class BodyPaymentApiService
                 "length" => 1
             ],
             "trial" => [
-                "enabled" => false,
-                "hold_setup_fee" => false
+                "enabled" => $this->sandbox,
+                "hold_setup_fee" => $this->sandbox
             ],
             "payment_method" => [
                 "CREDIT_CARD"
@@ -41,6 +48,21 @@ class BodyPaymentApiService
 
     }
 
+    /**
+     * Build the request payload for creating a customer in the payment gateway.
+     *
+     * This method assembles the customer's address, billing information (credit card details),
+     * and personal data into the expected API format.
+     *
+     * Expected keys in $data:
+     * - street, number, locality, city, region_code, postal_code
+     * - area, phone
+     * - name, birth_date, cpf
+     * - number_card, cvv, year, month
+     *
+     * @param array $data Customer input data
+     * @return array Formatted request body
+     */
     public function bodyCreateCustomer(array $data)
     {
         $body = [
@@ -90,6 +112,21 @@ class BodyPaymentApiService
         return $body;
     }
 
+    /**
+     * Build the request payload for creating a subscription.
+     *
+     * This method retrieves the selected plan and formats the required data
+     * into the structure expected by the payment API, including plan reference,
+     * customer identification, and payment method (credit card).
+     *
+     * Expected keys in $data:
+     * - plan_id
+     * - customer_id
+     * - cvv
+     *
+     * @param array $data Subscription input data
+     * @return array Formatted request body
+     */
     public function bodyCreateSubscription(array $data)
     {
         $plan = Plan::find($data['plan_id']);
