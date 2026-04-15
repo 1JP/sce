@@ -17,7 +17,6 @@ class UserPolicyTest extends TestCase
     protected $userAdmin;
     protected $userMembro;
     protected $userUsuario;
-    protected $userCliente;
     protected $userRoot;
 
     public function setUp(): void
@@ -29,13 +28,11 @@ class UserPolicyTest extends TestCase
         $roleAdmin = Role::where('name', 'Admin')->first();
         $roleMembros = Role::where('name', 'Membros')->first();
         $roleUsuario = Role::where('name', 'Usuario')->first();
-        $roleCliente = Role::where('name', 'Cliente')->first();
         $roleRoot = Role::where('name', 'Root')->first();
 
         $this->userAdmin = User::factory()->create()->assignRole($roleAdmin->id);
         $this->userMembro = User::factory()->create()->assignRole($roleMembros->id);
         $this->userUsuario = User::factory()->create()->assignRole($roleUsuario->id);
-        $this->userCliente = User::factory()->create()->assignRole($roleCliente->id);
         $this->userRoot = User::factory()->create()->assignRole($roleRoot->id);
     }
 

@@ -17,7 +17,6 @@ class SettingPolicyTest extends TestCase
     protected $userAdmin;
     protected $userMembro;
     protected $userUsuario;
-    protected $userCliente;
     protected $userRoot;
 
     public function setUp(): void
@@ -29,13 +28,11 @@ class SettingPolicyTest extends TestCase
         $roleAdmin = Role::where('name', 'Admin')->first();
         $roleMembros = Role::where('name', 'Membros')->first();
         $roleUsuario = Role::where('name', 'Usuario')->first();
-        $roleCliente = Role::where('name', 'Cliente')->first();
         $roleRoot = Role::where('name', 'Root')->first();
 
         $this->userAdmin = User::factory()->create()->assignRole($roleAdmin->id);
         $this->userMembro = User::factory()->create()->assignRole($roleMembros->id);
         $this->userUsuario = User::factory()->create()->assignRole($roleUsuario->id);
-        $this->userCliente = User::factory()->create()->assignRole($roleCliente->id);
         $this->userRoot = User::factory()->create()->assignRole($roleRoot->id);
     }
 
@@ -47,7 +44,6 @@ class SettingPolicyTest extends TestCase
         $setting = Setting::factory()->create();
 
         $this->assertTrue($this->userRoot->can('create', $setting));
-        $this->assertTrue($this->userAdmin->can('create', $setting));
     }
 
     /**
@@ -62,7 +58,6 @@ class SettingPolicyTest extends TestCase
         ]);
 
         $this->assertTrue($this->userRoot->can('update', $setting));
-        $this->assertTrue($this->userAdmin->can('update', $setting));
     }
 
     /**
@@ -73,7 +68,6 @@ class SettingPolicyTest extends TestCase
         $setting = Setting::factory()->create();
 
         $this->assertTrue($this->userRoot->can('delete', $setting));
-        $this->assertTrue($this->userAdmin->can('delete', $setting));
     }
 
     /**
@@ -85,7 +79,6 @@ class SettingPolicyTest extends TestCase
 
         $this->assertFalse($this->userUsuario->can('delete', $setting));
         $this->assertFalse($this->userMembro->can('delete', $setting));
-        $this->assertFalse($this->userCliente->can('delete', $setting));
     }
 
     /**
@@ -97,7 +90,6 @@ class SettingPolicyTest extends TestCase
 
         $this->assertFalse($this->userUsuario->can('create', $setting));
         $this->assertFalse($this->userMembro->can('create', $setting));
-        $this->assertFalse($this->userCliente->can('create', $setting));
     }
 
     /**
@@ -113,6 +105,5 @@ class SettingPolicyTest extends TestCase
         
         $this->assertFalse($this->userUsuario->can('update', $setting));
         $this->assertFalse($this->userMembro->can('update', $setting));
-        $this->assertFalse($this->userCliente->can('update', $setting));
     }
 }

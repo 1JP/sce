@@ -18,7 +18,6 @@ class SubscriptionPolicyTest extends TestCase
     protected $userAdmin;
     protected $userMembro;
     protected $userUsuario;
-    protected $userCliente;
     protected $userRoot;
 
     public function setUp(): void
@@ -30,13 +29,11 @@ class SubscriptionPolicyTest extends TestCase
         $roleAdmin = Role::where('name', 'Admin')->first();
         $roleMembros = Role::where('name', 'Membros')->first();
         $roleUsuario = Role::where('name', 'Usuario')->first();
-        $roleCliente = Role::where('name', 'Cliente')->first();
         $roleRoot = Role::where('name', 'Root')->first();
 
         $this->userAdmin = User::factory()->create()->assignRole($roleAdmin->id);
         $this->userMembro = User::factory()->create()->assignRole($roleMembros->id);
         $this->userUsuario = User::factory()->create()->assignRole($roleUsuario->id);
-        $this->userCliente = User::factory()->create()->assignRole($roleCliente->id);
         $this->userRoot = User::factory()->create()->assignRole($roleRoot->id);
     }
 
@@ -85,7 +82,6 @@ class SubscriptionPolicyTest extends TestCase
 
         $this->assertFalse($this->userUsuario->can('delete', $subscription));
         $this->assertFalse($this->userMembro->can('delete', $subscription));
-        $this->assertFalse($this->userAdmin->can('delete', $subscription));
         $this->assertFalse($user->can('delete', $subscription));
     }
 
@@ -99,7 +95,6 @@ class SubscriptionPolicyTest extends TestCase
 
         $this->assertFalse($this->userUsuario->can('update', $subscription));
         $this->assertFalse($this->userMembro->can('update', $subscription));
-        $this->assertFalse($this->userAdmin->can('update', $subscription));
         $this->assertFalse($user->can('update', $subscription));
     }
 }

@@ -12,12 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('links', function (Blueprint $table) {
-            $table->foreignId('post_id')->constrained()->nullable();
+            $table->id(); // 🔥 ADICIONA ISSO
+
+            $table->foreignId('post_id')->nullable()->constrained();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('comment_id')->nullable()->constrained('comments');
+
             $table->timestamps();
 
-            $table->primary(['post_id', 'user_id', 'comment_id']);
+            $table->unique(['post_id', 'user_id', 'comment_id']); // 🔥 substitui PK composta
         });
     }
 
