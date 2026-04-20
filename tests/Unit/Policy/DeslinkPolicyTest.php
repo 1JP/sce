@@ -38,13 +38,13 @@ class DeslinkPolicyTest extends TestCase
      */
     public function test_user_cannot_delete_deslink()
     {
-        $user = User::factory()->create();
+        $userTeste = User::factory()->create();
 
         $deslink = Deslink::factory()->create([
-            'user_id' => $user
+            'user_id' => $userTeste->id
         ]);
 
-        $this->assertTrue($this->user->can('delete', $deslink));
+        $this->assertFalse($this->user->can('delete', $deslink));
     }
 
 }

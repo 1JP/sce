@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Policy;
 
+use App\Models\Client;
+use App\Models\Member;
 use App\Models\Post;
 use App\Models\User;
 use Database\Seeders\RolesSeeder;
@@ -34,6 +36,14 @@ class PostPolicyTest extends TestCase
         $this->userMembro = User::factory()->create()->assignRole($roleMembros->id);
         $this->userUsuario = User::factory()->create()->assignRole($roleUsuario->id);
         $this->userRoot = User::factory()->create()->assignRole($roleRoot->id);
+        $client = Client::factory()->create([
+            'user_id' => $this->userAdmin->id
+        ]);
+
+        Member::factory()->create([
+            'client_id' => $client->id,
+            'user_id' => $this->userMembro->id
+        ]);
     }
 
     /**

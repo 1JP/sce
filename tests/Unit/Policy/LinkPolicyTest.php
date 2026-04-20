@@ -46,6 +46,6 @@ class LinkPolicyTest extends TestCase
             'user_id' => $user
         ]);
 
-        $this->assertTrue($this->user->can('delete', $link));
+        $this->assertFalse($this->user->can('delete', $link));
     }
 }

@@ -21,15 +21,15 @@ class PostPolicy
      */
     public function view(User $user, Post $post): bool
     {
-        if ($user->hasRole('Root')) {
+        if ($user->isRoot()) {
             return true;
         }
 
-        if ($user->hasRole('Admin')) {
+        if ($user->isAdmin()) {
             return $user->id === $post->user_id;
         }
 
-        if ($user->hasRole('Membros')) {
+        if ($user->isMember()) {
             $administrator = $user->administrator()->first()->user;
             return $administrator && $administrator->id === $post->user_id;
         }
@@ -50,16 +50,16 @@ class PostPolicy
      */
     public function update(User $user, Post $post): bool
     {
-        if ($user->isRoot) {
+        if ($user->isRoot()) {
             return true;
         }
 
-        if ($user->isAdmin) {
+        if ($user->isAdmin()) {
             return $user->id === $post->user_id;
         }
 
-        if ($user->isMember) {
-            $administrator = $user->administrator;
+        if ($user->isMember()) {
+            $administrator = $user->administrator()->first();
             return $administrator && $administrator->id === $post->user_id;
         }
 
