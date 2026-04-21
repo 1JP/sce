@@ -20,6 +20,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SiteCategoryController;
+use App\Http\Controllers\SiteCommentController;
 use App\Http\Controllers\SitePostController;
 use App\Http\Controllers\SiteUserController;
 use Illuminate\Support\Facades\Route;
@@ -70,4 +71,5 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('usuarios')->name('usuarios.')->group(function () {
         Route::put('/update/{user}', [SiteUserController::class, 'update'])->name('update');
     });
+    Route::resource('/comments', SiteCommentController::class);
 });

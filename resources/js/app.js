@@ -101,6 +101,7 @@ app.component('site-create-user', require('./components/site/user/create.vue').d
 app.component('site-my-account', require('./components/site/user/my-account.vue').default)
 app.component('site-index-user', require('./components/site/user/index.vue').default);
 app.component('site-home', require('./components/site/home/index.vue').default);
+app.component('site-post-show', require('./components/site/post/show.vue').default);
 
 app.component('create-payment', require('./components/payment/create.vue').default)
 app.component('summary-payment', require('./components/payment/summary.vue').default)

@@ -42,5 +42,13 @@ class AppServiceProvider extends ServiceProvider
         Route::model('log', Activity::class);
         Route::model('role', Role::class);
         Route::model('permisso', Role::class);
+
+        view()->composer('*', function($view) {
+            $user = auth()->user();
+            if ($user) {
+                $user->load('roles');
+            }
+            $view->with('user', $user);
+        });
     }
 }
