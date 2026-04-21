@@ -71,7 +71,3 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/update/{user}', [SiteUserController::class, 'update'])->name('update');
     });
 });
-
-Route::get('/teste', function(){
-    return view('email.first-access');
-});

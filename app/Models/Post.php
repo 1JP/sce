@@ -15,7 +15,13 @@ class Post extends Model
      *
      * @var array<int, string>
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'description',
+        'user_id',
+        'category_id',
+        'indicative_rating_id',
+    ];
 
     public function images()
     {

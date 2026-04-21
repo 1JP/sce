@@ -17,7 +17,6 @@ class PlanPolicyTest extends TestCase
     protected $userAdmin;
     protected $userMembro;
     protected $userUsuario;
-    protected $userCliente;
     protected $userRoot;
 
     public function setUp(): void
@@ -35,7 +34,6 @@ class PlanPolicyTest extends TestCase
         $this->userAdmin = User::factory()->create()->assignRole($roleAdmin->id);
         $this->userMembro = User::factory()->create()->assignRole($roleMembros->id);
         $this->userUsuario = User::factory()->create()->assignRole($roleUsuario->id);
-        $this->userCliente = User::factory()->create()->assignRole($roleCliente->id);
         $this->userRoot = User::factory()->create()->assignRole($roleRoot->id);
     }
 
@@ -81,7 +79,6 @@ class PlanPolicyTest extends TestCase
         $plan = Plan::factory()->create();
 
         $this->assertFalse($this->userAdmin->can('create', $plan));
-        $this->assertFalse($this->userCliente->can('create', $plan));
         $this->assertFalse($this->userMembro->can('create', $plan));
         $this->assertFalse($this->userUsuario->can('create', $plan));
     }
@@ -98,7 +95,6 @@ class PlanPolicyTest extends TestCase
         ]);
 
         $this->assertFalse($this->userAdmin->can('update', $plan));
-        $this->assertFalse($this->userCliente->can('update', $plan));
         $this->assertFalse($this->userMembro->can('update', $plan));
         $this->assertFalse($this->userUsuario->can('update', $plan));
     }
@@ -111,7 +107,6 @@ class PlanPolicyTest extends TestCase
         $plan = Plan::factory()->create();
         
         $this->assertFalse($this->userAdmin->can('delete', $plan));
-        $this->assertFalse($this->userCliente->can('delete', $plan));
         $this->assertFalse($this->userMembro->can('delete', $plan));
         $this->assertFalse($this->userUsuario->can('delete', $plan));
     }

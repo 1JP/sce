@@ -86,9 +86,7 @@ class SiteUserController extends Controller
      */
     public function update(CreateUserRequest $request, User $user)
     {
-        if (Gate::denies('update', Auth::user())) {
-            abort(403);
-        }
+        $this->authorize('update', Auth::user());
         
         try {
             $validated = $request->validated();

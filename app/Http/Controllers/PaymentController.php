@@ -8,7 +8,6 @@ use App\Models\Plan;
 use App\Models\Subscription;
 use App\Services\BodyPaymentApiService;
 use App\Services\PaymentApi;
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
@@ -107,6 +106,8 @@ class PaymentController extends Controller
      */
     public function update(PaymentRequest $request, Subscription $subscription)
     {
+        $this->authorize('update', $subscription);
+
         try {
             $validated = $request->validated();
             $plan = Plan::find($validated['plan_id']);
@@ -153,6 +154,8 @@ class PaymentController extends Controller
      */
     public function destroy(Subscription $subscription)
     {
+        $this->authorize('delete', $subscription);
+        
         try {
             $pagSeguroSubscriptionCancel = $this->paymentApi->cancelSubscription($subscription->customer_id);
             

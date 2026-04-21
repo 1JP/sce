@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\PostAction;
+use App\Actions\UpdatePostAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
@@ -13,10 +15,38 @@ use Illuminate\Support\Facades\Storage;
 class PostController extends Controller
 {
     /**
+     * Action responsible for handling post creation logic.
+     *
+     * @var PostAction
+     */
+    private $actionPost;
+
+    /**
+     * Action responsible for handling post update logic.
+     *
+     * @var UpdatePostAction
+     */
+    private $updateActionPost;
+
+    /**
+     * Class constructor to initialize the actions for PostAction and UpdatePostAction.
+     *
+     * @param PostAction $actionPost              The action used to handle post creation.
+     * @param UpdatePostAction $updateActionPost  The action used to handle post update.
+     */
+    public function __construct(PostAction $actionPost, UpdatePostAction $updateActionPost)
+    {
+        $this->actionPost = $actionPost;
+        $this->updateActionPost = $updateActionPost;
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $this->authorize('viewAny', Auth::user());
+
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Nome'],
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2', 'name' => 'Classificação Indicativas'],
@@ -46,10 +76,11 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
         $this->authorize('create', Auth::user());
-
+        
         try {
             $validated = $request->validated();
-            $post = Auth::user()->posts()->create(Arr::except($validated, ['images']));
+            
+            $post = $this->actionPost->execute(Auth::user(), Arr::except($validated, ['images']));
 
             if (isset($validated['images'])) {
                 foreach ($validated['images'] as $key => $image) {
@@ -101,21 +132,21 @@ class PostController extends Controller
 
         try {
             $validated = $request->validated();
-            $post->update(Arr::except($validated, ['images']));
+            $updateActionPost = $this->updateActionPost->execute(Auth::user(), $post, Arr::except($validated, ['images']));
 
             if (isset($validated['images'])) {
-                $post->images->map(function($item){
+                $updateActionPost->images->map(function($item){
                     if (Storage::disk('public')->exists($item->name)) {
                         Storage::disk('public')->delete($item->name);
                     }
                 });
-                $post->images()->delete();
+                $updateActionPost->images()->delete();
                 foreach ($validated['images'] as $key => $image) {
-                    $postName = 'post_'.$post->id.'_'.$key;
+                    $postName = 'post_'.$updateActionPost->id.'_'.$key;
                     $fileInfos = Filepond::field($image)
                         ->moveTo('posts/' . $postName);
 
-                    $post->images()->create([
+                    $updateActionPost->images()->create([
                         'name' => $fileInfos['location']
                     ]);
                 }

@@ -93,7 +93,7 @@
                                         :class-header="'mx-4 p-3 text-center'"
                                     >
                                         <template v-slot:header>
-                                            <button  v-if="subscription.status == 'ACTIVE'" type="button" class="btn bg-gradient-danger btn-block mb-3" data-bs-toggle="modal" data-bs-target="#destorySubscription">
+                                            <button  v-if="subscription.status == 'ACTIVE' || subscription.status == 'TRIAL'" type="button" class="btn bg-gradient-danger btn-block mb-3" data-bs-toggle="modal" data-bs-target="#destorySubscription">
                                                 Excluir Assinatura
                                             </button>
                                             <hr class="horizontal dark my-3">

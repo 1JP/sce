@@ -20,9 +20,9 @@ class LinkFactory extends Factory
     public function definition(): array
     {
         return [
-            'post_id' => Post::factory(),
-            'comment_id' => Comment::factory(),
-            'user_id' => User::factory(),
+            'post_id' => null,
+            'comment_id' => null,
+            'user_id' => null,
         ];
     }
 }

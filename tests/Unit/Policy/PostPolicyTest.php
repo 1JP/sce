@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Policy;
 
+use App\Models\Client;
+use App\Models\Member;
 use App\Models\Post;
 use App\Models\User;
 use Database\Seeders\RolesSeeder;
@@ -17,7 +19,6 @@ class PostPolicyTest extends TestCase
     protected $userAdmin;
     protected $userMembro;
     protected $userUsuario;
-    protected $userCliente;
     protected $userRoot;
 
     public function setUp(): void
@@ -29,14 +30,20 @@ class PostPolicyTest extends TestCase
         $roleAdmin = Role::where('name', 'Admin')->first();
         $roleMembros = Role::where('name', 'Membros')->first();
         $roleUsuario = Role::where('name', 'Usuario')->first();
-        $roleCliente = Role::where('name', 'Cliente')->first();
         $roleRoot = Role::where('name', 'Root')->first();
 
         $this->userAdmin = User::factory()->create()->assignRole($roleAdmin->id);
         $this->userMembro = User::factory()->create()->assignRole($roleMembros->id);
         $this->userUsuario = User::factory()->create()->assignRole($roleUsuario->id);
-        $this->userCliente = User::factory()->create()->assignRole($roleCliente->id);
         $this->userRoot = User::factory()->create()->assignRole($roleRoot->id);
+        $client = Client::factory()->create([
+            'user_id' => $this->userAdmin->id
+        ]);
+
+        Member::factory()->create([
+            'client_id' => $client->id,
+            'user_id' => $this->userMembro->id
+        ]);
     }
 
     /**
@@ -120,9 +127,6 @@ class PostPolicyTest extends TestCase
         $this->assertFalse($this->userUsuario->can('create', $postAdmin));
         $this->assertFalse($this->userUsuario->can('create', $postRoot));
 
-        $this->assertFalse($this->userCliente->can('create', $postAdmin));
-        $this->assertFalse($this->userCliente->can('create', $postRoot));
-
         $this->assertFalse($this->userMembro->can('create', $postAdmin));
         $this->assertFalse($this->userMembro->can('create', $postRoot));
     }
@@ -159,8 +163,6 @@ class PostPolicyTest extends TestCase
         $this->assertFalse($this->userUsuario->can('update', $postAdmin));
         $this->assertFalse($this->userUsuario->can('update', $postRoot));
 
-        $this->assertFalse($this->userCliente->can('update', $postAdmin));
-        $this->assertFalse($this->userCliente->can('update', $postRoot));
     }
 
     /**
@@ -174,9 +176,6 @@ class PostPolicyTest extends TestCase
 
         $this->assertFalse($this->userUsuario->can('delete', $postAdmin));
         $this->assertFalse($this->userUsuario->can('delete', $postRoot));
-
-        $this->assertFalse($this->userCliente->can('delete', $postAdmin));
-        $this->assertFalse($this->userCliente->can('delete', $postRoot));
 
         $this->assertFalse($this->userMembro->can('delete', $postAdmin));
         $this->assertFalse($this->userMembro->can('delete', $postRoot));

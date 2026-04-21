@@ -99,7 +99,7 @@ class PostTest extends TestCase
 
         $post->delete();
 
-        $this->assertDatabaseMissing('posts', [
+        $this->assertSoftDeleted('posts', [
             'id' => $post->id,
         ]);
     }

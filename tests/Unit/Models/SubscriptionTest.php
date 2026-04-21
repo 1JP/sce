@@ -32,7 +32,7 @@ class SubscriptionTest extends TestCase
 
         $this->customerId = fake()->text(100);
 
-        $this->user = User::factory()->create()->assignRole(Role::where('name', 'Cliente')->first()->id);
+        $this->user = User::factory()->create()->assignRole(Role::where('name', 'Admin')->first()->id);
 
         $this->plan = Plan::factory()->create();
     }

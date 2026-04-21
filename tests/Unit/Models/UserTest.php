@@ -32,7 +32,6 @@ class UserTest extends TestCase
         $this->roleAdmin = Role::where('name', 'Admin')->first();
         $this->roleMembros = Role::where('name', 'Membros')->first();
         $this->roleUsuario = Role::where('name', 'Usuario')->first();
-        $this->roleCliente = Role::where('name', 'Cliente')->first();
         $this->roleRoot = Role::where('name', 'Root')->first();
     }
 
@@ -44,19 +43,16 @@ class UserTest extends TestCase
         $userAdmin = User::factory()->create()->assignRole($this->roleAdmin->id);
         $userMembros = User::factory()->create()->assignRole($this->roleMembros->id);
         $userUsuario = User::factory()->create()->assignRole($this->roleUsuario->id);
-        $userCliente = User::factory()->create()->assignRole($this->roleCliente->id);
         $userRoot = User::factory()->create()->assignRole($this->roleRoot->id);
         
         $this->assertModelExists($userAdmin);
         $this->assertModelExists($userMembros);
         $this->assertModelExists($userUsuario);
-        $this->assertModelExists($userCliente);
         $this->assertModelExists($userRoot);
 
         $this->assertEquals($userAdmin->roles()->first()->id, $this->roleAdmin->id);
         $this->assertEquals($userMembros->roles()->first()->id, $this->roleMembros->id);
         $this->assertEquals($userUsuario->roles()->first()->id, $this->roleUsuario->id);
-        $this->assertEquals($userCliente->roles()->first()->id, $this->roleCliente->id);
         $this->assertEquals($userRoot->roles()->first()->id, $this->roleRoot->id);
     }
 

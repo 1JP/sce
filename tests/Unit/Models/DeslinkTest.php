@@ -7,20 +7,14 @@ use App\Models\Comment;
 use App\Models\Deslink;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use InvalidArgumentException;
 use Tests\TestCase;
 
 class DeslinkTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @var Post */
     protected $post;
-
-    /** @var User */
     protected $user;
-
-    /** @var Comment */
     protected $comment;
 
     public function setUp(): void
@@ -29,12 +23,15 @@ class DeslinkTest extends TestCase
         
         $this->user = User::factory()->create();
         $this->post = Post::factory()->create();
-        $this->comment = Comment::factory()->create();
 
+        $this->comment = Comment::factory()->create([
+            'user_id' => $this->user->id,
+            'post_id' => $this->post->id,
+        ]);
     }
 
     /**
-     * test create deslink
+     * Test the creation of a Deslink for both post and comment, ensuring that the correct relationships are established.
      */
     public function test_create_deslink(): void
     {
@@ -43,54 +40,50 @@ class DeslinkTest extends TestCase
             'post_id' => $this->post->id,
         ]);
 
-        $this->assertEquals($linkPost->post_id, $this->post->id);
-        $this->assertEquals($linkPost->user_id, $this->user->id);
+        $this->assertEquals($this->post->id, $linkPost->post_id);
+        $this->assertEquals($this->user->id, $linkPost->user_id);
 
         $linkComment = Deslink::factory()->create([
             'user_id' => $this->user->id,
             'comment_id' => $this->comment->id,
         ]);
 
-        $this->assertEquals($linkComment->comment_id, $this->comment->id);
-        $this->assertEquals($linkComment->user_id, $this->user->id);
+        $this->assertEquals($this->comment->id, $linkComment->comment_id);
+        $this->assertEquals($this->user->id, $linkComment->user_id);
     }
 
-    /** 
-     * test delete deslink 
+    /**
+     * Test the deletion of a Deslink, ensuring that the record is removed from the database.
      */
-    public function test_delete_deslink():void
+    public function test_delete_deslink(): void
     {
-        $linkComment = Deslink::factory()->create();
-
-        $this->assertDatabaseHas('links', [
-            'user_id' => $linkComment->user_id,
-            'comment_id' => $linkComment->comment_id,
+        $link = Deslink::factory()->create([
+            'user_id' => $this->user->id,
+            'post_id' => $this->post->id,
+            'comment_id' => $this->comment->id,
         ]);
 
-        $linkComment->delete();
-
-        $this->assertDatabaseMissing('links', [
-            'user_id' => $linkComment->user_id,
-            'comment_id' => $linkComment->comment_id,
+        $this->assertDatabaseHas('deslinks', [
+            'id' => $link->id,
         ]);
 
+        $link->delete();
+
+        $this->assertDatabaseMissing('deslinks', [
+            'id' => $link->id,
+        ]);
     }
 
-    /** 
-     * test not create deslink all wrong data
+    /**
+     * Test that a Deslink cannot be created with invalid data.
      */
     public function test_not_create_all_wrong_data_deslink(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\Illuminate\Database\QueryException::class);
 
         Deslink::factory()->create([
-            'post_id' => fake()->randomDigit(),
-            'user_id' => fake()->randomDigit(),
-        ]);
-
-        Deslink::factory()->create([
-            'comment_id' => fake()->randomDigit(),
-            'user_id' => fake()->randomDigit(),
+            'post_id' => 999999,
+            'user_id' => 999999,
         ]);
     }
 }

@@ -2,120 +2,109 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Post;
 use App\Models\Comment;
+use App\Models\Post;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use InvalidArgumentException;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
 
 class CommentTest extends TestCase
 {
-    use RefreshDatabase;
-
-    /** @var Post */
-    protected $post;
-
-    /** @var User */
-    protected $user;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        
-        $this->user = User::factory()->create();
-        $this->post = Post::factory()->create();
-    }
+    use LazilyRefreshDatabase;
 
     /**
-     * test create comment
+     * Test creating a comment on a post
      */
-    public function test_create_comment(): void
+    public function test_create_comment_on_post(): void
     {
-        $description = fake()->text(100);
-
-        $commentPost = Comment::factory()->create([
-            'user_id' => $this->user->id,
-            'post_id' => $this->post->id,
-            'comment' => $description,
-        ]);
-
-        $this->assertEquals($commentPost->post_id, $this->post->id);
-        $this->assertEquals($commentPost->user_id, $this->user->id);
-        $this->assertEquals($commentPost->comment, $description);
-
-        $descriptionComment = fake()->text(100);
+        $user = User::factory()->create();
+        $post = Post::factory()->create();
 
         $comment = Comment::factory()->create([
-            'user_id' => $this->user->id,
-            'comment_id' => $commentPost->id,
-            'comment' => $descriptionComment,
+            'user_id' => $user->id,
+            'post_id' => $post->id,
         ]);
 
-        $this->assertEquals($comment->user_id, $this->user->id);
-        $this->assertEquals($comment->comment_id, $commentPost->id);
-        $this->assertEquals($comment->comment, $descriptionComment);
+        $this->assertNotNull($comment->id);
+        $this->assertEquals($user->id, $comment->user_id);
+        $this->assertEquals($post->id, $comment->post_id);
     }
 
     /**
-     * test update comment
+     * Test creating a reply to a comment
+     */
+    public function test_create_reply_comment(): void
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->create();
+
+        $parent = Comment::factory()->create([
+            'user_id' => $user->id,
+            'post_id' => $post->id,
+        ]);
+
+        $reply = Comment::factory()->create([
+            'user_id' => $user->id,
+            'post_id' => $post->id,
+            'comment_id' => $parent->id,
+        ]);
+
+        $this->assertNotNull($reply->id);
+        $this->assertEquals($parent->id, $reply->comment_id);
+    }
+
+    /**
+     * Test updating a comment
      */
     public function test_update_comment(): void
     {
-        $description = fake()->text(100);
+        $user = User::factory()->create();
+        $post = Post::factory()->create();
 
-        $commentPost = Comment::factory()->create();
-        $commentPost->update([
-            'comment' => $description,
+        $comment = Comment::factory()->create([
+            'user_id' => $user->id,
+            'post_id' => $post->id,
         ]);
 
-        $this->assertEquals($commentPost->comment, $description);
+        $newText = 'Comentário atualizado';
 
-        $descriptionComment = fake()->text(100);
-
-        $comment = Comment::factory()->create();
         $comment->update([
-            'comment' => $descriptionComment,
+            'description' => $newText,
         ]);
 
-        $this->assertEquals($comment->comment, $descriptionComment);
+        $this->assertEquals($newText, $comment->description);
     }
 
-    /** 
-     * test delete post 
+    /**
+     * Test deleting a comment
      */
-    public function test_delete_post():void
+    public function test_delete_comment(): void
     {
-        $comment = Comment::factory()->create();
+        $user = User::factory()->create();
+        $post = Post::factory()->create();
 
-        $this->assertDatabaseHas('comments', [
-            'id' => $comment->id,
+        $comment = Comment::factory()->create([
+            'user_id' => $user->id,
+            'post_id' => $post->id,
         ]);
+
+        $id = $comment->id;
 
         $comment->delete();
 
-        $this->assertDatabaseMissing('comments', [
-            'id' => $comment->id,
-        ]);
+        $this->assertNull(Comment::find($id));
     }
 
-    /** 
-     * test not create comment all wrong data
+    /**
+     * Test creating comment requires user and post
      */
-    public function test_not_create_all_wrong_data_comment(): void
+    public function test_cannot_create_comment_without_required_fields(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\Illuminate\Database\QueryException::class);
 
         Comment::factory()->create([
-            'post_id' => fake()->randomDigit(),
-            'user_id' => fake()->randomDigit(),
-            'description' => fake()->randomDigit(),
-        ]);
-
-        Comment::factory()->create([
-            'comment_id' => fake()->randomDigit(),
-            'user_id' => fake()->randomDigit(),
-            'description' => '',
+            'user_id' => null,
+            'post_id' => null,
         ]);
     }
 }

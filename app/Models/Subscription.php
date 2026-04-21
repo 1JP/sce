@@ -26,6 +26,11 @@ class Subscription extends Model
      */
     protected $guarded = [];
 
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class);
+    }
+    
     /**
      * Scope a query to only include active students.
      *

@@ -94,9 +94,8 @@ class PlanTest extends TestCase
 
         $plan->delete();
 
-        $this->assertDatabaseMissing('plans', [
+        $this->assertSoftDeleted('plans', [
             'id' => $plan->id,
-            'name' => 'Plano Teste',
         ]);
     }
 

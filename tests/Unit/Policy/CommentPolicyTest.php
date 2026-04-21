@@ -3,6 +3,7 @@
 namespace Tests\Unit\Policy;
 
 use App\Models\Comment;
+use App\Models\Post;
 use App\Models\User;
 use Database\Seeders\RolesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,8 +18,10 @@ class CommentPolicyTest extends TestCase
     protected $userAdmin;
     protected $userMembro;
     protected $userUsuario;
-    protected $userCliente;
     protected $userRoot;
+
+    /** @var Post */
+    protected $post;
 
     public function setUp(): void
     {
@@ -29,14 +32,15 @@ class CommentPolicyTest extends TestCase
         $roleAdmin = Role::where('name', 'Admin')->first();
         $roleMembros = Role::where('name', 'Membros')->first();
         $roleUsuario = Role::where('name', 'Usuario')->first();
-        $roleCliente = Role::where('name', 'Cliente')->first();
         $roleRoot = Role::where('name', 'Root')->first();
 
         $this->userAdmin = User::factory()->create()->assignRole($roleAdmin->id);
         $this->userMembro = User::factory()->create()->assignRole($roleMembros->id);
         $this->userUsuario = User::factory()->create()->assignRole($roleUsuario->id);
-        $this->userCliente = User::factory()->create()->assignRole($roleCliente->id);
         $this->userRoot = User::factory()->create()->assignRole($roleRoot->id);
+        $this->post = Post::factory()->create([
+            'user_id' => $this->userAdmin->id
+        ]);
     }
 
     /**
@@ -45,7 +49,8 @@ class CommentPolicyTest extends TestCase
     public function test_user_can_update_comment()
     {
         $comment = Comment::factory()->create([
-            'user_id' => $this->userCliente->id
+            'post_id' => $this->post->id,
+            'user_id' => $this->userUsuario->id
         ]);
 
         $comment->update([
@@ -53,7 +58,7 @@ class CommentPolicyTest extends TestCase
         ]);
 
         $this->assertTrue($this->userRoot->can('update', $comment));
-        $this->assertTrue($this->userCliente->can('update', $comment));
+        $this->assertTrue($this->userUsuario->can('update', $comment));
     }
 
     /**
@@ -62,11 +67,12 @@ class CommentPolicyTest extends TestCase
     public function test_user_can_delete_comment()
     {
         $comment = Comment::factory()->create([
-            'user_id' => $this->userCliente->id
+            'post_id' => $this->post->id,
+            'user_id' => $this->userUsuario->id
         ]);
 
         $this->assertTrue($this->userRoot->can('delete', $comment));
-        $this->assertTrue($this->userCliente->can('delete', $comment));
+        $this->assertTrue($this->userUsuario->can('delete', $comment));
     }
 
     /**
@@ -74,22 +80,20 @@ class CommentPolicyTest extends TestCase
      */
     public function test_user_cannot_delete_comment()
     {
+        $userTeste = User::factory()->create()->assignRole('Usuario');
+
         $comment = Comment::factory()->create([
-            'user_id' => $this->userCliente->id
+            'post_id' => $this->post->id,
+            'user_id' => $userTeste->id
         ]);
 
         $comment->update([
             'description'=> fake()->text()
         ]);
-        
-        $role = Role::where('name', 'Cliente')->first();
-
-        $user = User::factory()->create()->assignRole($role->id);
 
         $this->assertFalse($this->userAdmin->can('delete', $comment));
         $this->assertFalse($this->userMembro->can('delete', $comment));
         $this->assertFalse($this->userUsuario->can('delete', $comment));
-        $this->assertFalse($user->can('delete', $comment));
     }
 
     /**
@@ -97,17 +101,15 @@ class CommentPolicyTest extends TestCase
      */
     public function test_user_cannot_update_comment()
     {
+        $userTeste = User::factory()->create()->assignRole('Usuario');
+
         $comment = Comment::factory()->create([
-            'user_id' => $this->userCliente->id
+            'post_id' => $this->post->id,
+            'user_id' => $userTeste->id
         ]);
-
-        $role = Role::where('name', 'Cliente')->first();
-
-        $user = User::factory()->create()->assignRole($role->id);
 
         $this->assertFalse($this->userAdmin->can('update', $comment));
         $this->assertFalse($this->userMembro->can('update', $comment));
         $this->assertFalse($this->userUsuario->can('update', $comment));
-        $this->assertFalse($user->can('update', $comment));
     }
 }
