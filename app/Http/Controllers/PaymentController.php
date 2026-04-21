@@ -106,6 +106,8 @@ class PaymentController extends Controller
      */
     public function update(PaymentRequest $request, Subscription $subscription)
     {
+        $this->authorize('update', $subscription);
+
         try {
             $validated = $request->validated();
             $plan = Plan::find($validated['plan_id']);
@@ -152,6 +154,8 @@ class PaymentController extends Controller
      */
     public function destroy(Subscription $subscription)
     {
+        $this->authorize('delete', $subscription);
+        
         try {
             $pagSeguroSubscriptionCancel = $this->paymentApi->cancelSubscription($subscription->customer_id);
             
