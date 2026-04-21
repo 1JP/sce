@@ -86,6 +86,7 @@ class PostController extends Controller
     public function comments(Post $post)
     {
         $comments = $post->comments()->whereNull('comment_id')->orderBy('created_at', 'DESC')->get();
+        
         return CommentResource::collection($comments);
     }
 }
