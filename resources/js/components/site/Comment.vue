@@ -12,8 +12,8 @@
                             :class-button="'btn btn-outline-primary btn-sm p-0 rounded-circle'"
                             :icon="'bi bi-three-dots'"
                             >
-                            <component-dropdown-item name="Responder" route="#"></component-dropdown-item>
-                            <component-dropdown-item name="Editar" route="#" v-if="user.id == comment.user.id"></component-dropdown-item>
+                            <component-dropdown-item name="Responder" @click="selectComment(comment, false)"></component-dropdown-item>
+                            <component-dropdown-item name="Editar" @click="selectComment(comment, true)" v-if="user.id == comment.user.id"></component-dropdown-item>
                             <component-dropdown-item name="Excluir" route="#" v-if="user.id == comment.user.id"></component-dropdown-item>
                         </component-dropdown>
                     </div>
@@ -37,7 +37,12 @@
                 0
             </a>
         </div>
-        <site-create-comment v-if="false"></site-create-comment>
+        <site-create-comment v-if="createComment"
+            :post_id="post_id"
+            :comment_id="comment_id"
+            :user="user"
+            :comment="contest"
+        ></site-create-comment>
         <site-children-comment v-if="comment.children && Array.isArray(comment.children) && comment.children.length > 0" 
             :children="comment.children" :user="user"
         ></site-children-comment>
@@ -61,6 +66,9 @@ import { comment } from 'postcss';
         data() {
             return {
                 comments: [],
+                createComment: false,
+                comment_id: null,
+                contest: '',
             }
         },
         methods: {
@@ -72,6 +80,11 @@ import { comment } from 'postcss';
                     .catch(error => {
                         console.error('Error fetching comments:', error);
                     });  
+            },
+            selectComment(comment, isEdit = false){
+                this.createComment = true;
+                this.comment_id = isEdit ? comment.comment_id : comment.id;
+                this.contest = isEdit ? comment.description : '';
             }
         },
         mounted() {

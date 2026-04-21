@@ -16,7 +16,7 @@ class SiteCommentController extends Controller
     {
         $this->huggingface = $huggingface;
     }
-    
+
     /**
      * Display a listing of the resource.
      */
@@ -48,14 +48,12 @@ class SiteCommentController extends Controller
                 [
                     'comment_id' => $validated['comment_id'] ?? null,
                     'post_id' => $validated['post_id'],
-                    'description' => $validated['description'],
                     'user_id' => $validated['user_id'],
-
                 ],
                 $validated
             );
 
-            return redirect()->back()->with('success', 'Comentário criado com sucesso!');
+            return redirect()->back()->with('success', 'Comentário criado/alterado com sucesso!');
         } catch (\Exception $e) {
             return redirect()->back()->with('danger', 'Ocorreu um erro ao analisar o sentimento do comentário: ' . $e->getMessage());
         }

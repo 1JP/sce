@@ -13,8 +13,8 @@
                                 :class-button="'btn btn-outline-primary btn-sm p-0 rounded-circle'"
                                 :icon="'bi bi-three-dots'"
                                 >
-                                <component-dropdown-item name="Responder" route="#"></component-dropdown-item>
-                                <component-dropdown-item name="Editar" route="#" v-if="user.id == comment.user.id"></component-dropdown-item>
+                                <component-dropdown-item name="Responder" @click="selectComment(comment, false)"></component-dropdown-item>
+                                <component-dropdown-item name="Editar" @click="selectComment(comment, true)" v-if="user.id == comment.user.id"></component-dropdown-item>
                                 <component-dropdown-item name="Excluir" route="#" v-if="user.id == comment.user.id"></component-dropdown-item>
                             </component-dropdown>
                         </div>
@@ -39,10 +39,15 @@
                     1
                 </a>
             </div>
-            <site-create-comment v-if="false"></site-create-comment>
-        </div>
-        <div v-if="children && Array.isArray(children) && children.length > 0">
-            <component :is="ChildrenComment"/>
+            <site-create-comment v-if="createComment"
+                :post_id="comment.post_id"
+                :comment_id="comment_id"
+                :user="user"
+                :comment="contest"
+            ></site-create-comment>
+            <site-children-comment v-if="comment.children && Array.isArray(comment.children) && comment.children.length > 0" 
+                :children="comment.children" :user="user"
+            ></site-children-comment>
         </div>
     </div>
 </template>
@@ -61,15 +66,26 @@
                 required: false
             }
         },
+        data() {
+            return {
+                createComment: false,
+                comment_id: null,
+                contest: '',
+            }
+        },
         components: {
             // A importação dinâmica ajuda a evitar problemas de dependência circular
-            ChildrenComment: () => import('./ReplyComment.vue'),
+            ChildrenComment: () => import('./ChildrenComment.vue'),
         },
         methods: {
-            //
+             selectComment(comment, isEdit = false){
+                this.createComment = true;
+                this.comment_id = isEdit ? comment.comment_id : comment.id;
+                this.contest = isEdit ? comment.description : '';
+            }
         },
         mounted() {
-            console.log(this.children)
+            //
         }
     }
 </script>

@@ -3,6 +3,7 @@
         <input type="hidden" name="_token" :value="token"/>
         <input type="hidden" name="post_id" :value="post_id"/>
         <input type="hidden" name="comment_id" :value="comment_id"/>
+        <input type="hidden" name="user_id" :value="user?.id"/>
         <div class="row">
             <div class="col-12 col-lg-12">
                 <p class="text-dark mt-3 mb-2">Comentar:</p>
@@ -36,6 +37,14 @@ import { comment } from 'postcss';
             comment_id: {
                 type: Number,
                 required: false
+            },
+            user: {
+                type: Object,
+                required: false
+            },
+            comment: {
+                type: String,
+                required: false
             }
         },
         data() {
@@ -62,6 +71,7 @@ import { comment } from 'postcss';
         },
         mounted() {
             this.token = document.head.querySelector('meta[name="csrf-token"]')?.content;
+            this.description = this.comment || '';
         }
     }
 </script>
