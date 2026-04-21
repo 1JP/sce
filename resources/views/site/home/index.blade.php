@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-<site-home></site-home>
+<site-home :user="{{ $user }}"></site-home>
 @endsection

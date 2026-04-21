@@ -8,7 +8,7 @@
                     </div>
 
                     <ul class="tabs">
-                        <li data-tab-target="#all-genre" class="active tab">All Genre</li>
+                        <li data-tab-target="#all-genre" class="active tab">Todos Gêneros</li>
                         <li v-for="category in categories" :key="category" 
                             class="tab"
                             :data-tab-target="'#' + category.name"
