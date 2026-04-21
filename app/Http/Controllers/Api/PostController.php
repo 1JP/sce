@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
-
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
@@ -18,6 +16,8 @@ class PostController extends Controller
     public function index()
     {
         $user = Auth::user();
+
+        $this->authorize('viewAny', $user);
 
         $posts = match (true) {
             $user->hasRole('Membros') => $user->administrator[0]->user?->posts ?? collect(),
@@ -44,6 +44,9 @@ class PostController extends Controller
     public function search(SearchRequest $request)
     {
         $user = Auth::user();
+
+        $this->authorize('viewAny', $user);
+        
         $validated = $request->validated();
         
         $posts = Post::when($user->isAdmin(), function($query) use ($user){
