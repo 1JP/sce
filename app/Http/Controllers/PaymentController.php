@@ -8,7 +8,6 @@ use App\Models\Plan;
 use App\Models\Subscription;
 use App\Services\BodyPaymentApiService;
 use App\Services\PaymentApi;
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
