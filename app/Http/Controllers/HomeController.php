@@ -11,7 +11,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('site.home.index');
+        $user = auth()->user();
+        if ($user) {
+            $user->load('roles');
+        }
+        return view('site.home.index', compact('user'));
     }
 
 }

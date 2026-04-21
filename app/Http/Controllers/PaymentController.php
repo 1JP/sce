@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateRequest;
 use App\Http\Requests\PaymentRequest;
 use App\Models\Plan;
 use App\Models\Subscription;
@@ -42,9 +43,18 @@ class PaymentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(CreateRequest $request)
     {
-        return view('site.payment.create');
+        $validated = $request->validated();
+        $plan = null;
+        if (isset($validated['plan_id'])) {
+            $plan = Plan::find($validated['plan_id']);
+            if (! $plan || ! $plan->active) {
+                return redirect()->route('home')->with('info', 'Plano não encontrado ou inativo.');
+            }
+        }
+
+        return view('site.payment.create', compact('plan'));
     }
 
     /**

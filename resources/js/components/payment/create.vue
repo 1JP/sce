@@ -241,6 +241,10 @@
                 type: Object,
                 required: false,
             },
+            plan: {
+                type: Object,
+                required: false,
+            }
         },
         data() {
             return {
@@ -471,6 +475,10 @@
         mounted() {
             this.token = document.head.querySelector('meta[name="csrf-token"]')?.content;
             this.listPlans();
+            if (this.plan) {
+                this.createPayment(this.plan);
+            }
+            this.plan_id = this.plan ? this.plan.id : '';
         }
     }
 </script>

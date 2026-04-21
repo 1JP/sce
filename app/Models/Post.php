@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class Post extends Model
 {
@@ -22,6 +23,17 @@ class Post extends Model
         'category_id',
         'indicative_rating_id',
     ];
+
+    /**
+     * Scope a query to only include active students.
+     *
+     * @param  Builder  $query The query builder to be filtered
+     * @return Builder The query builder filtered by active students
+     */
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('active', true);
+    }
 
     public function images()
     {

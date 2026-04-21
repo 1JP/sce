@@ -199,7 +199,7 @@
                 this.categoryTypeIds = this.category.category_types.map(ct => ct.id);
             },
             listCategories(){
-                axios.get(route('api.admin.categories.index'))
+                axios.get(route('api.categories.index'))
                     .then((response) => {
                         this.categories = response.data.data;
                     })

@@ -30,11 +30,15 @@ use Illuminate\Support\Facades\Hash;
 |
 */
 
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/all-posts', [PostController::class, 'all'])->name('posts.all');
+Route::get('/all-plans', [PlanController::class, 'all'])->name('plans.all');
+
 Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(function () {
     Route::prefix('categories')->name('categories.')->group(function () {
         Route::get('search', [CategoryController::class, 'search'])->name('search');
     });
-    Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('categories', CategoryController::class)->except(['index']);
 
     Route::prefix('categorie-types')->name('categorie-types.')->group(function () {
         Route::get('search', [CategoryTypeController::class, 'search'])->name('search');

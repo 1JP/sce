@@ -7,7 +7,7 @@ use App\Http\Requests\SearchRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Models\CategoryType;
-use App\Models\CategoryTypeCategory;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -24,6 +24,8 @@ class CategoryController extends Controller
      */
     public function search(SearchRequest $request)
     {
+        $this->authorize('viewAny', Auth::user());
+        
         $validated = $request->validated();
 
         $categories = Category::when(isset($validated['search']['name']), function ($query) use ($validated) {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Models\CategoryType;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -14,6 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Auth::user());
+
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Categorias'],
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2', 'name' => 'Classificação Indicativas'],
@@ -41,6 +44,8 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
+        $this->authorize('create', Auth::user());
+
         try {
             $validated = $request->validated();
             $category = Category::create([
@@ -76,6 +81,9 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $category)
     {
+
+        $this->authorize('update', $category);
+
         try {
             $validated = $request->validated();
 
@@ -97,6 +105,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        $this->authorize('delete', $category);
+
         try {
             $category->categoryTypes()->detach();
             $category->delete();

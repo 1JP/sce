@@ -5,7 +5,9 @@
     <div class="container">
       <div class="row d-flex justify-content-center">
         <div class="col-lg-6 col-10 py-2 py-lg-0 order-2 order-md-1">
-          <create-payment/>
+          <create-payment
+            :plan="{{ isset($plan) ? $plan : 'null' }}"
+          />
         </div>
         <div class="col-lg-4 col-10 order-1 order-md-2">
           <summary-payment/>

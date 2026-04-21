@@ -50,4 +50,15 @@ class PlanController extends Controller
        return PlanResource::collection($plans);
     }
 
+    /**
+     * Retrieve all active plans ordered alphabetically by name.
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function all()
+    {
+        $plans = Plan::active()->get();
+
+        return PlanResource::collection($plans);
+    }
 }
