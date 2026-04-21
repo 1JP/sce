@@ -1,14 +1,17 @@
 <template>
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3" v-for="post in posts" :key="post.id">
             <div class="product-item">
                 <figure class="product-style">
-                    <img src="images/tab-item1.jpg" alt="Books" class="product-item">
-                    <button type="button" class="add-to-cart" data-product-tile="comment" @click="showPost('teste')">Comentar</button>
+                    <img :src="post.images[0].image" 
+                        :alt="post.name" 
+                        :class="['product-item', post.images[0].name === 'Default' ? 'product-item--default' : '']"
+                    >
+                    <button type="button" class="add-to-cart" data-product-tile="comment" @click="showPost(post.id)">Comentar</button>
                 </figure>
                 <figure>
                     <figcaption>
-                        <h3>Portrait photography</h3>
+                        <h3>{{ post.name }}</h3>
                     </figcaption>
                 </figure>
             </div>
@@ -18,9 +21,15 @@
 
 <script>
 export default {
+    props: {
+        posts: {
+            type: Array,
+            default: []
+        }
+    },
     data(){
         return {
-            
+            //
         }
     },
     methods: {

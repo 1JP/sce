@@ -14,6 +14,13 @@ class PostResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $images = $this->images()->count() > 0
+            ? $this->images->map(function ($image) {
+                $image->image = asset('storage/' . $image->name);
+                return $image;
+            })
+            : [['image' => asset('site/img/logo-favicon.jpeg'), 'name' => 'Default']];
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -24,7 +31,8 @@ class PostResource extends JsonResource
             'category_id' => $this->category_id,
             'indicative_rating' => $this->indicative_rating,
             'indicative_rating_id' => $this->indicative_rating_id,
-            'active' => $this->active
+            'active' => $this->active,
+            'images' => $images
         ];
     }
 }

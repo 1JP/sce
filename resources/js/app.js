@@ -100,6 +100,7 @@ app.component('site-children-comment', require('./components/site/ChildrenCommen
 app.component('site-create-user', require('./components/site/user/create.vue').default);
 app.component('site-my-account', require('./components/site/user/my-account.vue').default)
 app.component('site-index-user', require('./components/site/user/index.vue').default);
+app.component('site-home', require('./components/site/home/index.vue').default);
 
 app.component('create-payment', require('./components/payment/create.vue').default)
 app.component('summary-payment', require('./components/payment/summary.vue').default)

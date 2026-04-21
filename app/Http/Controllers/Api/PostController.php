@@ -69,4 +69,16 @@ class PostController extends Controller
 
        return PostResource::collection($posts);
     }
+
+    /**
+     * Retrieve all active posts ordered alphabetically by name.
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function all()
+    {
+        $posts = Post::active()->orderBy('name')->get();
+
+        return PostResource::collection($posts);
+    }
 }

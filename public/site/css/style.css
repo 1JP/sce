@@ -2373,9 +2373,14 @@ footer#footer {
   position: relative;
   background: #EFEEE8;
   border: 1px solid #EAE8DF;
-  padding: 15%;
   cursor: pointer;
   width: 100%;
+  height: 200px;
+}
+.product-style img.product-item--default {
+  object-fit: contain;
+  padding: 30px;
+  box-sizing: border-box;
 }
 
 .product-style button.add-to-cart {
