@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class BodyPaymentApiService
 {
-    private Boolean $sandbox;
+    private bool $sandbox;
 
     public function __construct() {
         $sandboxBody = Setting::where('name', 'sandbox-payment')->first();
-        $this->sandbox = $sandboxBody->body == "1" ? true : false;
+        $this->sandbox = $sandboxBody->body == "1";
     }
 
     /**

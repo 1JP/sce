@@ -6,9 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\PlanResource;
 use App\Models\Plan;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
 class PlanController extends Controller
 {
@@ -17,9 +15,7 @@ class PlanController extends Controller
      */
     public function index()
     {
-        if (Gate::denies('viewAny', Auth::user())) {
-            abort(403);
-        }
+        $this->authorize('viewAny', Auth::user());
 
         $plans = Plan::all();
 
@@ -31,6 +27,8 @@ class PlanController extends Controller
      */
     public function show(Plan $plan)
     {
+        $this->authorize('view', Auth::user());
+
         return PlanResource::make($plan);
     }
 
@@ -39,6 +37,8 @@ class PlanController extends Controller
      */
     public function search(SearchRequest $request)
     {
+        $this->authorize('viewAny', Auth::user());
+
         $validated = $request->validated();
 
         $plans = Plan::when(isset($validated['search']['name']), function ($query) use ($validated){

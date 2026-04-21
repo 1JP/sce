@@ -7,9 +7,7 @@ use App\Http\Requests\PlanRequest;
 use App\Models\Plan;
 use App\Services\BodyPaymentApiService;
 use App\Services\PaymentApi;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
 class PlanController extends Controller
 {
@@ -45,9 +43,7 @@ class PlanController extends Controller
      */
     public function index()
     {
-        if (Gate::denies('viewAny', Auth::user())) {
-            abort(403);
-        }
+        $this->authorize('viewAny', Auth::user());
 
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Plano'],
@@ -76,9 +72,7 @@ class PlanController extends Controller
      */
     public function store(PlanRequest $request)
     {
-        if (Gate::denies('create', Auth::user())) {
-            abort(403);
-        }
+        $this->authorize('create', Auth::user());
 
         try {
             $validated = $request->validated();
@@ -122,9 +116,7 @@ class PlanController extends Controller
      */
     public function update(PlanRequest $request, Plan $plan)
     {
-        if (Gate::denies('update', Auth::user())) {
-            abort(403);
-        }
+        $this->authorize('update', $plan);
 
         try {
             $validated = $request->validated();
@@ -153,9 +145,7 @@ class PlanController extends Controller
      */
     public function destroy(Plan $plan)
     {
-        if (Gate::denies('delete', Auth::user())) {
-            abort(403);
-        }
+        $this->authorize('delete', $plan);
 
         try {
             $plan->delete();
