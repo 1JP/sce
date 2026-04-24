@@ -32,9 +32,9 @@
                 <i class="bi bi-hand-thumbs-down"></i>
                 0
             </a>
-            <a class="me-2">
+            <a class="me-2" @click="showComment(comment.id)">
                 <i class="bi bi-chat-square-text-fill"></i>
-                0
+                {{ comment.countComments }}
             </a>
         </div>
         <site-create-comment v-if="createComment"
@@ -43,8 +43,11 @@
             :user="user"
             :comment="contest"
         ></site-create-comment>
-        <site-children-comment v-if="comment.children && Array.isArray(comment.children) && comment.children.length > 0" 
-            :children="comment.children" :user="user"
+        <site-children-comment 
+            v-if="comment.children && Array.isArray(comment.children) 
+            && comment.children.length > 0 && expandedComments.includes(comment.id)"
+            :children="comment.children" 
+            :user="user"
         ></site-children-comment>
     </div>
 
@@ -76,6 +79,7 @@ import { comment } from 'postcss';
                 createComment: false,
                 comment_id: null,
                 contest: '',
+                expandedComments: [],
             }
         },
         methods: {
@@ -89,12 +93,20 @@ import { comment } from 'postcss';
                     });  
             },
             selectComment(comment, isEdit = false){
-                this.createComment = true;
+                this.createComment = !this.createComment;
                 this.comment_id = isEdit ? comment.comment_id : comment.id;
                 this.contest = isEdit ? comment.description : '';
             },
             deleteComment(comment){
                 this.comment_id = comment.id;
+            },
+            showComment(commentId) {
+                const index = this.expandedComments.indexOf(commentId);
+                if (index === -1) {
+                    this.expandedComments.push(commentId);
+                } else {
+                    this.expandedComments.splice(index, 1);
+                }
             },
         },
         mounted() {

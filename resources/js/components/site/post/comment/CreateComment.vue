@@ -16,9 +16,14 @@
                     @input="valueTextArea($event)"
                 />
             </div>
-            <div class="col-lg-6 col-6">
-                <button class="btn btn-primary text-light rounded-lg btn-lg btn-block mt-3" @click="save()">
+            <div class="col-6" v-if="description != ''">
+                <button class="btn btn-primary text-light rounded-lg btn-lg btn-block mt-3 w-100" @click="save()">
                     Comentar <i class="bi bi-chat-square-text-fill"></i> 
+                </button>
+            </div>
+            <div class="col-6" v-if="description != ''">
+                <button class="btn btn-primary text-light rounded-lg btn-lg btn-block mt-3 w-100" @click="cancel()">
+                    Cancelar
                 </button>
             </div>
         </div>
@@ -67,6 +72,9 @@ import { comment } from 'postcss';
                 
                 this.classDescription = 'is-valid'
                 this.$refs.form.submit();
+            },
+            cancel(){
+                this.description = '';
             }
         },
         mounted() {
