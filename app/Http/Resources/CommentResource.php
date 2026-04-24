@@ -33,6 +33,7 @@ class CommentResource extends JsonResource
                 'description' => $this->comment->description,
             ] : null,
             'children' => CommentResource::collection($this->comments),
+            'countComments' => $this->comments()->count(),
             'created_at' => $this->created_at->format('d-m-Y H:i:s'),
             'updated_at' => $this->updated_at->format('d-m-Y H:i:s'),
         ];
