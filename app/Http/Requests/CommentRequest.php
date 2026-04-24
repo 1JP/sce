@@ -32,8 +32,8 @@ class CommentRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'description.required' => 'A descrição é obrigatória.',
-            'description.string' => 'A descrição deve ser uma string.',
+            'description.required' => 'O comentário é obrigatória.',
+            'description.string' => 'O comentário deve ser uma string.',
             'post_id.required' => 'O ID do post é obrigatório.',
             'post_id.exists' => 'O post especificado não existe.',
             'comment_id.exists' => 'O comentário especificado para resposta não existe.',
