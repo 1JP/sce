@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use App\Services\SentimentService;
-use Illuminate\Http\Request;
 
 class SiteCommentController extends Controller
 {

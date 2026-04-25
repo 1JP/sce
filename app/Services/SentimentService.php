@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Setting;
-
 class SentimentService
 {
     private string $token;
@@ -11,10 +9,8 @@ class SentimentService
     private string $url = 'https://router.huggingface.co/hf-inference/models/';
 
     public function __construct() {
-        $huggingfaceToken = Setting::where('name', 'huggingface-token')->first();
-        $this->token = $huggingfaceToken->body;
-        $huggingfaceModel = Setting::where('name', 'huggingface-model')->first();
-        $this->model = $huggingfaceModel->body;
+        $this->token = env('HUGGINGFACE_TOKEN');
+        $this->model = env('HUGGINGFACE_MODEL');
     }
 
     public function analyze(string $text)
