@@ -18,11 +18,14 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\MemberAccessController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PendingActionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SiteCategoryController;
+use App\Http\Controllers\SiteCommentController;
 use App\Http\Controllers\SitePostController;
 use App\Http\Controllers\SiteUserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\SavePendingComment;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/signin', [LoginController::class, 'store'])->name('signin');
@@ -34,6 +37,10 @@ Route::get('/ativacao-membro/{email}/{token}', [MemberAccessController::class, '
 Route::post('/primeiro-acesso-membro', [MemberAccessController::class, 'store'])->name('store-ative-member');
 
 Route::get('/esqueci-minha-senha', [LoginController::class, 'forgotPassword'])->name('forgot-password');
+
+Route::get('/pending-action/execute', [PendingActionController::class, 'execute'])
+    ->middleware('auth')
+    ->name('pending.execute');
 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -70,4 +77,9 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('usuarios')->name('usuarios.')->group(function () {
         Route::put('/update/{user}', [SiteUserController::class, 'update'])->name('update');
     });
+    Route::resource('/comments', SiteCommentController::class);
+    Route::post('/comments', [SiteCommentController::class, 'store'])
+        ->middleware(SavePendingComment::class)
+        ->name('comments.store');
 });
+    

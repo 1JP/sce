@@ -13,6 +13,7 @@ return [
         'auth.*',
         'forgot-password',
         'login',
-        'store-ative-member'
+        'store-ative-member',
+        'comments.*'
     ],
 ];

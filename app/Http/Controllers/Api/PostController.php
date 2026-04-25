@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
+use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
@@ -80,5 +81,18 @@ class PostController extends Controller
         $posts = Post::active()->orderBy('name')->get();
 
         return PostResource::collection($posts);
+    }
+
+    /**
+     * Retrieve root comments for a given post, ordered by most recent.
+     *
+     * @param Post $post
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function comments(Post $post)
+    {
+        $comments = $post->comments()->whereNull('comment_id')->orderBy('created_at', 'DESC')->get();
+        
+        return CommentResource::collection($comments);
     }
 }

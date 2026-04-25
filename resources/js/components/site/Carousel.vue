@@ -1,19 +1,11 @@
 <template>
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button"v-for="image in images" :key="image.name" :class="{ active: images.indexOf(image) === 0 }" :data-bs-target="'#carouselExampleIndicators'" :data-bs-slide-to="images.indexOf(image)" :aria-label="'Slide ' + (images.indexOf(image) + 1)"></button>
         </div>
         <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="images/product-item1.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="images/product-item2.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="images/product-item3.jpg" class="d-block w-100" alt="...">
+            <div class="carousel-item" v-for="image in images" :key="image.name" :class="{ active: images.indexOf(image) === 0 }">
+                <img :src="image.image" class="d-block w-100" :alt="image.name">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -28,5 +20,20 @@
 </template>
 
 <script>
-    export default {}
+    export default {
+        props: {
+            images: {
+                type: Array,
+                required: false
+            }
+        },
+        data() {
+            return {
+                //
+            }
+        },
+        methods: {
+            //
+        }
+    }
 </script>

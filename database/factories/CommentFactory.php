@@ -13,6 +13,7 @@ class CommentFactory extends Factory
             'comment_id' => null,
             'user_id' => null,
             'description' => fake()->text(),
+            'sentiment'   => fake()->randomElement(['positive', 'negative', 'neutral']),
         ];
     }
 }

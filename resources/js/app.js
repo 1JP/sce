@@ -94,13 +94,15 @@ app.component('site-nav', require('./components/site/Nav.vue').default);
 app.component('site-post', require('./components/site/Post.vue').default);
 app.component('site-plan', require('./components/site/Plan.vue').default);
 app.component('site-carousel', require('./components/site/Carousel.vue').default);
-app.component('site-comment', require('./components/site/Comment.vue').default);
-app.component('site-create-comment', require('./components/site/CreateComment.vue').default);
-app.component('site-children-comment', require('./components/site/ChildrenComment.vue').default);
+app.component('site-comment', require('./components/site/post/comment/Comment.vue').default);
+app.component('site-create-comment', require('./components/site/post/comment/CreateComment.vue').default);
+app.component('site-children-comment', require('./components/site/post/comment/ChildrenComment.vue').default);
 app.component('site-create-user', require('./components/site/user/create.vue').default);
 app.component('site-my-account', require('./components/site/user/my-account.vue').default)
 app.component('site-index-user', require('./components/site/user/index.vue').default);
 app.component('site-home', require('./components/site/home/index.vue').default);
+app.component('site-post-show', require('./components/site/post/show.vue').default);
+app.component('site-comment-destroy', require('./components/site/post/comment/delete.vue').default);
 
 app.component('create-payment', require('./components/payment/create.vue').default)
 app.component('summary-payment', require('./components/payment/summary.vue').default)

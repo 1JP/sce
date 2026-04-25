@@ -42,5 +42,18 @@ class SettingSeeder extends Seeder
             'body' => '',
             'group' => 'api-payment'
         ]);
+
+        Setting::create([
+            'name' => 'huggingface-token',
+            'body' => '',
+            'group' => 'huggingface'
+        ]);
+
+        Setting::create([
+            'name' => 'huggingface-model',
+            'body' => 'cardiffnlp/twitter-xlm-roberta-base-sentiment',
+            'group' => 'huggingface'
+        ]);
+
     }
 }

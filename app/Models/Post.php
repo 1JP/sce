@@ -55,6 +55,11 @@ class Post extends Model
         return $this->belongsTo(IndicativeRating::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+    
     /**
      * Sets the `name` attribute, formatting the user's name so that each word 
      * starts with an uppercase letter, while the remaining letters are lowercase.

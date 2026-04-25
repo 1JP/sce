@@ -56,7 +56,13 @@ class LoginController extends Controller
         if ($this->attemptLogin($request)) {
             session()->put('validation', Crypt::encrypt($request->password));
 
-            return $this->sendLoginResponse($request);
+            if (session()->has('pending_action')) {
+                $pending = session()->pull('pending_action');
+
+                return redirect()->route('pending.execute');
+            }
+
+            return redirect()->intended($this->redirectPath());
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts
