@@ -15,7 +15,7 @@
                                 >
                                 <component-dropdown-item name="Responder" @click="selectComment(comment, false)"></component-dropdown-item>
                                 <component-dropdown-item name="Editar" @click="selectComment(comment, true)" v-if="user.id == comment.user.id"></component-dropdown-item>
-                                <component-dropdown-item name="Excluir" target="#destroyCommentModal" @click="deleteComment(comment)" v-if="user.id == comment.user.id"></component-dropdown-item>
+                                <component-dropdown-item name="Excluir" target="#destroyChildrenCommentModal" @click="deleteComment(comment)" v-if="user.id == comment.user.id"></component-dropdown-item>
                             </component-dropdown>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
     <site-comment-destroy
         v-if="comment_id"
         :title="'Excluir Comentário'"
-        :name-id="'destroyCommentModal'"
+        :name-id="'destroyChildrenCommentModal'"
         :routeDelete='route("comments.destroy", comment_id)'
     />
 </template>
