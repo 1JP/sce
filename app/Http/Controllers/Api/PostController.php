@@ -83,6 +83,12 @@ class PostController extends Controller
         return PostResource::collection($posts);
     }
 
+    /**
+     * Retrieve root comments for a given post, ordered by most recent.
+     *
+     * @param Post $post
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function comments(Post $post)
     {
         $comments = $post->comments()->whereNull('comment_id')->orderBy('created_at', 'DESC')->get();
