@@ -101,7 +101,21 @@ class User extends Authenticatable
         return $this->hasRole(['Admin', 'Root']);
     }
 
+    public function links()
+    {
+        return $this->hasMany(Link::class);
+    }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function deslinks()
+    {
+        return $this->hasMany(Deslink::class);
+    }
+    
     /**
      * Sets the `name` attribute and ensures it is not an integer.
      *

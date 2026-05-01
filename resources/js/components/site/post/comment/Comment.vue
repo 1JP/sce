@@ -13,8 +13,8 @@
                             :icon="'bi bi-three-dots'"
                             >
                             <component-dropdown-item name="Responder" @click="selectComment(comment, false)"></component-dropdown-item>
-                            <component-dropdown-item name="Editar" @click="selectComment(comment, true)" v-if="user.id == comment.user.id"></component-dropdown-item>
-                            <component-dropdown-item name="Excluir" target="#destroyCommentModal" @click="deleteComment(comment)" v-if="user.id == comment.user.id"></component-dropdown-item>
+                            <component-dropdown-item name="Editar" @click="selectComment(comment, true)" v-if="user?.id == comment.user.id"></component-dropdown-item>
+                            <component-dropdown-item name="Excluir" target="#destroyCommentModal" @click="deleteComment(comment)" v-if="user?.id == comment.user.id"></component-dropdown-item>
                         </component-dropdown>
                     </div>
                 </div>
@@ -70,7 +70,8 @@ import { comment } from 'postcss';
             },
             user: {
                 type: Object,
-                required: false
+                required: false,
+                default: () => ({}), // Garante que o usuário seja um objeto vazio por padrão
             }
         },
         data() {

@@ -19,7 +19,9 @@ class SitePostController extends Controller
             })
             : [['image' => asset('site/img/logo-favicon.jpeg'), 'name' => 'Default']];
         
-        
+        $post->countLinks = $post->links()->count();
+        $post->countDeslikes = $post->deslinks()->count();
+
         return view('site.post.show', compact('post'));
     }
 
