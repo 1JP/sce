@@ -1,6 +1,6 @@
 <template>
     <div class="children-comment">
-        <div class="mb-4 hover-actions-trigger btn-reveal-trigger" v-for="comment in children" :key="comment.id">
+        <div class="mb-4 hover-actions-trigger btn-reveal-trigger" v-for="comment in localChildren" :key="comment.id">
             <div class="row">
                 <div class="col-lg-6">
                     <p class="text-body-tertiary fs-9 mb-1">{{ comment.user.name }}</p>
@@ -26,14 +26,14 @@
             </p>
 
             <div class="hover-actions-trigger top-0">
-                <a class="me-2">
+                <a class="me-2" @click="link(comment)">
                     <i class="bi bi-hand-thumbs-up"></i>
-                    4
+                    {{ comment.countLinks }}
                 </a>
-                <a class="me-1">
+                <a class="me-2" @click="deslink(comment)">
                     <i class="bi bi-hand-thumbs-down"></i>
-                    5
-                    </a>
+                    {{ comment.countDesLinks }}
+                </a>
                 <a class="me-2" @click="showComment(comment.id)">
                     <i class="bi bi-chat-square-text-fill"></i>
                     {{ comment.countComments }}
@@ -83,6 +83,7 @@
                 contest: '',
                 routeDelete: '',
                 expandedComments: [],
+                localChildren: [...this.children]
             }
         },
         components: {
@@ -106,6 +107,38 @@
                     this.expandedComments.splice(index, 1); // recolhe
                 }
             },
+            link(comment) {
+                axios.post(route('api.links.store', {comment_id: comment.id}))
+                    .then(response => {
+                        const index = this.localChildren.indexOf(comment);
+                        if (index !== -1) {
+                            this.localChildren[index].countLinks = response.data.countComment;
+                        }
+                    })
+                    .catch(error => {
+                        if (error.response?.status === 401) {
+                            window.location.href = route('login') + '?intended=' + encodeURIComponent(window.location.href);
+                        } else {
+                            console.error('Error response data:', error.response?.data);
+                        }
+                    });  
+            },
+            deslink(comment) {
+                axios.post(route('api.deslinks.store', {comment_id: comment.id}))
+                    .then(response => {
+                        const index = this.localChildren.indexOf(comment);
+                        if (index !== -1) {
+                            this.localChildren[index].countDesLinks = response.data.countComment;
+                        }
+                    })
+                    .catch(error => {
+                        if (error.response?.status === 401) {
+                            window.location.href = route('login') + '?intended=' + encodeURIComponent(window.location.href);
+                        } else {
+                            console.error('Error response data:', error.response?.data);
+                        }
+                    });  
+            }
         },
         mounted() {
             //
