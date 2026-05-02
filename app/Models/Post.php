@@ -69,6 +69,11 @@ class Post extends Model
     {
         return $this->hasMany(Deslink::class);
     }
+
+    public function postRatings()
+    {
+        return $this->hasMany(PostRating::class);
+    }
     
     /**
      * Sets the `name` attribute, formatting the user's name so that each word 
@@ -87,5 +92,26 @@ class Post extends Model
         }
 
         $this->attributes['name'] = $value;
+    }
+
+    /**
+     * Get the average note for the post.
+     */
+    public function getNoteAttribute()
+    {
+        $ratings = $this->postRatings()->pluck('rating');
+        if ($ratings->isEmpty()) {
+            return 0.0;
+        }
+
+        $average = $ratings->avg();
+        $count = $ratings->count();
+
+        $m = 10;
+        $C = 7.0;
+
+        $weightedAverage = ($count / ($count + $m)) * $average + ($m / ($count + $m)) * $C;
+
+        return round($weightedAverage, 1);
     }
 }
