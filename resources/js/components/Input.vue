@@ -8,7 +8,9 @@
         :placeholder="placeholder" 
         :name="nameId"
         :checked="checked" 
-        :maxlength="maxLength" 
+        :maxlength="maxLength"
+        :max="max"
+        :min="min" 
         :disabled="isDisabled"
     >
     <slot/>
@@ -37,6 +39,14 @@
                 default: ''
             },
             maxLength: {
+                required: false,
+                default: ''
+            },
+            max: {
+                required: false,
+                default: ''
+            },
+            min: {
                 required: false,
                 default: ''
             },

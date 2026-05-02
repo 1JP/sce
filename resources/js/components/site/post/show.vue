@@ -12,17 +12,26 @@
                                 <div class="col-md-8">
                                     <h2 class="card-title p-3">{{ post.name }}</h2>
                                     <p class="card-text m-3">{{ post.description }}</p>
-                                    <form class="m-0" v-if="user">
+                                    <div class="m-0" v-if="user">
                                         <div class="row m-1 align-items-center">
-                                        <div class="col-lg-3">
-                                            <input type="text" class="form-control">
+                                            <div class="col-lg-3">
+                                                <component-input
+                                                    :required="true"
+                                                    :input-type="'number'"
+                                                    :name-id="'rating'"
+                                                    :value="rating"
+                                                    :class-input="classRating"
+                                                    :min="0"
+                                                    :max="10"
+                                                    @input="inputRating($event)"
+                                                />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <button class="btn btn-primary text-light rounded-lg h-25 mt-0 me-0" @click="save()">Votar</button>
+                                            </div>
                                         </div>
-                                        <div class="col-lg-3">
-                                            <button class="btn btn-primary text-light rounded-lg h-25 mt-0 me-0">Votar</button>
-                                        </div>
-                                        </div>
-                                    </form>
-                                    <p class="card-text m-3">Nota: {{ post.note }}</p>
+                                    </div>
+                                    <p class="card-text m-3">Nota: {{ localPost.note }}</p>
                                 </div>
                                 <div class="col-md-4"></div>
                             </div>
@@ -76,7 +85,9 @@
         },
         data() {
             return {
-                localPost: { ...this.post }
+                localPost: { ...this.post },
+                rating: 0,
+                classRating: ''
             }
         },
         methods: {
@@ -105,10 +116,40 @@
                             console.error('Error response data:', error.response?.data);
                         }
                     });  
+            },
+            inputRating(event) {
+                this.rating = event.target.value;
+            },
+            getRating() {
+                if (!this.user) {
+                    return;
+                }
+                
+                axios.get(route('api.ratings.get', {user: this.user.id, post: this.post.id}))
+                    .then(response => {
+                        this.rating = response.data.data.rating;
+                    })
+                    .catch(error => {
+                        console.error('Error response data:', error.response?.data);
+                    });
+            },
+            save() {
+                axios.post(route('api.ratings.store', {post_id: this.post.id}), {
+                    rating: this.rating
+                })
+                .then(response => {
+                    this.localPost.note = response.data.average_rating;
+                    this.rating = response.data.note;
+                    this.classRating = 'is-valid';
+                })
+                .catch(error => {
+                    console.error('Error response data:', error.response?.data);
+                    this.classRating = 'is-invalid';
+                });  
             }
         },
         mounted() {
-            //
+            this.getRating();
         }
     }  
 </script>

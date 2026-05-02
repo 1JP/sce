@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\IndicativeRatingController;
 use App\Http\Controllers\Api\LinkController;
 use App\Http\Controllers\Api\MemberController;
 use App\Http\Controllers\Api\PlanController;
+use App\Http\Controllers\Api\RatingController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PostController;
@@ -91,6 +92,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class);
     Route::apiResource('links', LinkController::class)->only(['store']);
     Route::apiResource('deslinks', DesLinkController::class)->only(['store']);
+    Route::apiResource('ratings', RatingController::class)->only(['store']);
+    Route::get('/ratings/{user}/{post}', [RatingController::class, 'getRating'])->name('ratings.get');
 });
 
 Route::post('/sanctum/token', function (Request $request) {

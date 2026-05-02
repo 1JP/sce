@@ -14,6 +14,7 @@ return [
         'forgot-password',
         'login',
         'store-ative-member',
-        'comments.*'
+        'comments.*',
+        'ratings.*',
     ],
 ];
