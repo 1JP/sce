@@ -34,6 +34,8 @@ class CommentResource extends JsonResource
             ] : null,
             'children' => CommentResource::collection($this->comments),
             'countComments' => $this->comments()->count(),
+            'countDesLinks' => $this->deslinks()->count(),
+            'countLinks' => $this->links()->count(),
             'created_at' => $this->created_at->format('d-m-Y H:i:s'),
             'updated_at' => $this->updated_at->format('d-m-Y H:i:s'),
         ];

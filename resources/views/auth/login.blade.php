@@ -8,6 +8,7 @@
             <h3 class="mb-4 pb-4">Login</h3>
             <form class="" method="POST" action="{{ route('signin') }}">
                 @csrf
+                <input type="hidden" name="intended" value="{{ request()->query('intended') }}">
                 <div class="form-group"> 
                     <label>E-mail<br></label>
                     <component-input

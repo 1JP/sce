@@ -62,6 +62,10 @@ class LoginController extends Controller
                 return redirect()->route('pending.execute');
             }
 
+            if ($request->input('intended')) {
+                session()->put('url.intended', $request->input('intended'));
+            }
+
             return redirect()->intended($this->redirectPath());
         }
 

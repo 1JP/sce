@@ -13,8 +13,8 @@
                             :icon="'bi bi-three-dots'"
                             >
                             <component-dropdown-item name="Responder" @click="selectComment(comment, false)"></component-dropdown-item>
-                            <component-dropdown-item name="Editar" @click="selectComment(comment, true)" v-if="user.id == comment.user.id"></component-dropdown-item>
-                            <component-dropdown-item name="Excluir" target="#destroyCommentModal" @click="deleteComment(comment)" v-if="user.id == comment.user.id"></component-dropdown-item>
+                            <component-dropdown-item name="Editar" @click="selectComment(comment, true)" v-if="user?.id == comment.user.id"></component-dropdown-item>
+                            <component-dropdown-item name="Excluir" target="#destroyCommentModal" @click="deleteComment(comment)" v-if="user?.id == comment.user.id"></component-dropdown-item>
                         </component-dropdown>
                     </div>
                 </div>
@@ -24,13 +24,13 @@
             {{ comment.description }}
         </p>
         <div class="hover-actions-trigger top-0">
-            <a class="me-2">
+            <a class="me-2" @click="link(comment)">
                 <i class="bi bi-hand-thumbs-up"></i>
-                0
+                {{ comment.countLinks }}
             </a>
-            <a class="me-1">
+            <a class="me-2" @click="deslink(comment)">
                 <i class="bi bi-hand-thumbs-down"></i>
-                0
+                {{ comment.countDesLinks }}
             </a>
             <a class="me-2" @click="showComment(comment.id)">
                 <i class="bi bi-chat-square-text-fill"></i>
@@ -70,7 +70,8 @@ import { comment } from 'postcss';
             },
             user: {
                 type: Object,
-                required: false
+                required: false,
+                default: () => ({}), // Garante que o usuário seja um objeto vazio por padrão
             }
         },
         data() {
@@ -108,6 +109,38 @@ import { comment } from 'postcss';
                     this.expandedComments.splice(index, 1);
                 }
             },
+            link(comment) {
+                axios.post(route('api.links.store', {comment_id: comment.id}))
+                    .then(response => {
+                        const index = this.comments.indexOf(comment);
+                        if (index !== -1) {
+                            this.comments[index].countLinks = response.data.countComment;
+                        }
+                    })
+                    .catch(error => {
+                        if (error.response?.status === 401) {
+                            window.location.href = route('login') + '?intended=' + encodeURIComponent(window.location.href);
+                        } else {
+                            console.error('Error response data:', error.response?.data);
+                        }
+                    });  
+            },
+            deslink(comment) {
+                axios.post(route('api.deslinks.store', {comment_id: comment.id}))
+                    .then(response => {
+                        const index = this.comments.indexOf(comment);
+                        if (index !== -1) {
+                            this.comments[index].countDesLinks = response.data.countComment;
+                        }
+                    })
+                    .catch(error => {
+                        if (error.response?.status === 401) {
+                            window.location.href = route('login') + '?intended=' + encodeURIComponent(window.location.href);
+                        } else {
+                            console.error('Error response data:', error.response?.data);
+                        }
+                    });  
+            }
         },
         mounted() {
             this.getComments()

@@ -36,4 +36,14 @@ class Comment extends Model
     {
         return $this->hasMany(Comment::class, 'comment_id');
     }
+
+    public function links()
+    {
+        return $this->hasMany(Link::class);
+    }
+
+    public function deslinks()
+    {
+        return $this->hasMany(DesLink::class);
+    }
 }

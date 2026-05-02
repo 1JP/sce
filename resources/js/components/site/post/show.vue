@@ -29,13 +29,13 @@
                             <div class="row ">
                                 <div class="col-md-6">
                                     <div class="hover-actions-trigger top-0 m-3">
-                                        <a class="me-2">
+                                        <a class="me-2" @click="link(post)">
                                             <i class="bi bi-hand-thumbs-up"></i>
-                                            400
+                                            {{ localPost.countLinks }}
                                         </a>
-                                        <a class="me-1">
+                                        <a class="me-1" @click="deslink(post)">
                                             <i class="bi bi-hand-thumbs-down"></i>
-                                            52 mil
+                                            {{ localPost.countDeslikes }}
                                         </a>
                                     </div>
                                 </div>
@@ -76,11 +76,36 @@
         },
         data() {
             return {
-                //
+                localPost: { ...this.post }
             }
         },
         methods: {
-            //
+            link(post) {
+                axios.post(route('api.links.store', {post_id: post.id}))
+                    .then(response => {
+                        this.localPost.countLinks = response.data.countPost;
+                    })
+                    .catch(error => {
+                        if (error.response?.status === 401) {
+                            window.location.href = route('login') + '?intended=' + encodeURIComponent(window.location.href);
+                        } else {
+                            console.error('Error response data:', error.response?.data);
+                        }
+                    });  
+            },
+            deslink(post) {
+                axios.post(route('api.deslinks.store', {post_id: post.id}))
+                    .then(response => {
+                        this.localPost.countDeslikes = response.data.countPost;
+                    })
+                    .catch(error => {
+                        if (error.response?.status === 401) {
+                            window.location.href = route('login') + '?intended=' + encodeURIComponent(window.location.href);
+                        } else {
+                            console.error('Error response data:', error.response?.data);
+                        }
+                    });  
+            }
         },
         mounted() {
             //
