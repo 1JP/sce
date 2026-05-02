@@ -42,16 +42,16 @@ class DesLinkController extends Controller
                     : 0,
             ]);
 
-        } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'Não autorizado.'], 403);
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Não encontrado.'], 404);
         } catch (Exception $e) {
-            \Log::error('Error processing deslink request: ' . $e->getMessage(), ['exception' => $e]);
             return response()->json(['message' => 'Ocorreu um erro ao processar a solicitação.'], 500);
         }
     }
 
+    /**
+     * Toggles the deslink status for a post.
+     */
     private function togglePostDesLink(User $user, int $postId): void
     {
         $deslinks = $user->deslinks()->where('post_id', $postId)->first();
@@ -59,6 +59,9 @@ class DesLinkController extends Controller
         $deslinks ? $deslinks->delete() : $user->deslinks()->create(['post_id' => $postId]);
     }
 
+    /**
+     * Toggles the deslink status for a comment.
+     */
     private function toggleCommentDesLink(User $user, int $commentId): void
     {
         $deslinks = $user->deslinks()->where('comment_id', $commentId)->first();

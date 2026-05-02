@@ -42,8 +42,6 @@ class LinkController extends Controller
                     : 0,
             ]);
 
-        } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'Não autorizado.'], 403);
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Não encontrado.'], 404);
         } catch (Exception $e) {
@@ -52,6 +50,9 @@ class LinkController extends Controller
         
     }
 
+    /**
+     * Toggles the link status for a post.
+     */
     private function togglePostLink(User $user, int $postId): void
     {
         $link = $user->links()->where('post_id', $postId)->first();
@@ -59,6 +60,9 @@ class LinkController extends Controller
         $link ? $link->delete() : $user->links()->create(['post_id' => $postId]);
     }
 
+    /**
+     * Toggles the link status for a comment.
+     */
     private function toggleCommentLink(User $user, int $commentId): void
     {
         $link = $user->links()->where('comment_id', $commentId)->first();
