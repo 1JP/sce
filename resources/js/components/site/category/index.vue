@@ -67,6 +67,7 @@
                     <div class="row mb-4">
                         <site-post :posts="allPosts"></site-post>
                     </div>
+                    <component-paginate v-if="pagination" :pagination="pagination" @page-change="getAllPosts()"/>
                 </div>
             </div>
         </div>
@@ -113,21 +114,26 @@ export default {
             filter: 2,
             display: 30,
             order: 'asc',
-            total: 0
+            total: 0,
+            pagination: null,
         }
     },
     methods: {
         selectedDisplay(event){
             this.display = event.target.value;
+            this.getAllPosts();
         },
         selectedFilter(event){
             this.filter = event.target.value;
+            this.order = this.filter === '2' ? 'asc' : 'desc';
+            this.getAllPosts();
         },
-        getAllPosts() {
-            axios.get(route('api.posts.all'))
+        getAllPosts(page = 1) {
+            axios.get(route('api.posts.all', {per_page: this.display, order_direction: this.order, page: page}))
                 .then(response => {
                     this.allPosts = response.data.data;
                     this.total = response.data.meta.total;
+                    this.pagination = response.data.meta
                 })
                 .catch(error => {
                     console.error('Error fetching posts:', error);

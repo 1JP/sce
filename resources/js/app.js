@@ -86,6 +86,7 @@ app.component('fixed-bottom', require('./components/FixedBottom.vue').default);
 app.component('breadcrumb', require('./components/Breadcrumb.vue').default);
 app.component('model', require('./components/Model.vue').default);
 app.component('component-progress', require('./components/Progress.vue').default);
+app.component('component-paginate', require('./components/Paginate.vue').default);
 
 app.component('site-header', require('./components/site/Header.vue').default);
 app.component('site-social-links', require('./components/site/SocialLinks.vue').default);
