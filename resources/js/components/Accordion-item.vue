@@ -8,35 +8,16 @@
         <div :id="'flush-collapse'+idItem" class="accordion-collapse collapse" :aria-labelledby="'flush-heading'+idItem" data-bs-parent="#accordionFlushExample">
             <div class="accordion-body">
                 <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #EDEBE4;">
+                    <li v-for="item, index in itens" :key="index" class="list-group-item d-flex justify-content-between align-items-center" style="background: #EDEBE4;">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Default checkbox
-                            </label>
-                        </div>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #EDEBE4;">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Default checkbox
-                            </label>
-                        </div>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #EDEBE4;">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Default checkbox
-                            </label>
-                        </div>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #EDEBE4;">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Default checkbox
+                            <input class="form-check-input" 
+                                type="checkbox" 
+                                :value="item.id ?? item" 
+                                :id="'flexCheckDefault'+index"
+                                @change="changeCheckbox($event, name)"
+                            >
+                            <label class="form-check-label" :for="'flexCheckDefault'+index">
+                                {{ item.name ?? item }}
                             </label>
                         </div>
                     </li>
@@ -58,6 +39,25 @@
                 type: Number,
                 required: true,
             },
+            itens: {
+                type: Array,
+                required: true,
+            },
+        },
+        emits: ['onChanged'],
+        data(){
+            return {
+                //
+            }
+        },
+        methods: {
+            changeCheckbox(event, name){
+                this.$emit('onChanged', {
+                    value: event.target.value,
+                    name: name,
+                    checked: event.target.checked,
+                });
+            }
         },
     }
 </script>
