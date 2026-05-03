@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\Hash;
 */
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/indicative-rating', [IndicativeRatingController::class, 'index'])->name('indicative-rating.index');
 Route::get('/all-posts', [PostController::class, 'all'])->name('posts.all');
 Route::get('/all-plans', [PlanController::class, 'all'])->name('plans.all');
 Route::get('/posts/{post}/comments', [PostController::class, 'comments'])->name('posts.comments');
@@ -52,7 +53,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
     Route::prefix('indicative-rating')->name('indicative-rating.')->group(function () {
         Route::get('search', [IndicativeRatingController::class, 'search'])->name('search');
     });
-    Route::apiResource('indicative-rating', IndicativeRatingController::class);
+    Route::apiResource('indicative-rating', IndicativeRatingController::class)->except(['index']);
 
     Route::prefix('plans')->name('plans.')->group(function () {
         Route::get('search', [PlanController::class, 'search'])->name('search');
