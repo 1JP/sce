@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostAllRequest;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
@@ -76,9 +77,12 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function all()
+    public function all(PostAllRequest $request)
     {
-        $posts = Post::active()->orderBy('name')->get();
+        $validated = $request->validated();
+
+        $posts = Post::active()->orderBy('name', $validated['order_direction'])
+            ->paginate($validated['per_page']);
 
         return PostResource::collection($posts);
     }
