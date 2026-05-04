@@ -48,6 +48,6 @@
     </div>
 </div>
 
-<site-category-index/>
+<site-category-index></site-category-index>
 
 @endsection

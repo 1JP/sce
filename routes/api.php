@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\SubscriptionController;
 use App\Http\Controllers\Api\ViaCepController;
 use App\Http\Controllers\Api\LogController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\SitePostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
@@ -38,6 +39,7 @@ Route::get('/indicative-rating', [IndicativeRatingController::class, 'index'])->
 Route::get('/all-posts', [PostController::class, 'all'])->name('posts.all');
 Route::get('/all-plans', [PlanController::class, 'all'])->name('plans.all');
 Route::get('/posts/{post}/comments', [PostController::class, 'comments'])->name('posts.comments');
+Route::get('/categories/posts/search', [SitePostController::class, 'search'])->name('site.posts.search');
 
 Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(function () {
     Route::prefix('categories')->name('categories.')->group(function () {

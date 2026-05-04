@@ -14,6 +14,7 @@
                                 type="checkbox" 
                                 :value="item.id ?? item" 
                                 :id="'flexCheckDefault'+index"
+                                :checked="item.show"
                                 @change="changeCheckbox($event, name)"
                             >
                             <label class="form-check-label" :for="'flexCheckDefault'+index">
@@ -59,5 +60,8 @@
                 });
             }
         },
+        mounted(){
+            //console.log(this.itens);
+        }
     }
 </script>

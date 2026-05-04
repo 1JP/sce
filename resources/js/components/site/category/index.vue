@@ -32,7 +32,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 d-none d-lg-block">
-                    <component-accordion/>
+                    <component-accordion
+                        :key="accordionKey"
+                        :itens="accordions"
+                        @onChanged="changeAccordion($event)"
+                    />
                 </div>
                 <div class="col-lg-9">
                     <div class="row d-none d-lg-block">
@@ -63,36 +67,54 @@
                                 </div>
                             </div>
                         </div>
+                        <button v-if="Object.keys(listSearch).length > 0" class="btn btn-outline-dark btn-block" @click="clear()">
+                            Limpar filtro
+                        </button>
                     </div>
                     <div class="row mb-4">
                         <site-post :posts="allPosts"></site-post>
                     </div>
-                    <component-paginate v-if="pagination" :pagination="pagination" @page-change="getAllPosts()"/>
+                    <component-paginate v-if="pagination" :pagination="pagination" @page-change="getPostsByPage"/>
                 </div>
             </div>
         </div>
     </div>
 
     <model :title="'Filtrar por'" :name="'filtros'" :class-header="'bg-primary rounded-0'">
-        <div class="row mx-auto">
+        <div class="row mx-auto" v-if="Object.keys(listSearch).length > 0">
             <div class="col-md-12">
-                <a class="btn btn-light rounded m-2" href="#">Nome A
+                <a class="btn btn-light rounded m-2" href="#" 
+                    v-for="value in listSearch.search.category_id" 
+                    :key="value"
+                    @click="removeList(value, 'category')"
+                >
+                    {{ getNameCategory(value) }}
                     <i class="bi bi-x-circle text-primary ml-2"></i>
                 </a>
-                <a class="btn btn-light rounded m-2" href="#">
-                    Nome B
+                <a class="btn btn-light rounded m-2" href="#" 
+                    v-for="value in listSearch.search.indicative_rating_id" 
+                    :key="value"
+                    @click="removeList(value, 'indicative_rating')"
+                >
+                    {{ getNameIndication(value) }}
                     <i class="bi bi-x-circle text-primary ml-2"></i>
                 </a>
             </div>
         </div>
-        <div class="row mx-auto">
+        <div class="row mx-auto" v-if="Object.keys(listSearch).length > 0">
             <div class="col-md-12 pt-2 pb-4">
-                <a class="btn btn-outline-dark btn-block" href="#">Limpar filtro</a>
+                <button class="btn btn-outline-dark btn-block" @click="clear()">
+                    Limpar filtro
+                </button>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-3 d-lg-block">
-                <component-accordion/>
+                <component-accordion
+                    :key="accordionKey"
+                    :itens="accordions"
+                    @onChanged="changeAccordion($event)"
+                />
             </div>
         </div>
     </model>
@@ -116,17 +138,33 @@ export default {
             order: 'asc',
             total: 0,
             pagination: null,
+            categories: [],
+            indications: [],
+            accordions: [
+                {
+                    name: 'Categorias',
+                    itens: []
+                },
+                {
+                    name: 'Indicativas',
+                    itens: []
+                }
+            ],
+            selectedCategories: [],
+            selectedIndications: [],
+            listSearch: {},
+            accordionKey: 0,
         }
     },
     methods: {
         selectedDisplay(event){
             this.display = event.target.value;
-            this.getAllPosts();
+            this.getPostsByPage();
         },
         selectedFilter(event){
             this.filter = event.target.value;
             this.order = this.filter === '2' ? 'asc' : 'desc';
-            this.getAllPosts();
+            this.getPostsByPage();
         },
         getAllPosts(page = 1) {
             axios.get(route('api.posts.all', {per_page: this.display, order_direction: this.order, page: page}))
@@ -139,9 +177,162 @@ export default {
                     console.error('Error fetching posts:', error);
                 });
         },
+        listCategories(){
+            axios.get(route('api.categories.index'))
+                .then((response) => {
+                    this.categories = response.data.data;
+                    this.accordions.filter(accordion => accordion.name === 'Categorias')
+                        .forEach(accordion => { 
+                            accordion.itens = this.categories.map(category => ({
+                                id: category.id, 
+                                name: category.name,
+                                show: false
+                            }));
+                        });
+                })
+        },
+        listIndications(){
+            axios.get(route('api.indicative-rating.index'))
+                .then((response) => {
+                    this.indications = response.data.data;
+                    this.accordions.filter(accordion => accordion.name === 'Indicativas')
+                        .forEach(accordion => { 
+                            accordion.itens = this.indications.map(indication => ({
+                                id: indication.id, 
+                                name: indication.name,
+                                show: false
+                            }));
+                        });
+                })
+        },
+        changeAccordion(event){
+            if (event.name == 'Categorias') {
+                if (event.checked) {
+                    this.selectedCategories.push(event.value);
+                } else {
+                    const index = this.selectedCategories.indexOf(event.value);
+                    if (index > -1) {
+                        this.selectedCategories.splice(index, 1);
+                    }
+                }
+            }
+            if (event.name == 'Indicativas') {
+                if (event.checked) {
+                    this.selectedIndications.push(event.value);
+                } else {
+                    const index = this.selectedIndications.indexOf(event.value);
+                    if (index > -1) {
+                        this.selectedIndications.splice(index, 1);
+                    }
+                }
+            }
+            this.search();
+        },
+        search() {
+            let params = {
+                'search': {
+                    'category_id' : this.selectedCategories,
+                    'indicative_rating_id' : this.selectedIndications,
+                    'paginate': {
+                        'per_page': this.display,
+                        'order_direction': this.order
+                    },
+                }
+            };
+            this.listSearch = params;
+            axios.get(route('api.site.posts.search', params))
+                .then(response => {
+                    this.allPosts = response.data.data;
+                    this.total = response.data.meta.total;
+                    this.pagination = response.data.meta
+                })
+                .catch(error => {
+                    console.error('Error fetching posts:', error);
+                });
+        },
+        getPostsByPage(page = 1){
+            if(Object.keys(this.listSearch).length > 0){
+                this.search();
+                return;
+            }
+            this.getAllPosts(page);
+        },
+        clear(){
+            this.selectedCategories = [];
+            this.selectedIndications = [];
+            this.listSearch = {};
+            this.accordionKey++;
+            this.getAllPosts();
+        },
+        getNameCategory(id){
+            const category = this.categories.find(category => category.id === parseInt(id));
+            return category ? category.name : '';
+        },
+        getNameIndication(id){
+            const indication = this.indications.find(indication => indication.id === parseInt(id));
+            return indication ? indication.name : '';
+        },
+        removeList(value, type){
+            if (type === 'category') {
+                const indexCategory = this.selectedCategories.indexOf(value);
+                if (indexCategory > -1) {
+                    this.selectedCategories.splice(indexCategory, 1);
+                    if(this.selectedCategories.length == 0){
+                        this.accordions.filter(accordion => accordion.name === 'Categorias')
+                            .forEach(accordion => {
+                                accordion.itens.forEach(item => {
+                                    item.show = false;
+                                });
+                            });
+                    }
+                    console.log(this.selectedCategories, this.accordions);
+                    this.accordions.filter(accordion => accordion.name === 'Categorias')
+                        .forEach(accordion => {
+                            const item = accordion.itens.find(item => this.selectedCategories.includes(String(item.id)));
+                            console.log(item, console.log(String(item.id), item.id))
+                            /*if (item) {
+                                item.show = true;
+                            } */
+                        });
+                }
+            }
+
+            if (type === 'indicative_rating') {
+                const indexIndication = this.selectedIndications.indexOf(value);
+                if (indexIndication > -1) {
+                    this.selectedIndications.splice(indexIndication, 1);
+                    if(this.selectedIndications.length == 0){
+                        this.accordions.filter(accordion => accordion.name === 'Indicativas')
+                            .forEach(accordion => {
+                                accordion.itens.forEach(item => {
+                                    item.show = false;
+                                });
+                            });
+                    }
+
+                    this.accordions.filter(accordion => accordion.name === 'Indicativas')
+                        .forEach(accordion => { 
+                            const item = accordion.itens.find(item => this.selectedIndications.includes(String(item.id)));
+                            if (item) {
+                                item.show = true;
+                            }
+                        });
+                }
+            }
+
+            if(this.selectedCategories.length == 0 && this.selectedIndications.length == 0){
+                this.clear()
+                return;
+            }
+            
+            this.accordionKey++;
+            this.search();
+        },
     },
     mounted() {
         this.getAllPosts();
+        this.listCategories();
+        this.listIndications();
     }
 }
 </script>
