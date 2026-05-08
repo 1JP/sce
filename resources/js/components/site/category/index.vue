@@ -260,6 +260,8 @@ export default {
         clear(){
             this.selectedCategories = [];
             this.selectedIndications = [];
+            this.listCategories();
+            this.listIndications();
             this.listSearch = {};
             this.accordionKey++;
             this.getAllPosts();
@@ -277,54 +279,38 @@ export default {
                 const indexCategory = this.selectedCategories.indexOf(value);
                 if (indexCategory > -1) {
                     this.selectedCategories.splice(indexCategory, 1);
-                    if(this.selectedCategories.length == 0){
-                        this.accordions.filter(accordion => accordion.name === 'Categorias')
-                            .forEach(accordion => {
-                                accordion.itens.forEach(item => {
-                                    item.show = false;
-                                });
-                            });
-                    }
-                    console.log(this.selectedCategories, this.accordions);
-                    this.accordions.filter(accordion => accordion.name === 'Categorias')
-                        .forEach(accordion => {
-                            const item = accordion.itens.find(item => this.selectedCategories.includes(String(item.id)));
-                            console.log(item, console.log(String(item.id), item.id))
-                            /*if (item) {
-                                item.show = true;
-                            } */
-                        });
                 }
             }
-
             if (type === 'indicative_rating') {
                 const indexIndication = this.selectedIndications.indexOf(value);
                 if (indexIndication > -1) {
                     this.selectedIndications.splice(indexIndication, 1);
-                    if(this.selectedIndications.length == 0){
-                        this.accordions.filter(accordion => accordion.name === 'Indicativas')
-                            .forEach(accordion => {
-                                accordion.itens.forEach(item => {
-                                    item.show = false;
-                                });
-                            });
-                    }
-
-                    this.accordions.filter(accordion => accordion.name === 'Indicativas')
-                        .forEach(accordion => { 
-                            const item = accordion.itens.find(item => this.selectedIndications.includes(String(item.id)));
-                            if (item) {
-                                item.show = true;
-                            }
-                        });
                 }
             }
+
+            this.accordions.filter(accordion => accordion.name === 'Indicativas')
+                .forEach(accordion => {
+                    accordion.itens = this.indications.map(indication => ({
+                        id: indication.id, 
+                        name: indication.name,
+                        show: this.selectedIndications.includes(String(indication.id))
+                    }));
+                });
+                
+            this.accordions.filter(accordion => accordion.name === 'Categorias')
+                .forEach(accordion => {
+                    accordion.itens = this.categories.map(category => ({
+                        id: category.id, 
+                        name: category.name,
+                        show: this.selectedCategories.includes(String(category.id))
+                    }));
+                });
 
             if(this.selectedCategories.length == 0 && this.selectedIndications.length == 0){
                 this.clear()
                 return;
             }
-            
+
             this.accordionKey++;
             this.search();
         },
