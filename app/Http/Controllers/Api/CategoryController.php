@@ -44,11 +44,14 @@ class CategoryController extends Controller
         return CategoryResource::collection($categories);
     }
 
+    /**
+     * Display the specified resource.
+     */
     public function myPosts(Category $category, PaginateRequest $request)
     {
         $validated = $request->validated();
         $per_page = $validated['paginate']['per_page'] ?? 30;
-        $order_direction = $validated['search']['order_direction'] ?? 'ASC';
+        $order_direction = $validated['search']['order_direction'] ?? 'asc';
 
         $posts = $category->posts()->active()
             ->orderBy('name', $order_direction)

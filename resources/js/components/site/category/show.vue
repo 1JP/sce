@@ -196,7 +196,7 @@ export default {
         search() {
             let params = {
                 'search': {
-                    //'category_id' : this.selectedCategories,
+                    'category_id' : [this.category.id],
                     'indicative_rating_id' : this.selectedIndications,
                     'paginate': {
                         'per_page': this.display,

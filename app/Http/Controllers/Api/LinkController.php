@@ -8,7 +8,6 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
 use Exception;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 
