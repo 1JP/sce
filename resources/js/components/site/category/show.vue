@@ -196,7 +196,7 @@ export default {
         search() {
             let params = {
                 'search': {
-                    'category_id' : [this.category.id],
+                    'category_id' : [String(this.category.id)],
                     'indicative_rating_id' : this.selectedIndications,
                     'paginate': {
                         'per_page': this.display,
@@ -204,6 +204,7 @@ export default {
                     },
                 }
             };
+            
             this.listSearch = params;
             axios.get(route('api.site.posts.search', params))
                 .then(response => {
