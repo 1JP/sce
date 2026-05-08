@@ -21,6 +21,6 @@ class SiteCategoryController extends Controller
      */
     public function show(Category $category)
     {
-        dd($category);
+        return view('site.category.show', compact('category'));
     }
 }

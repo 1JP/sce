@@ -36,7 +36,7 @@ class SitePostController extends Controller
         $per_page = $validated['paginate']['per_page'] ?? 30;
         $order_direction = $validated['search']['order_direction'] ?? 'ASC';
 
-        $posts = Post::when(isset($validated['search']['category_id']), function ($query) use ($validated){
+        $posts = Post::active()->when(isset($validated['search']['category_id']), function ($query) use ($validated){
             $query->whereIn('category_id', $validated['search']['category_id']);
         })->when(isset($validated['search']['indicative_rating_id']), function ($query) use ($validated){
             $query->whereIn('indicative_rating_id', $validated['search']['indicative_rating_id']);

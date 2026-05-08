@@ -105,6 +105,7 @@ app.component('site-home', require('./components/site/home/index.vue').default);
 app.component('site-post-show', require('./components/site/post/show.vue').default);
 app.component('site-comment-destroy', require('./components/site/post/comment/delete.vue').default);
 app.component('site-category-index', require('./components/site/category/index.vue').default);
+app.component('site-category-show', require('./components/site/category/show.vue').default);
 
 app.component('create-payment', require('./components/payment/create.vue').default)
 app.component('summary-payment', require('./components/payment/summary.vue').default)

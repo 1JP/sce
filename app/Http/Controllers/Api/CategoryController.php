@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PaginateRequest;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\PostResource;
 use App\Models\Category;
 use App\Models\CategoryType;
 use Illuminate\Support\Facades\Auth;
@@ -40,5 +42,18 @@ class CategoryController extends Controller
         ->get();
 
         return CategoryResource::collection($categories);
+    }
+
+    public function myPosts(Category $category, PaginateRequest $request)
+    {
+        $validated = $request->validated();
+        $per_page = $validated['paginate']['per_page'] ?? 30;
+        $order_direction = $validated['search']['order_direction'] ?? 'ASC';
+
+        $posts = $category->posts()->active()
+            ->orderBy('name', $order_direction)
+            ->paginate($per_page);
+
+        return PostResource::collection($posts);
     }
 }
