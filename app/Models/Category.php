@@ -42,6 +42,11 @@ class Category extends Model
         return $query->where('active', true);
     }
 
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+    
     /**
      * Sets the `name` attribute, formatting the user's name so that each word 
      * starts with an uppercase letter, while the remaining letters are lowercase.

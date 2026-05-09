@@ -170,7 +170,7 @@
                     })
             },
             listIndications(){
-                axios.get(route('api.admin.indicative-rating.index'))
+                axios.get(route('api.indicative-rating.index'))
                     .then((response) => {
                         this.indications = response.data.data;
                     })

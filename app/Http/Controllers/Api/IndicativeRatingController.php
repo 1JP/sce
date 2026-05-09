@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\IndicativeRatingResource;
 use App\Models\IndicativeRating;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Auth;
 
 class IndicativeRatingController extends Controller
 {
@@ -16,10 +14,6 @@ class IndicativeRatingController extends Controller
      */
     public function index()
     {
-        if (Gate::denies('viewAny', Auth::user())) {
-            abort(403);
-        }
-
         $indicative = IndicativeRating::orderBy('name')->get();
 
         return IndicativeRatingResource::collection($indicative);

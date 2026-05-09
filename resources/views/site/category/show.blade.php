@@ -41,6 +41,7 @@
         <div class="col-md-12 px-0">
             <breadcrumb :items='@json([
                 [ "name" => "Categorias" ],
+                [ "name" => $category->name ]
             ])' :icone="'bi bi-house-door text-muted'"
             :text-color="''"></breadcrumb>
         </div>
@@ -48,6 +49,6 @@
     </div>
 </div>
 
-<site-category-index></site-category-index>
+<site-category-show :category='@json($category)'></site-category-show>
 
 @endsection

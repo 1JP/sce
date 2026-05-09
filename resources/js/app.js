@@ -86,6 +86,7 @@ app.component('fixed-bottom', require('./components/FixedBottom.vue').default);
 app.component('breadcrumb', require('./components/Breadcrumb.vue').default);
 app.component('model', require('./components/Model.vue').default);
 app.component('component-progress', require('./components/Progress.vue').default);
+app.component('component-paginate', require('./components/Paginate.vue').default);
 
 app.component('site-header', require('./components/site/Header.vue').default);
 app.component('site-social-links', require('./components/site/SocialLinks.vue').default);
@@ -103,6 +104,8 @@ app.component('site-index-user', require('./components/site/user/index.vue').def
 app.component('site-home', require('./components/site/home/index.vue').default);
 app.component('site-post-show', require('./components/site/post/show.vue').default);
 app.component('site-comment-destroy', require('./components/site/post/comment/delete.vue').default);
+app.component('site-category-index', require('./components/site/category/index.vue').default);
+app.component('site-category-show', require('./components/site/category/show.vue').default);
 
 app.component('create-payment', require('./components/payment/create.vue').default)
 app.component('summary-payment', require('./components/payment/summary.vue').default)
