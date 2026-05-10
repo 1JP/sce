@@ -41,6 +41,7 @@ Route::get('/all-plans', [PlanController::class, 'all'])->name('plans.all');
 Route::get('/posts/{post}/comments', [PostController::class, 'comments'])->name('posts.comments');
 Route::get('/categories/{category}/posts', [CategoryController::class, 'myPosts'])->name('categories.posts');
 Route::get('/categories/posts/search', [SitePostController::class, 'search'])->name('site.posts.search');
+Route::get('links', [SettingController::class, 'links'])->name('settings.links');
 
 Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(function () {
     Route::prefix('categories')->name('categories.')->group(function () {

@@ -45,10 +45,13 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('*', function($view) {
             $user = auth()->user();
+            $roles = ['Admin', 'Membros', 'Root', 'Client'];
+
             if ($user) {
                 $user->load('roles');
             }
             $view->with('user', $user);
+            $view->with('isRole', $user ? $user->hasAnyRole($roles) : false);
         });
     }
 }

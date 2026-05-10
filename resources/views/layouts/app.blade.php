@@ -27,8 +27,10 @@
     <body data-bs-spy="scroll" data-bs-target="#header" tabindex="0">
         <div id="app">
             <site-header 
-                :name="' {{ Auth::user()->name ?? '' }} '" 
-                :logo="'{{ asset('site/img/logo-sce.jpeg') }}'" ></site-header>
+                :name="'{{ $user->name ?? '' }}'"
+                :is-role="{{ $isRole }}"
+                :logo="'{{ asset('site/img/logo-sce.jpeg') }}'" >
+            </site-header>
             <div class="py-5">
                 <div class="container">
                     @include('partials.alert')
