@@ -16,5 +16,6 @@ return [
         'store-ative-member',
         'comments.*',
         'ratings.*',
+        'site.search',
     ],
 ];

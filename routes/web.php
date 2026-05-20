@@ -23,6 +23,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SiteCategoryController;
 use App\Http\Controllers\SiteCommentController;
 use App\Http\Controllers\SitePostController;
+use App\Http\Controllers\SiteSearchController;
 use App\Http\Controllers\SiteUserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SavePendingComment;
@@ -35,8 +36,8 @@ Route::get('/primeiro-acesso', [AccessController::class, 'index'])->name('first-
 Route::post('/send-primeiro-acesso', [AccessController::class, 'store'])->name('create.first-access');
 Route::get('/ativacao-membro/{email}/{token}', [MemberAccessController::class, 'index'])->name('ative-member');
 Route::post('/primeiro-acesso-membro', [MemberAccessController::class, 'store'])->name('store-ative-member');
-
 Route::get('/esqueci-minha-senha', [LoginController::class, 'forgotPassword'])->name('forgot-password');
+Route::get('/search', [SiteSearchController::class, 'search'])->name('site.search');
 
 Route::get('/pending-action/execute', [PendingActionController::class, 'execute'])
     ->middleware('auth')
