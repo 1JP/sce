@@ -89,6 +89,7 @@ app.component('component-progress', require('./components/Progress.vue').default
 app.component('component-paginate', require('./components/Paginate.vue').default);
 
 app.component('site-header', require('./components/site/Header.vue').default);
+app.component('site-footer', require('./components/site/Footer.vue').default);
 app.component('site-social-links', require('./components/site/SocialLinks.vue').default);
 app.component('site-nav-bar', require('./components/site/NavBar.vue').default);
 app.component('site-nav', require('./components/site/Nav.vue').default);

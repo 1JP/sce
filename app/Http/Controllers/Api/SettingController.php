@@ -21,4 +21,10 @@ class SettingController extends Controller
         return SettingResource::collection($settings);
     }
 
+    public function links()
+    {
+        $settings = Setting::whereIn('name', ['facebook', 'twitter', 'youtube', 'instagram'])->get();
+
+        return SettingResource::collection($settings);
+    }
 }

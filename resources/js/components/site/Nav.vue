@@ -2,18 +2,10 @@
     <a :href="route" class="nav-link">
         {{ name }}
     </a>
-    <ul v-if="name != 'Home'">
-        <li class="active">
-            <a href="index.html">Home</a>
+    <ul v-if="name != 'Home'" class="dropdown-menu scroll-dropdown">
+        <li v-for="(type, index) in types" :key="type.id">
+            <a :href="type.route">{{ type.name }}</a>
         </li>
-        <li><a href="index.html">About</a></li>
-        <li><a href="index.html">Styles</a></li>
-        <li><a href="index.html">Blog</a></li>
-        <li><a href="index.html">Post Single</a></li>
-        <li><a href="index.html">Our Store</a></li>
-        <li><a href="index.html">Product Single</a></li>
-        <li><a href="index.html">Contact</a></li>
-        <li><a href="index.html">Thank You</a></li>
     </ul>
 </template>
 
@@ -27,12 +19,29 @@
             route: {
                 type: String,
                 required: true,
+            },
+            types: {
+                type: Array,
+                required: false,
             }
         },
         data(){
             return {
-                
+                //
             }
+        },
+        methods: {
+            //
+        },
+        mounted() {
+            //
         }
     }
 </script>
+
+<style scoped>
+    .scroll-dropdown {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+</style>
