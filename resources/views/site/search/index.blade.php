@@ -46,4 +46,10 @@
     </div>
 </div>
 
+<site-search 
+    :search='@json($search)'
+    :total='@json($posts->total())'
+    :posts='@json($posts->getCollection())'
+    :pagination='@json($posts->toArray())'
+></site-search>
 @endsection

@@ -24,7 +24,21 @@ class SiteSearchController extends Controller
             ->where('name', 'like', '%' . $search . '%')
             ->orWhere('description', 'like', '%' . $search . '%')
             ->orderBy('name', $order_direction)
-            ->paginate($per_page);
+            ->paginate($per_page)
+            ->through(function ($post) {
+                $post->setRelation('images', $post->images->isNotEmpty()
+                    ? $post->images->map(function ($image) {
+                        $image->image = asset('storage/' . $image->name);
+                        return $image;
+                    })
+                    : collect([['image' => asset('site/img/logo-favicon.jpeg'), 'name' => 'Default']])
+                );
+
+                $post->countLinks    = $post->links->count();
+                $post->countDeslikes = $post->deslinks->count();
+
+                return $post;
+            });
 
         return view('site.search.index', compact('posts', 'search'));
     }
