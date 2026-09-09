@@ -39,7 +39,10 @@ class SiteSearchController extends Controller
 
                 return $post;
             });
-
-        return view('site.search.index', compact('posts', 'search'));
+        
+        $category_ids = $posts->pluck('category_id')->unique()->toArray();
+        $indicative_rating_ids = $posts->pluck('indicative_rating_id')->unique()->toArray();
+        
+        return view('site.search.index', compact('posts', 'search', 'category_ids', 'indicative_rating_ids'));
     }
 }

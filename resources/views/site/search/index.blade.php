@@ -51,5 +51,7 @@
     :total='@json($posts->total())'
     :posts='@json($posts->getCollection())'
     :pagination='@json($posts->toArray())'
+    :category_ids='@json($category_ids)'
+    :indicative_rating_ids='@json($indicative_rating_ids)'
 ></site-search>
 @endsection

@@ -107,6 +107,14 @@
                 type: Object,
                 default: null
             },
+            category_ids: {
+                type: Array,
+                default: []
+            },
+            indicative_rating_ids: {
+                type: Array,
+                default: []
+            }
         },
         data(){
             return {
@@ -148,11 +156,58 @@
                 this.getAllPosts(page);
             },
             getAllPosts(page = 1) {
-                //
+                if (typeof page === 'string') {
+                    page = parseInt(page);
+                }
+                
+                this.pagination.links.filter(link => parseInt(link.label) === page).forEach(link => {
+                    if(link.url){
+                        console.log(link)
+                        this.irParaPagina(page, link);
+                    }
+                });
             },
+            listCategories(){
+                axios.get(route('api.categories.index'))
+                    .then((response) => {
+                        this.categories = response.data.data.filter(category => this.category_ids.includes(category.id));
+                        this.accordions.filter(accordion => accordion.name === 'Categorias')
+                            .forEach(accordion => { 
+                                accordion.itens = this.categories.map(category => ({
+                                    id: category.id, 
+                                    name: category.name,
+                                    show: false
+                                }));
+                            });
+                    })
+            },
+            listIndications(){
+                axios.get(route('api.indicative-rating.index'))
+                    .then((response) => {
+                        this.indications = response.data.data.filter(indication => this.indicative_rating_ids.includes(indication.id));
+                        this.accordions.filter(accordion => accordion.name === 'Indicativas')
+                            .forEach(accordion => { 
+                                accordion.itens = this.indications.map(indication => ({
+                                    id: indication.id, 
+                                    name: indication.name,
+                                    show: false
+                                }));
+                            });
+                    })
+            },
+            irParaPagina(page, link) {
+                const url = new URL(link.url, window.location.origin)
+                url.searchParams.set('search[search]', this.search)
+                url.searchParams.set('search[order_direction]', this.order)
+                url.searchParams.set('search[per_page]', this.display)
+                url.searchParams.set('paginate[page]', page)
+
+                window.location.href = url.toString()
+            }
         },
         mounted() {
-            //
+            this.listCategories();
+            this.listIndications()
         }
     }
 </script>
