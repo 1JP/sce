@@ -3,6 +3,10 @@
 }
 
 @media print {
+    .navbar {
+        display: none !important;
+    }
+
     .col-sm-1,
     .col-sm-2,
     .col-sm-3,

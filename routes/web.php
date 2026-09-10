@@ -49,8 +49,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('/tipos-de-categorias', CategoryTypeController::class);
     Route::resource('/posts', PostController::class);
     Route::prefix('report')->name('report.')->group(function () {
-        Route::get('/relatorio-geral', [ReportController::class, 'generalReport'])->name('general');
-        Route::get('/relatorio-comentarios', [ReportController::class, 'commentReport'])->name('comment');
+        Route::get('/relatorio-geral/{post}', [ReportController::class, 'generalReport'])->name('general');
+        Route::get('/relatorio-comentarios/{post}', [ReportController::class, 'commentReport'])->name('comment');
     });
     Route::resource('/planos', PlanController::class);
     Route::resource('/classificacao-indicativas', IndicativeRatingController::class);

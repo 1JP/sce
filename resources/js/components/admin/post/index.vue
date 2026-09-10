@@ -104,8 +104,8 @@
                                 <component-dropdown-item name="Editar" :route="route('admin.posts.edit', post.id)"></component-dropdown-item>
                                 <component-dropdown-item name="Excluir" target="#destoryPost" @click="selectPost(post)" v-if="created"></component-dropdown-item>
                                 <li><hr class="dropdown-divider"></li>
-                                <component-dropdown-item name="Relatório Geral" :route="route('admin.report.general')"></component-dropdown-item>
-                                <component-dropdown-item name="Relatório de Comentarios" :route="route('admin.report.comment')"></component-dropdown-item>
+                                <component-dropdown-item name="Relatório Geral" :route="route('admin.report.general', post.id)"></component-dropdown-item>
+                                <component-dropdown-item name="Relatório de Comentarios" :route="route('admin.report.comment', post.id)"></component-dropdown-item>
                             </component-dropdown>
                         </component-td>
                     </admin-tr>
