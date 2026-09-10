@@ -47,6 +47,9 @@ class SiteSearchController extends Controller
         return view('site.search.index', compact('posts', 'search', 'category_ids', 'indicative_rating_ids', 'selected_categories_id', 'selected_indicative_ratings_id'));
     }
 
+    /**
+     * Get the categories based on the search criteria.
+     */
     private function getCategories(array $validated, string $search, string $order_direction): array
     {
         return Post::select('category_id')
@@ -63,6 +66,9 @@ class SiteSearchController extends Controller
             ->get()->pluck('category_id')->unique()->toArray();
     }
 
+    /* 
+     * Get the indicative ratings based on the search criteria.
+     */
     private function getIndicativeRatings(array $validated, string $search, string $order_direction): array
     {
         return Post::select('indicative_rating_id')
