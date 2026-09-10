@@ -1,10 +1,10 @@
 <template>
     <admin-report-nav
-        :name_report="'relatorio_geral'"
+        :name_report="'relatorio_comentarios'"
     />
     <div id="report-content">
         <ReportSummary 
-            :title="'Relatório Geral'"
+            :title="'Relatório Comentários'"
             :postName="post.name"
             :indicativa="post.indicative_rating.name"
             :category="post.category.name"
@@ -15,11 +15,6 @@
             :negativeComments="post.negative_comments_percentage"
             :neutralComments="post.neutral_comments_percentage"
             :description="post.description"
-        />
-        <PostEngagementStats 
-            :likes="post.likes_total"
-            :dislikes="post.dislikes_total"
-            :comments="post.total_comments"
         />
         <MostCommentedPosts
             v-if="post.most_commented_comments?.length"
@@ -47,13 +42,11 @@
 
 <script>
     import ReportSummary from './components/reportSummary.vue'
-    import PostEngagementStats from './components/postEngagementStats.vue'
     import MostCommentedPosts from './components/mostCommentedPosts.vue'
     
     export default {
         components: {
             ReportSummary,
-            PostEngagementStats,
             MostCommentedPosts
         },
         props: {

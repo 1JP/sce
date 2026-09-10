@@ -25,6 +25,12 @@
 
 <script>
     export default {
+        props: {
+            name_report: {
+                type: String,
+                required: true
+            }
+        },
         data(){
             return {
                 //
@@ -126,7 +132,7 @@
                 const link = document.createElement('a');
 
                 link.href = url;
-                link.download = 'relatorio-geral.doc';
+                link.download = `${this.name_report}.doc`;
                 link.click();
                 URL.revokeObjectURL(url);
             }

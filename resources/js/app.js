@@ -50,6 +50,8 @@ app.component('admin-report-nav', require('./components/admin/report/components/
 app.component('admin-report-footer', require('./components/admin/report/components/Footer.vue').default);
 
 app.component('admin-report-general', require('./components/admin/report/general.vue').default);
+app.component('admin-report-comment', require('./components/admin/report/comment.vue').default);
+
 app.component('admin-category-create', require('./components/admin/category/create.vue').default);
 app.component('admin-category-index', require('./components/admin/category/index.vue').default);
 app.component('admin-category-type-index', require('./components/admin/category-type/index.vue').default);
