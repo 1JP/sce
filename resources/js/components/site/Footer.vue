@@ -122,7 +122,6 @@
 		},
 		mounted() {
 			this.getLinks();
-			console.log(this.user)
 		},
     }
 </script>

@@ -35,12 +35,24 @@
 							</ul>
 							<div class="action-menu">
 								<div class="search-bar">
-									<a href="#" class="search-button search-toggle" data-selector="#header-wrap">
+									<a href="#" class="search-button search-toggle" 
+										data-selector="#header-wrap"
+										@click="actionSearch"
+									>
 										<i class="icon icon-search"></i>
 									</a>
-									<form role="search" method="get" class="search-box">
-										<input class="search-field text search-input" placeholder="Search"
-											type="search">
+									<form role="search" method="GET" class="search-box" 
+										ref="formSearch" :action="route('site.search')"
+									>
+										<input type="hidden" name="_token" :value="token"/>
+										<component-input
+											:input-type="'search'"
+											:placeholder="'Search'"
+											:name-id="'search[search]'"
+											:value="search"
+											:class-input="'search-field text search-input'"
+											@input="valueSearch($event)"
+										/>
 									</form>
 								</div>
 							</div>
@@ -76,6 +88,8 @@
                 routeHome: route('home'),
 				routeLogout: route('auth.logout'),
 				routeScript: 'http://127.0.0.1:8000/js/script.js',
+				search: '',
+				token: ''
             }
         },
 		props: {
@@ -111,11 +125,21 @@
 					.catch(error => {
 						console.error('Error fetching links:', error);
 					});
+			},
+			valueSearch(event){
+				this.search = event.target.value;
+			},
+			actionSearch(event){
+				event.preventDefault();
+				if(this.search.trim() !== ''){
+					this.$refs.formSearch.submit();
+				}
 			}
 		},
 		mounted() {
 			this.loadScript();
 			this.getLinks();
+			this.token = document.head.querySelector('meta[name="csrf-token"]')?.content;
 		},
     }
 </script>

@@ -255,7 +255,6 @@
                 this.search(params);
             },
             searchInputPost(event){
-                console.log(event.target.value);
                 this.inputPost = event.target.value;
                 if(this.inputPost == ''){
                     this.listPlans();

@@ -37,6 +37,9 @@ export default {
             let url = route('posts.show', id)
             window.location.href = url;
         }
+    },
+    mounted() {
+        //
     }
 }
 </script>

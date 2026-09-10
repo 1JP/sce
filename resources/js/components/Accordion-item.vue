@@ -61,7 +61,7 @@
             }
         },
         mounted(){
-            //console.log(this.itens);
+            //
         }
     }
 </script>
