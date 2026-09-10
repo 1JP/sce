@@ -53,5 +53,7 @@
     :pagination='@json($posts->toArray())'
     :category_ids='@json($category_ids)'
     :indicative_rating_ids='@json($indicative_rating_ids)'
+    :selected_categories_id='@json($selected_categories_id)'
+    :selected_indicative_ratings_id='@json($selected_indicative_ratings_id)'
 ></site-search>
 @endsection

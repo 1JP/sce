@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button v-if="Object.keys(listSearch).length > 0" class="btn btn-outline-dark btn-block" @click="clear()">
+                        <button v-if="selected_categories_id.length > 0 || selected_indicative_ratings_id.length > 0" class="btn btn-outline-dark btn-block" @click="clear()">
                             Limpar filtro
                         </button>
                     </div>
@@ -87,6 +87,49 @@
             </div>
         </div>
     </div>
+
+    <model :title="'Filtrar por'" :name="'filtros'" :class-header="'bg-primary rounded-0'">
+        <div class="row mx-auto" v-if="selected_indicative_ratings_id.length > 0">
+            <div class="col-md-12">
+                <a class="btn btn-light rounded m-2" href="#" 
+                    v-for="value in selected_indicative_ratings_id" 
+                    :key="value"
+                    @click="removeList(value, 'indicative_rating')"
+                >
+                    {{ getNameIndication(value) }}
+                    <i class="bi bi-x-circle text-primary ml-2"></i>
+                </a>
+            </div>
+        </div>
+        <div class="row mx-auto" v-if="selected_categories_id.length > 0">
+            <div class="col-md-12">
+                <a class="btn btn-light rounded m-2" href="#" 
+                    v-for="value in selected_categories_id" 
+                    :key="value"
+                    @click="removeList(value, 'category')"
+                >
+                    {{ getNameCategory(value) }}
+                    <i class="bi bi-x-circle text-primary ml-2"></i>
+                </a>
+            </div>
+        </div>
+        <div class="row mx-auto" v-if="selected_categories_id.length > 0 || selected_indicative_ratings_id.length > 0">
+            <div class="col-md-12 pt-2 pb-4">
+                <button class="btn btn-outline-dark btn-block" @click="clear()">
+                    Limpar filtro
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 d-lg-block">
+                <component-accordion
+                    :key="accordionKey"
+                    :itens="accordions"
+                    @onChanged="changeAccordion($event)"
+                />
+            </div>
+        </div>
+    </model>
 </template>
 <script>
     export default {
@@ -112,6 +155,14 @@
                 default: []
             },
             indicative_rating_ids: {
+                type: Array,
+                default: []
+            },
+            selected_categories_id: {
+                type: Array,
+                default: []
+            },
+            selected_indicative_ratings_id: {
                 type: Array,
                 default: []
             }
@@ -145,8 +196,23 @@
             }
         },
         methods: {
+            selectedDisplay(event){
+                this.display = event.target.value;
+                this.getPostsByPage();
+            },
+            selectedFilter(event){
+                this.filter = event.target.value;
+                this.order = this.filter === '2' ? 'asc' : 'desc';
+                this.getPostsByPage();
+            },
             clear(){
-                //
+                this.selectedIndications = [];
+                this.selectedCategories = [];
+                this.listIndications();
+                this.listCategories();
+                this.listSearch = {};
+                this.accordionKey++;
+                this.getAllPosts();
             },
             getPostsByPage(page = 1){
                 if(Object.keys(this.listSearch).length > 0){
@@ -162,7 +228,6 @@
                 
                 this.pagination.links.filter(link => parseInt(link.label) === page).forEach(link => {
                     if(link.url){
-                        console.log(link)
                         this.irParaPagina(page, link);
                     }
                 });
@@ -176,7 +241,7 @@
                                 accordion.itens = this.categories.map(category => ({
                                     id: category.id, 
                                     name: category.name,
-                                    show: false
+                                    show: this.selected_categories_id.includes(String(category.id))
                                 }));
                             });
                     })
@@ -190,24 +255,110 @@
                                 accordion.itens = this.indications.map(indication => ({
                                     id: indication.id, 
                                     name: indication.name,
-                                    show: false
+                                    show: this.selected_indicative_ratings_id.includes(String(indication.id))
                                 }));
                             });
                     })
+            },
+            changeAccordion(event){
+                if (event.name == 'Indicativas') {
+                    if (event.checked) {
+                        this.selectedIndications.push(event.value);
+                    } else {
+                        const index = this.selectedIndications.indexOf(event.value);
+                        if (index > -1) {
+                            this.selectedIndications.splice(index, 1);
+                        }
+                    }
+                }
+                if (event.name == 'Categorias'){
+                    if (event.checked) {
+                        this.selectedCategories.push(event.value);
+                    } else {
+                        const index = this.selectedCategories.indexOf(event.value);
+                        if (index > -1) {
+                            this.selectedCategories.splice(index, 1);
+                        }
+                    }
+                }
+                
+                let params = {
+                    'search': {
+                        'search' : this.search,
+                        'category_id' : this.selectedCategories,
+                        'indicative_rating_id' : this.selectedIndications,
+                        'order_direction': this.order,
+                        'paginate': {
+                            'per_page': this.display,
+                        },
+                    }
+                };
+
+                window.location.href = route('site.search', params);
             },
             irParaPagina(page, link) {
                 const url = new URL(link.url, window.location.origin)
                 url.searchParams.set('search[search]', this.search)
                 url.searchParams.set('search[order_direction]', this.order)
                 url.searchParams.set('search[per_page]', this.display)
+                url.searchParams.set('search[category_id]', this.selectedCategories.join(','))
+                url.searchParams.set('search[indicative_rating_id]', this.selectedIndications.join(','))
                 url.searchParams.set('paginate[page]', page)
 
                 window.location.href = url.toString()
+            },
+            getNameIndication(id){
+                const indication = this.indications.find(indication => indication.id === parseInt(id));
+                return indication ? indication.name : '';
+            },
+            getNameCategory(id){
+                const category = this.categories.find(category => category.id === parseInt(id));
+                return category ? category.name : '';
+            },
+            removeList(value, type){
+                if (type === 'indicative_rating') {
+                    const indexIndication = this.selectedIndications.indexOf(value);
+                    if (indexIndication > -1) {
+                        this.selectedIndications.splice(indexIndication, 1);
+                    }
+                }
+                if (type === 'category') {
+                    const indexCategory = this.selectedCategories.indexOf(value);
+                    if (indexCategory > -1) {
+                        this.selectedCategories.splice(indexCategory, 1);
+                    }
+                }
+
+                this.accordions.filter(accordion => accordion.name === 'Indicativas')
+                    .forEach(accordion => {
+                        accordion.itens = this.indications.map(indication => ({
+                            id: indication.id, 
+                            name: indication.name,
+                            show: this.selectedIndications.includes(String(indication.id))
+                        }));
+                    });
+
+                this.accordions.filter(accordion => accordion.name === 'Categorias')
+                    .forEach(accordion => {
+                        accordion.itens = this.categories.map(category => ({
+                            id: category.id, 
+                            name: category.name,
+                            show: this.selectedCategories.includes(String(category.id))
+                        }));
+                    });
+
+                if(this.selectedIndications.length == 0 || this.selectedCategories.length == 0){
+                    this.clear()
+                    return;
+                }
+
+                this.accordionKey++;
+                this.search();
             }
         },
         mounted() {
             this.listCategories();
-            this.listIndications()
+            this.listIndications();
         }
     }
 </script>
