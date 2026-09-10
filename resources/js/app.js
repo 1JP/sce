@@ -46,7 +46,10 @@ app.component('admin-filter-input', require('./components/filter/InputFilter.vue
 app.component('admin-thead', require('./components/table/Thead.vue').default);
 app.component('admin-tr', require('./components/table/Tr.vue').default);
 app.component('admin-subscription-info', require('./components/admin/SubscriptionInfo.vue').default);
+app.component('admin-report-nav', require('./components/admin/report/components/Nav.vue').default);
+app.component('admin-report-footer', require('./components/admin/report/components/Footer.vue').default);
 
+app.component('admin-report-general', require('./components/admin/report/general.vue').default);
 app.component('admin-category-create', require('./components/admin/category/create.vue').default);
 app.component('admin-category-index', require('./components/admin/category/index.vue').default);
 app.component('admin-category-type-index', require('./components/admin/category-type/index.vue').default);
