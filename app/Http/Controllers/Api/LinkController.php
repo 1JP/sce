@@ -57,13 +57,16 @@ class LinkController extends Controller
     public function chartline(Request $request)
     {
         $year = (int) $request->query('year', now()->year);
+        $user = Auth::user();
 
         $months = [
             'Janeiro','Fevereiro','Março','Abril','Maio','Junho',
             'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'
         ];
 
-        $links = Link::query()->whereYear('created_at', $year)->get();
+        $linksQuery = Link::query()->whereYear('created_at', $year);
+        $linksQuery = $this->filterLinksByScope($linksQuery, $user);
+        $links = $linksQuery->get();
         $counts = array_fill(0, 12, 0);
 
         foreach ($links as $link) {
@@ -73,7 +76,9 @@ class LinkController extends Controller
 
         $currentTotal = array_sum($counts);
         $previousYear = $year - 1;
-        $previousLinks = Link::query()->whereYear('created_at', $previousYear)->get();
+        $previousLinksQuery = Link::query()->whereYear('created_at', $previousYear);
+        $previousLinksQuery = $this->filterLinksByScope($previousLinksQuery, $user);
+        $previousLinks = $previousLinksQuery->get();
         $previousCounts = array_fill(0, 12, 0);
 
         foreach ($previousLinks as $link) {
@@ -98,6 +103,47 @@ class LinkController extends Controller
             'current_year_total' => $currentTotal,
             'previous_year_total' => $previousTotal,
         ]);
+    }
+
+    /**
+     * Filters links based on the user's scope.
+     */
+    private function filterLinksByScope($query, ?User $user)
+    {
+        if (!$user) {
+            return $query;
+        }
+
+        if ($user->isRoot()) {
+            return $query;
+        }
+
+        if ($user->isAdmin()) {
+            return $query->where(function ($q) use ($user) {
+                $q->whereHas('post', function ($postQuery) use ($user) {
+                    $postQuery->where('user_id', $user->id);
+                })->orWhereHas('comment.post', function ($postQuery) use ($user) {
+                    $postQuery->where('user_id', $user->id);
+                });
+            });
+        }
+
+        if ($user->isMember()) {
+            $administrator = $user->administrator()->first()?->user;
+            if (!$administrator) {
+                return $query->whereRaw('1 = 0');
+            }
+
+            return $query->where(function ($q) use ($administrator) {
+                $q->whereHas('post', function ($postQuery) use ($administrator) {
+                    $postQuery->where('user_id', $administrator->id);
+                })->orWhereHas('comment.post', function ($postQuery) use ($administrator) {
+                    $postQuery->where('user_id', $administrator->id);
+                });
+            });
+        }
+
+        return $query;
     }
 
     /**

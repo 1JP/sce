@@ -40,8 +40,9 @@
                         <span class="badge rounded-circle" style="background-color: rgba(255, 87, 51, 0.2); width: 12px; height: 12px; display: inline-block;"></span>
                     </h6>
                     <p class="text-sm mb-0">
-                        <i class="fa fa-arrow-up text-success"></i>
-                        <span class="font-weight-bold">4% more</span> in {{ currentYear }}
+                        <i class="fa fa-arrow-up text-success" v-if="linkTrend"></i>
+                        <i class="fa fa-arrow-down text-danger" v-else></i>
+                        <span class="font-weight-bold">{{ linkTrendPercentage }}% more</span> in {{ currentYear }}
                     </p>
                 </template>
                 <template v-slot:body>
@@ -137,7 +138,9 @@
                 currentYear: new Date().getFullYear(),
                 commentDatasets: [],
                 commentTrend: false,
+                linkTrend: false,
                 commentTrendPercentage: 0,
+                linkTrendPercentage: 0,
                 linkDeslinkDatasets: [],
                 linkDatasets: {
                     label: 'Like',
@@ -180,6 +183,8 @@
                 return axios.get(route('api.links.chartline', { year: this.currentYear }))
                     .then((response) => {
                         this.linkDatasets.data = Array.isArray(response.data.counts) ? response.data.counts : [];
+                        this.linkTrend = response.data.trend === 'positive';
+                        this.linkTrendPercentage = response.data.percentage_increase;
                     })
                     .catch(() => {
                         this.linkDatasets.data = [];

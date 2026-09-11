@@ -9,7 +9,6 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Models\Deslink;
 use Exception;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -57,13 +56,16 @@ class DesLinkController extends Controller
     public function chartline(Request $request)
     {
         $year = (int) $request->query('year', now()->year);
+        $user = Auth::user();
 
         $months = [
             'Janeiro','Fevereiro','Março','Abril','Maio','Junho',
             'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'
         ];
 
-        $deslinks = Deslink::query()->whereYear('created_at', $year)->get();
+        $deslinksQuery = Deslink::query()->whereYear('created_at', $year);
+        $deslinksQuery = $this->filterDeslinksByScope($deslinksQuery, $user);
+        $deslinks = $deslinksQuery->get();
         $counts = array_fill(0, 12, 0);
 
         foreach ($deslinks as $deslink) {
@@ -73,7 +75,9 @@ class DesLinkController extends Controller
 
         $currentTotal = array_sum($counts);
         $previousYear = $year - 1;
-        $previousDeslinks = Deslink::query()->whereYear('created_at', $previousYear)->get();
+        $previousDeslinksQuery = Deslink::query()->whereYear('created_at', $previousYear);
+        $previousDeslinksQuery = $this->filterDeslinksByScope($previousDeslinksQuery, $user);
+        $previousDeslinks = $previousDeslinksQuery->get();
         $previousCounts = array_fill(0, 12, 0);
 
         foreach ($previousDeslinks as $deslink) {
@@ -98,6 +102,47 @@ class DesLinkController extends Controller
             'current_year_total' => $currentTotal,
             'previous_year_total' => $previousTotal,
         ]);
+    }
+
+    /**
+     * Filters deslinks based on the user's scope.
+     */
+    private function filterDeslinksByScope($query, ?User $user)
+    {
+        if (!$user) {
+            return $query;
+        }
+
+        if ($user->isRoot()) {
+            return $query;
+        }
+
+        if ($user->isAdmin()) {
+            return $query->where(function ($q) use ($user) {
+                $q->whereHas('post', function ($postQuery) use ($user) {
+                    $postQuery->where('user_id', $user->id);
+                })->orWhereHas('comment.post', function ($postQuery) use ($user) {
+                    $postQuery->where('user_id', $user->id);
+                });
+            });
+        }
+
+        if ($user->isMember()) {
+            $administrator = $user->administrator()->first()?->user;
+            if (!$administrator) {
+                return $query->whereRaw('1 = 0');
+            }
+
+            return $query->where(function ($q) use ($administrator) {
+                $q->whereHas('post', function ($postQuery) use ($administrator) {
+                    $postQuery->where('user_id', $administrator->id);
+                })->orWhereHas('comment.post', function ($postQuery) use ($administrator) {
+                    $postQuery->where('user_id', $administrator->id);
+                });
+            });
+        }
+
+        return $query;
     }
 
     /**
