@@ -9,7 +9,9 @@
                         {{ value }}
                     </h5>
                     <p class="mb-0">
-                        <span class="text-success text-sm font-weight-bolder">{{ description }}</span>
+                        <span class="text-success text-sm font-weight-bolder" v-if="trend == 'positive'">{{ description }}</span>
+                        <span class="text-danger text-sm font-weight-bolder" v-else-if="trend == 'negative'">{{ description }}</span>
+                        <span class="text-secondary text-sm font-weight-bolder" v-else>{{ description }}</span>
                     </p>
                     </div>
                 </div>
@@ -45,6 +47,11 @@
             color: {
                 type: String,
                 required: true,
+            },
+            trend: {
+                type: String,
+                required: false,
+                default: 'neutral',
             }
         },
     }

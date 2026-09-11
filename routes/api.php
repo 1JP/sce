@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CategoryTypeController;
 use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DesLinkController;
 use App\Http\Controllers\Api\IndicativeRatingController;
 use App\Http\Controllers\Api\LinkController;
@@ -95,6 +96,13 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
     });
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('profiles', ProfileController::class);
+
+    Route::prefix('dashboard')->name('dashboard.')->group(function () {
+        Route::get('new-subscription', [DashboardController::class, 'newSubscription'])->name('new-subscription');
+        Route::get('new-users', [DashboardController::class, 'newUsers'])->name('new-users');
+        Route::get('new-clients', [DashboardController::class, 'newClients'])->name('new-clients');
+        Route::get('new-posts', [DashboardController::class, 'newPosts'])->name('new-posts');
+    });
 });
 
 Route::middleware('auth:sanctum')->group(function () {
