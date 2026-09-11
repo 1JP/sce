@@ -32,7 +32,14 @@ class PostResource extends JsonResource
             'indicative_rating' => $this->indicative_rating,
             'indicative_rating_id' => $this->indicative_rating_id,
             'active' => $this->active,
-            'images' => $images
+            'images' => $images,
+            'likes_percentage' => $this->likes_percentage(),
+            'dislikes_percentage' => $this->dislikes_percentage(),
+            'positive_comments_percentage' => $this->positive_comments_percentage(),
+            'negative_comments_percentage' => $this->negative_comments_percentage(),
+            'neutral_comments_percentage' => $this->neutral_comments_percentage(),
+            'likes' => $this->links,
+            'dislikes' => $this->deslinks,
         ];
     }
 }

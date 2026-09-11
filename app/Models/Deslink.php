@@ -15,4 +15,14 @@ class Deslink extends Model
      * @var array<int, string>
      */
     protected $guarded = [];
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class, 'post_id');
+    }
+
+    public function comment()
+    {
+        return $this->belongsTo(Comment::class, 'comment_id');
+    }
 }

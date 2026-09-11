@@ -26,7 +26,7 @@ class CategoryResource extends JsonResource
             'active' => $this->active,
             'category_types' => $this->categoryTypes,
             'types' => $types,
-            'posts' => 0,
+            'posts' => $this->posts,
         ];
     }
 }
