@@ -47,38 +47,78 @@
             refreshChart() {
                 if (this.chart) {
                     this.chart.destroy();
+                    this.chart = null;
                 }
 
                 this.createChart();
             },
-            createChart() {
-                const canvas = this.$refs.chartLine;
-                const ctx = canvas.getContext("2d");
-                const gradientStroke1 = ctx.createLinearGradient(0, 230, 0, 50);
+            normalizeDatasets(datasetSource, gradientStroke1) {
+                if (!Array.isArray(datasetSource) || datasetSource.length === 0) {
+                    return [];
+                }
 
+                if (datasetSource.every((item) => typeof item === 'number')) {
+                    return [{
+                        label: 'Comments',
+                        tension: 0.4,
+                        borderWidth: 0,
+                        pointRadius: 0,
+                        borderColor: '#5e72e4',
+                        backgroundColor: gradientStroke1,
+                        borderWidth: 3,
+                        fill: true,
+                        data: datasetSource,
+                        maxBarThickness: 6,
+                    }];
+                }
+
+                if (datasetSource.every((item) => item && typeof item === 'object' && !Array.isArray(item))) {
+                    return datasetSource.map((dataset) => {
+                        const color = dataset.borderColor || '#5e72e4';
+
+                        return {
+                            label: dataset.label || 'Dataset',
+                            data: Array.isArray(dataset.data) ? dataset.data : [],
+                            borderColor: color,
+                            backgroundColor: dataset.backgroundColor || gradientStroke1,
+                            tension: dataset.tension ?? 0.4,
+                            borderWidth: dataset.borderWidth ?? 3,
+                            pointRadius: dataset.pointRadius ?? 0,
+                            fill: dataset.fill ?? true,
+                            maxBarThickness: dataset.maxBarThickness ?? 6,
+                        };
+                    });
+                }
+
+                return [];
+            },
+            createChart() {
+                if (!this.$refs.chartLine || !Array.isArray(this.labels) || !Array.isArray(this.datasets)) {
+                    return;
+                }
+
+                const canvas = this.$refs.chartLine;
+                const ctx = canvas.getContext('2d');
+                if (!ctx) {
+                    return;
+                }
+
+                const gradientStroke1 = ctx.createLinearGradient(0, 230, 0, 50);
                 gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 0.2)');
                 gradientStroke1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
                 gradientStroke1.addColorStop(0, 'rgba(94, 114, 228, 0)');
 
-                const chartData = {
-                    labels: this.labels,
-                    datasets: [{
-                        label: "Mobile apps",
-                        tension: 0.4,
-                        borderWidth: 0,
-                        pointRadius: 0,
-                        borderColor: "#5e72e4",
-                        backgroundColor: gradientStroke1,
-                        borderWidth: 3,
-                        fill: true,
-                        data: this.datasets,
-                        maxBarThickness: 6
-                    }],
+                const datasets = this.normalizeDatasets(this.datasets, gradientStroke1);
+                if (!datasets.length) {
+                    return;
                 }
 
                 const config = {
-                    type: "line",
-                    data: chartData,
+                    type: 'line',
+                    data: {
+                        labels: this.labels,
+                        datasets,
+                    },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
@@ -106,7 +146,7 @@
                                     color: '#fbfbfb',
                                     font: {
                                         size: 11,
-                                        family: "Open Sans",
+                                        family: 'Open Sans',
                                         style: 'normal',
                                         lineHeight: 2
                                     },
@@ -126,7 +166,7 @@
                                     padding: 20,
                                     font: {
                                         size: 11,
-                                        family: "Open Sans",
+                                        family: 'Open Sans',
                                         style: 'normal',
                                         lineHeight: 2
                                     },

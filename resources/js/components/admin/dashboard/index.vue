@@ -47,7 +47,7 @@
                 <template v-slot:body>
                     <admin-chart-line
                         :labels='labels'
-                        :datasets='[]'
+                        :datasets='linkDeslinkDatasets'
                     ></admin-chart-line>
                 </template>
             </component-card>
@@ -127,20 +127,32 @@
     import axios from 'axios';
 
     export default {
-        props: {
-            labels: {
-                type: Array,
-                required: true,
-                default: () => [],
-            },
-        },
         data(){
             return {
                 posts: [],
+                labels: [
+                    'Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+                    'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'
+                ],
                 currentYear: new Date().getFullYear(),
                 commentDatasets: [],
                 commentTrend: false,
                 commentTrendPercentage: 0,
+                linkDeslinkDatasets: [],
+                linkDatasets: {
+                    label: 'Like',
+                    data: [],
+                    borderColor: '#33FF57',
+                    backgroundColor: 'rgba(51, 255, 87, 0.2)',
+                    tension: 0.4,
+                },
+                deslinkDatasets: {
+                    label: 'Deslike',
+                    data: [],
+                    borderColor: '#FF5733',
+                    backgroundColor: 'rgba(255, 87, 51, 0.2)',
+                    tension: 0.4,
+                },
             }
         },
         methods: {
@@ -150,18 +162,51 @@
                         this.posts = response.data.data;
                     })
             },
+            normalizeLinkDeslinkDatasets() {
+                this.linkDeslinkDatasets = [
+                    { ...this.linkDatasets, data: Array.isArray(this.linkDatasets.data) ? this.linkDatasets.data : [] },
+                    { ...this.deslinkDatasets, data: Array.isArray(this.deslinkDatasets.data) ? this.deslinkDatasets.data : [] },
+                ];
+            },
             commentChartLine(){
-                axios.get(route('api.admin.comments.chartline', { year: this.currentYear }))
+                axios.get(route('api.comments.chartline', { year: this.currentYear }))
                     .then((response) => {
                         this.commentDatasets = response.data.counts;
-                        this.commentTrend = response.data.trend;
+                        this.commentTrend = response.data.trend === 'positive';
                         this.commentTrendPercentage = response.data.percentage_increase;
                     })
-            }
+            },
+            linkChartLine(){
+                return axios.get(route('api.links.chartline', { year: this.currentYear }))
+                    .then((response) => {
+                        this.linkDatasets.data = Array.isArray(response.data.counts) ? response.data.counts : [];
+                    })
+                    .catch(() => {
+                        this.linkDatasets.data = [];
+                    });
+            },
+            deslinkChartLine(){
+                return axios.get(route('api.deslinks.chartline', { year: this.currentYear }))
+                    .then((response) => {
+                        this.deslinkDatasets.data = Array.isArray(response.data.counts) ? response.data.counts : [];
+                    })
+                    .catch(() => {
+                        this.deslinkDatasets.data = [];
+                    });
+            },
+            loadReactionCharts() {
+                Promise.all([
+                    this.linkChartLine(),
+                    this.deslinkChartLine(),
+                ]).then(() => {
+                    this.normalizeLinkDeslinkDatasets();
+                });
+            },
         },
         mounted() {
             this.listPosts();
-            this.commentChartLine()
+            this.commentChartLine();
+            this.loadReactionCharts();
         }
     }
 </script>

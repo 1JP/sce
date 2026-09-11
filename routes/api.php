@@ -44,6 +44,10 @@ Route::get('/categories/{category}/posts', [CategoryController::class, 'myPosts'
 Route::get('/categories/posts/search', [SitePostController::class, 'search'])->name('site.posts.search');
 Route::get('links', [SettingController::class, 'links'])->name('settings.links');
 
+Route::get('/comments/chartline', [CommentController::class, 'chartline'])->name('comments.chartline');
+Route::get('/links/chartline', [LinkController::class, 'chartline'])->name('links.chartline');
+Route::get('/deslinks/chartline', [DesLinkController::class, 'chartline'])->name('deslinks.chartline');
+
 Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(function () {
     Route::prefix('categories')->name('categories.')->group(function () {
         Route::get('search', [CategoryController::class, 'search'])->name('search');
@@ -91,9 +95,6 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
     });
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('profiles', ProfileController::class);
-
-    Route::get('/comments/chartline', [CommentController::class, 'chartline'])->name('comments.chartline');
-
 });
 
 Route::middleware('auth:sanctum')->group(function () {

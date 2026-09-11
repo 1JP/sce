@@ -7,10 +7,12 @@ use App\Http\Requests\DesLinkRequest;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
+use App\Models\Deslink;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class DesLinkController extends Controller
 {
@@ -47,6 +49,55 @@ class DesLinkController extends Controller
         } catch (Exception $e) {
             return response()->json(['message' => 'Ocorreu um erro ao processar a solicitação.'], 500);
         }
+    }
+
+    /** 
+     * Returns the chart data for deslinks grouped by month for a given year.
+     * */
+    public function chartline(Request $request)
+    {
+        $year = (int) $request->query('year', now()->year);
+
+        $months = [
+            'Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+            'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'
+        ];
+
+        $deslinks = Deslink::query()->whereYear('created_at', $year)->get();
+        $counts = array_fill(0, 12, 0);
+
+        foreach ($deslinks as $deslink) {
+            $month = (int) $deslink->created_at->format('n');
+            $counts[$month - 1]++;
+        }
+
+        $currentTotal = array_sum($counts);
+        $previousYear = $year - 1;
+        $previousDeslinks = Deslink::query()->whereYear('created_at', $previousYear)->get();
+        $previousCounts = array_fill(0, 12, 0);
+
+        foreach ($previousDeslinks as $deslink) {
+            $month = (int) $deslink->created_at->format('n');
+            $previousCounts[$month - 1]++;
+        }
+
+        $previousTotal = array_sum($previousCounts);
+        $percentageIncrease = $previousTotal === 0
+            ? 100.0
+            : (($currentTotal - $previousTotal) / $previousTotal) * 100;
+
+        $trend = $percentageIncrease > 0 ? 'positive' : ($percentageIncrease < 0 ? 'negative' : 'neutral');
+
+        return response()->json([
+            'year' => $year,
+            'labels' => $months,
+            'counts' => array_values($counts),
+            'percentage_increase' => round($percentageIncrease, 2),
+            'trend' => $trend,
+            'previous_year' => $previousYear,
+            'current_year_total' => $currentTotal,
+            'previous_year_total' => $previousTotal,
+        ]);
     }
 
     /**
