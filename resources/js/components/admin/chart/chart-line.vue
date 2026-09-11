@@ -21,10 +21,36 @@
                 default: () => [],
             },
         },
+        data() {
+            return {
+                chart: null,
+            };
+        },
         mounted() {
             this.createChart();
         },
+        watch: {
+            labels: {
+                deep: true,
+                handler() {
+                    this.refreshChart();
+                }
+            },
+            datasets: {
+                deep: true,
+                handler() {
+                    this.refreshChart();
+                }
+            }
+        },
         methods: {
+            refreshChart() {
+                if (this.chart) {
+                    this.chart.destroy();
+                }
+
+                this.createChart();
+            },
             createChart() {
                 const canvas = this.$refs.chartLine;
                 const ctx = canvas.getContext("2d");
@@ -110,7 +136,7 @@
                     }
                 }
 
-                new Chart(ctx, config);
+                this.chart = new Chart(ctx, config);
             }
         }
     }

@@ -114,4 +114,59 @@ class Post extends Model
 
         return round($weightedAverage, 1);
     }
+
+    /**
+     * Get the percentage of likes for the post.
+     */
+    public function likes_percentage()
+    {
+        $totalReactions = $this->links->count() + $this->deslinks->count();
+        return $totalReactions
+            ? round(($this->links->count() / $totalReactions) * 100)
+            : 0;
+    }
+
+    /**
+     * Get the percentage of dislikes for the post.
+     */
+    public function dislikes_percentage()
+    {
+        $totalReactions = $this->links->count() + $this->deslinks->count();
+        return $totalReactions
+            ? round(($this->deslinks->count() / $totalReactions) * 100)
+            : 0;
+    }
+
+    /**
+     * Get the percentage of positive comments for the post.
+     */
+    public function positive_comments_percentage()
+    {
+        $totalReactions = $this->links->count() + $this->deslinks->count() + $this->comments->count();
+        return $totalReactions
+            ? round(($this->comments->where('sentiment', 'positive')->count() / $totalReactions) * 100)
+            : 0;
+    }
+
+    /**
+     * Get the percentage of negative comments for the post.
+     */
+    public function negative_comments_percentage()
+    {
+        $totalReactions = $this->links->count() + $this->deslinks->count() + $this->comments->count();
+        return $totalReactions
+            ? round(($this->comments->where('sentiment', 'negative')->count() / $totalReactions) * 100)
+            : 0;
+    }
+
+    /**
+     * Get the percentage of neutral comments for the post.
+     */
+    public function neutral_comments_percentage()
+    {
+        $totalReactions = $this->links->count() + $this->deslinks->count() + $this->comments->count();
+        return $totalReactions
+            ? round(($this->comments->where('sentiment', 'neutral')->count() / $totalReactions) * 100)
+            : 0;
+    }
 }

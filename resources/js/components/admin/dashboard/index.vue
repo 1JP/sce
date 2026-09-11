@@ -11,14 +11,15 @@
                 <template v-slot:header>
                     <h6 class="text-capitalize">Comentários</h6>
                     <p class="text-sm mb-0">
-                        <i class="fa fa-arrow-up text-success"></i>
-                        <span class="font-weight-bold">4% more</span> in 2024
+                        <i class="fa fa-arrow-up text-success" v-if="commentTrend"></i>
+                        <i class="fa fa-arrow-down text-danger" v-else></i>
+                        <span class="font-weight-bold">{{ commentTrendPercentage }}% more</span> in {{ currentYear }}
                     </p>
                 </template>
                 <template v-slot:body>
                     <admin-chart-line
                         :labels='labels'
-                        :datasets='[]'
+                        :datasets='commentDatasets'
                     ></admin-chart-line>
                 </template>
             </component-card>
@@ -40,7 +41,7 @@
                     </h6>
                     <p class="text-sm mb-0">
                         <i class="fa fa-arrow-up text-success"></i>
-                        <span class="font-weight-bold">4% more</span> in 2024
+                        <span class="font-weight-bold">4% more</span> in {{ currentYear }}
                     </p>
                 </template>
                 <template v-slot:body>
@@ -80,31 +81,31 @@
                                 <td>
                                     <div class="text-center">
                                         <p class="text-xs font-weight-bold mb-0">Link:</p>
-                                        <h6 class="text-sm mb-0">0</h6>
+                                        <h6 class="text-sm mb-0">{{ post.likes?.length }}</h6>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="text-center">
                                         <p class="text-xs font-weight-bold mb-0">Deslink:</p>
-                                        <h6 class="text-sm mb-0">0</h6>
+                                        <h6 class="text-sm mb-0">{{ post.dislikes?.length }}</h6>
                                     </div>
                                 </td>
                                 <td class="align-middle text-sm">
                                     <div class="col text-center">
                                         <p class="text-xs font-weight-bold mb-0">Comentários positivo:</p>
-                                        <h6 class="text-sm mb-0">0%</h6>
+                                        <h6 class="text-sm mb-0">{{ post.positive_comments_percentage }}%</h6>
                                     </div>
                                 </td>
                                 <td class="align-middle text-sm">
                                     <div class="col text-center">
                                         <p class="text-xs font-weight-bold mb-0">Comentários negativo:</p>
-                                        <h6 class="text-sm mb-0">0%</h6>
+                                        <h6 class="text-sm mb-0">{{ post.negative_comments_percentage }}%</h6>
                                     </div>
                                 </td>
                                 <td class="align-middle text-sm">
                                     <div class="col text-center">
                                         <p class="text-xs font-weight-bold mb-0">Comentários neutro:</p>
-                                        <h6 class="text-sm mb-0">0%</h6>
+                                        <h6 class="text-sm mb-0">{{ post.neutral_comments_percentage }}%</h6>
                                     </div>
                                 </td>
                                 <td>
@@ -136,6 +137,10 @@
         data(){
             return {
                 posts: [],
+                currentYear: new Date().getFullYear(),
+                commentDatasets: [],
+                commentTrend: false,
+                commentTrendPercentage: 0,
             }
         },
         methods: {
@@ -145,9 +150,18 @@
                         this.posts = response.data.data;
                     })
             },
+            commentChartLine(){
+                axios.get(route('api.admin.comments.chartline', { year: this.currentYear }))
+                    .then((response) => {
+                        this.commentDatasets = response.data.counts;
+                        this.commentTrend = response.data.trend;
+                        this.commentTrendPercentage = response.data.percentage_increase;
+                    })
+            }
         },
         mounted() {
             this.listPosts();
+            this.commentChartLine()
         }
     }
 </script>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CategoryTypeController;
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\DesLinkController;
 use App\Http\Controllers\Api\IndicativeRatingController;
 use App\Http\Controllers\Api\LinkController;
@@ -89,8 +90,10 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
         Route::get('search', [RoleController::class, 'search'])->name('search');
     });
     Route::apiResource('roles', RoleController::class);
-
     Route::apiResource('profiles', ProfileController::class);
+
+    Route::get('/comments/chartline', [CommentController::class, 'chartline'])->name('comments.chartline');
+
 });
 
 Route::middleware('auth:sanctum')->group(function () {
