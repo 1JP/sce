@@ -8,6 +8,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="pVTgFCMpFVhWl8YWanaQJAEx7AeA0ruAnVmRoEn1">
+    <link rel="icon" type="image/jpeg" href="{{ asset('site/img/logo-favicon.jpeg') }}">
+    
     <title>@yield('title')</title>
 
     @routes
