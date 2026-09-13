@@ -92,6 +92,8 @@ class PostController extends Controller
             $query->where('category_id', '=', $validated['search']['category_id']);
         })->when(isset($validated['search']['indicative_rating_id']), function ($query) use ($validated){
             $query->where('indicative_rating_id', '=', $validated['search']['indicative_rating_id']);
+        })->when(isset($validated['search']['category_type_id']), function ($query) use ($validated){
+            $query->where('category_type_id', '=', $validated['search']['category_type_id']);
         })->orderBy('name', 'ASC')->get();
 
        return PostResource::collection($posts);

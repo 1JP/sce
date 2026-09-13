@@ -39,6 +39,14 @@
                 </div>
                 <div class="col-lg-1 col-lg-2">
                     <admin-filter-select
+                        :name="'Tipo de Categoria'"
+                        :options="categories"
+                        :value-select="selectedCategoryType"
+                        @onChanged="filterCategoryType($event)"
+                    ></admin-filter-select>
+                </div>
+                <div class="col-lg-1 col-lg-2">
+                    <admin-filter-select
                         :name="'Status'"
                         :options="['Ativo', 'Desativado']"
                         :value-select="selectedStatus"
@@ -82,6 +90,9 @@
                         </component-td>
                         <component-td>
                             <h6 class="mb-0 text-sm">{{ post.category.name }}</h6>
+                        </component-td>
+                        <component-td>
+                            <h6 class="mb-0 text-sm">{{ post.category_type.name }}</h6>
                         </component-td>
                         <component-td>
                             <span class="me-2 text-xs font-weight-bold">{{ post.note }}</span>
@@ -150,14 +161,17 @@
                 token: '',
                 category_id: '',
                 indicative_rating_id: '',
+                category_type_id: '',
                 routeDelete: '',
                 posts: [],
                 post: {},
                 indications: [],
                 categories: [],
+                types: [],
                 selectedStatus: '',
                 selectedIndicativeRating: '',
                 selectedCategory: '',
+                selectedCategoryType: '',
                 inputPost: '',
                 listSearch: {},
             }
@@ -167,6 +181,12 @@
                 axios.get(route('api.categories.index'))
                     .then((response) => {
                         this.categories = response.data.data;
+                    })
+            },
+            listCategoriesType(){
+                axios.get(route('api.categories.index'))
+                    .then((response) => {
+                        this.types = response.data.data;
                     })
             },
             listIndications(){
@@ -223,6 +243,26 @@
                 if(Object.keys(this.listSearch).length > 0){
                     params.search = Object.assign({}, params.search, this.listSearch.search);
                     params.search.category_id = this.selectedCategory
+                }
+                
+                this.listSearch = params;
+                this.search(params);
+            },
+            filterCategoryType(event){
+                this.selectedCategoryType = event.target.value;
+                if(this.selectedCategoryType == ''){
+                    this.listPosts();
+                    return;
+                }
+                let params = {
+                    'search': {
+                        'category_type_id' : this.selectedCategoryType
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.category_type_id = this.selectedCategoryType
                 }
                 
                 this.listSearch = params;
@@ -293,6 +333,7 @@
             this.listCategories();
             this.listIndications();
             this.listPosts();
+            this.listCategoriesType();
             this.token = document.head.querySelector('meta[name="csrf-token"]')?.content;
         }
     }

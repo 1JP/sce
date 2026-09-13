@@ -50,6 +50,11 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function category_type()
+    {
+        return $this->belongsTo(CategoryType::class);
+    }
+
     public function indicative_rating()
     {
         return $this->belongsTo(IndicativeRating::class);

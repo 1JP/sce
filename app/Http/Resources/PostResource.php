@@ -31,6 +31,8 @@ class PostResource extends JsonResource
             'category_id' => $this->category_id,
             'indicative_rating' => $this->indicative_rating,
             'indicative_rating_id' => $this->indicative_rating_id,
+            'category_type_id' => $this->category_type_id,
+            'category_type' => $this->category_type,
             'active' => $this->active,
             'images' => $images,
             'likes_percentage' => $this->likes_percentage(),

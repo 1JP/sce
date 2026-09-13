@@ -26,6 +26,7 @@ class PostRequest extends FormRequest
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'indicative_rating_id' => 'required|exists:indicative_ratings,id',
+            'category_type_id' => 'required|exists:category_types,id',
             'images' => 'nullable|array',
             'active' => 'nullable',
         ];

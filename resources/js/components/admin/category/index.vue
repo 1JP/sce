@@ -72,7 +72,7 @@
                             </h6>
                         </component-td>
                         <component-td :class="'align-middle text-center text-sm'">
-                            <span class="text-secondary text-xs font-weight-bold">{{ category.posts }}</span>
+                            <span class="text-secondary text-xs font-weight-bold">{{ category.posts?.length }}</span>
                         </component-td>
                         <component-td :class="'align-middle text-center'">
                             <component-span-status :class="'bg-gradient-success'" v-if="category.active">Ativo</component-span-status>

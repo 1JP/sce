@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\CategoryType;
 use App\Models\IndicativeRating;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,6 +23,7 @@ class PostFactory extends Factory
         return [
             'indicative_rating_id' => IndicativeRating::factory(),
             'category_id' => Category::factory(),
+            'category_type_id' => CategoryType::factory(),
             'user_id' => User::factory(),
             'name' => fake()->name(),
             'description' => fake()->text(),
