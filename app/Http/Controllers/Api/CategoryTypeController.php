@@ -33,4 +33,16 @@ class CategoryTypeController extends Controller
 
         return CategoryTypeResource::collection($types);
     }
+
+    /**
+     * Retrieve all active category types ordered alphabetically by name.
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function all()
+    {
+        $types = CategoryType::orderBy('name')->get();
+
+        return CategoryTypeResource::collection($types);
+    }
 }

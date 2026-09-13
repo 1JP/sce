@@ -9,7 +9,7 @@
             </tbody>
         </table>
 
-        <component-paginate v-if="pagination" :pagination="pagination" @page-change="changePage()"/>
+        <component-paginate v-if="pagination" :pagination="pagination" @page-change="changePage"/>
         
     </div>
 </template>
@@ -26,25 +26,7 @@ export default {
     emits: ['page-change'],
 
     computed: {
-        visiblePages() {
-            const { current_page, last_page } = this.pagination
-            const pages = []
-            const delta = 2
-
-            for (let i = 1; i <= last_page; i++) {
-                if (
-                    i === 1 ||
-                    i === last_page ||
-                    (i >= current_page - delta && i <= current_page + delta)
-                ) {
-                    pages.push(i)
-                } else if (pages[pages.length - 1] !== '...') {
-                    pages.push('...')
-                }
-            }
-
-            return pages
-        },
+        //
     },
 
     methods: {

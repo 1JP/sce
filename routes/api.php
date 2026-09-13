@@ -37,6 +37,7 @@ use Illuminate\Support\Facades\Hash;
 */
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/all-category-type', [CategoryTypeController::class, 'all'])->name('category-type.all');
 Route::get('/indicative-rating', [IndicativeRatingController::class, 'index'])->name('indicative-rating.index');
 Route::get('/all-posts', [PostController::class, 'all'])->name('posts.all');
 Route::get('/posts/top', [PostController::class, 'top'])->name('posts.top');

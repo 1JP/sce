@@ -16,6 +16,12 @@
                 :category = '@json($post->category)'
                 :indicative_rating = '@json($post->indicative_rating)'
                 :images = '@json($post->images)'
+                :category_type = '@json($post->category_type)'
+                :likes_percentage = '@json($post->likes_percentage())'
+                :dislikes_percentage = '@json($post->dislikes_percentage())'
+                :positive_comments_percentage = '@json($post->positive_comments_percentage())'
+                :negative_comments_percentage = '@json($post->negative_comments_percentage())'
+                :neutral_comments_percentage = '@json($post->neutral_comments_percentage())'
             />
         </div>
     </div>

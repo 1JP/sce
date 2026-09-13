@@ -40,7 +40,7 @@
                 <div class="col-lg-1 col-lg-2">
                     <admin-filter-select
                         :name="'Tipo de Categoria'"
-                        :options="categories"
+                        :options="types"
                         :value-select="selectedCategoryType"
                         @onChanged="filterCategoryType($event)"
                     ></admin-filter-select>
@@ -53,20 +53,20 @@
                         @onChanged="filterSelectStatus($event)"
                     ></admin-filter-select>
                 </div>
-                <div class="col-lg-1 col-lg-2" v-if="Object.keys(listSearch).length > 0">
-                    <button type="button" class="btn bg-gradient-primary" @click="clear()">
-                        Limpar filtros
-                    </button>
-                </div>
-                <div class="col-lg-1 col-lg-1" v-if="created">
+                <div class="col-lg-1 col" v-if="created">
                     <a :href="route('admin.posts.create')" class="btn bg-gradient-primary">
                         Cadastrar
                     </a>
                 </div>
+                <div class="col-lg-1 col" v-if="Object.keys(listSearch).length > 0">
+                    <button type="button" class="btn bg-gradient-primary" @click="clear()">
+                        Limpar
+                    </button>
+                </div>
             </div>
         </template>
         <template v-slot:body>
-            <admin-table>
+            <admin-table :pagination="pagination" @page-change="listPosts">
                 <template v-slot:thead>
                     <admin-thead
                         v-for="tha, index in ths"
@@ -99,9 +99,9 @@
                         </component-td>
                         <component-td>
                             <div class="d-flex align-items-center justify-content-center">
-                                <span class="me-2 text-xs font-weight-bold">0%</span>
+                                <span class="me-2 text-xs font-weight-bold">{{ acceptance(post.likes_percentage, post.dislikes_percentage) }}%</span>
                                 <div>
-                                    <component-progress :number="0"/>
+                                    <component-progress :number="acceptance(post.likes_percentage, post.dislikes_percentage)"/>
                                 </div>
                             </div>
                         </component-td>
@@ -174,6 +174,7 @@
                 selectedCategoryType: '',
                 inputPost: '',
                 listSearch: {},
+                pagination: null,
             }
         },
         methods: {
@@ -184,7 +185,7 @@
                     })
             },
             listCategoriesType(){
-                axios.get(route('api.categories.index'))
+                axios.get(route('api.category-type.all'))
                     .then((response) => {
                         this.types = response.data.data;
                     })
@@ -195,10 +196,16 @@
                         this.indications = response.data.data;
                     })
             },
-            listPosts(){
-                axios.get(route('api.admin.posts.index'))
+            listPosts(page = 1){
+                if(Object.keys(this.listSearch).length > 0){
+                    this.listSearch.page = page
+                    this.search(this.listSearch)
+                    return
+                }
+                axios.get(route('api.admin.posts.index'), { params: { page } })
                     .then((response) => {
                         this.posts = response.data.data;
+                        this.pagination = response.data.meta
                     })
             },
             selectPost(post){
@@ -318,16 +325,23 @@
                 axios.get(route('api.admin.posts.search'), {params})
                     .then((response) => {
                         this.posts = response.data.data;
+                        this.pagination = response.data.meta
                     })
             },
             clear(){
                 this.selectedIndicativeRating = '';
                 this.selectedStatus = '';
                 this.selectedCategory = '';
+                this.selectedCategoryType = '';
                 this.inputPost = '';
                 this.listSearch = {}
                 this.listPosts();
-            }
+            },
+            acceptance(like, deslink){
+                if (deslink > like)
+                    return deslink;
+                return like
+            },
         },
         mounted() {
             this.listCategories();

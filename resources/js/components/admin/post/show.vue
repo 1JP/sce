@@ -26,13 +26,9 @@
                         <h5 class="text-dark">Nome do Post:</h5>
                         <p><span>{{ post.name }}</span></p>
                     </div>
-                    <div class="col-12 my-1 col-lg-3" style="">
+                    <div class="col-12 my-1 col-lg-6" style="">
                         <h5 class="text-dark">Post ativado?</h5>
-                        <p><span>Sim</span></p>
-                    </div>
-                    <div class="col-12 my-1 col-lg-3" style="">
-                        <h5 class="text-dark">Comentarios positivos</h5>
-                        <p><span>60%</span></p>
+                        <p><span>{{ post.active ? 'Sim' : 'Não' }}</span></p>
                     </div>
                 </div>
                 <div class="row">
@@ -49,12 +45,28 @@
                         <p><span>{{ indicative_rating.name }}</span></p>
                     </div>
                     <div class="col-12 my-1 col-lg-3" style="">
+                        <h5 class="text-dark">Tipo de Categoria</h5>
+                        <p><span>{{ category_type.name }}</span></p>
+                    </div>
+                    <div class="col-12 my-1 col-lg-3" style="">
                         <h5 class="text-dark">Like</h5>
-                        <p><span>0</span></p>
+                        <p><span>{{ likes_percentage }}%</span></p>
                     </div>
                     <div class="col-12 my-1 col-lg-3" style="">
                         <h5 class="text-dark">Deslike</h5>
-                        <p><span>0</span></p>
+                        <p><span>{{ dislikes_percentage }}%</span></p>
+                    </div>
+                    <div class="col-12 my-1 col-lg-3" style="">
+                        <h5 class="text-dark">Comentários positivos</h5>
+                        <p><span>{{ positive_comments_percentage }}%</span></p>
+                    </div>
+                    <div class="col-12 my-1 col-lg-3" style="">
+                        <h5 class="text-dark">Comentários negativos</h5>
+                        <p><span>{{ negative_comments_percentage }}%</span></p>
+                    </div>
+                    <div class="col-12 my-1 col-lg-3" style="">
+                        <h5 class="text-dark">Comentários neutros</h5>
+                        <p><span>{{ neutral_comments_percentage }}%</span></p>
                     </div>
                 </div>
                 <div class="row">
@@ -83,8 +95,6 @@
 </template>
 
 <script>
-    import axios from 'axios';
-
     export default {
         props: {
             post: {
@@ -93,12 +103,30 @@
             category: {
                 type: Object
             },
+            category_type: {
+                type: Object
+            },
             indicative_rating: {
                 type: Object
             },
             images: {
                 type: Object
             },
+            likes_percentage: {
+                type: Number
+            },
+            dislikes_percentage: {
+                type: Number
+            },
+            positive_comments_percentage: {
+                type: Number
+            },
+            negative_comments_percentage: {
+                type: Number
+            },
+            neutral_comments_percentage: {
+                type: Number
+            }
         },
         data(){
             return {
