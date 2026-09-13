@@ -13,6 +13,31 @@ use Illuminate\Support\Facades\Auth;
 class PostController extends Controller
 {
     /**
+     * Retrieve the 10 highest-ranked active posts by note and link count.
+     */
+    public function top()
+    {
+        $posts = Post::active()
+            ->withCount('links')
+            ->get();
+
+        $posts = $posts
+            ->sort(function ($first, $second) {
+                $noteComparison = $second->note <=> $first->note;
+
+                if ($noteComparison !== 0) {
+                    return $noteComparison;
+                }
+
+                return $second->links_count <=> $first->links_count;
+            })
+            ->take(10)
+            ->values();
+
+        return PostResource::collection($posts);
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()

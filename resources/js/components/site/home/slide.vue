@@ -3,42 +3,28 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-
                     <button class="prev slick-arrow">
                         <i class="icon icon-arrow-left"></i>
                     </button>
-
                     <div class="main-slider pattern-overlay">
-                        <div class="slider-item">
+                        <div 
+                            v-for="post in allPosts" 
+                            :key="post.id"
+                            class="slider-item"
+                        >
                             <div class="banner-content">
-                                <h2 class="banner-title">Life of the Wild</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu feugiat amet, libero
-                                    ipsum enim pharetra hac. Urna commodo, lacus ut magna velit eleifend. Amet, quis
-                                    urna, a eu.</p>
+                                <h2 class="banner-title">{{ post.name }}</h2>
+                                <p>{{ post.description }}</p>
                                 <div class="btn-wrap">
-                                    <a href="#" class="btn btn-outline-accent btn-accent-arrow">Read More<i
-                                            class="icon icon-ns-arrow-right"></i></a>
+                                    <a :href="route('posts.show', post.id)" class="btn btn-outline-accent btn-accent-arrow">
+                                        Comentar
+                                        <i class="icon icon-ns-arrow-right"></i>
+                                    </a>
                                 </div>
-                            </div><!--banner-content-->
-                            <img src="images/main-banner1.jpg" alt="banner" class="banner-image">
-                        </div><!--slider-item-->
-
-                        <div class="slider-item">
-                            <div class="banner-content">
-                                <h2 class="banner-title">Birds gonna be Happy</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu feugiat amet, libero
-                                    ipsum enim pharetra hac. Urna commodo, lacus ut magna velit eleifend. Amet, quis
-                                    urna, a eu.</p>
-                                <div class="btn-wrap">
-                                    <a href="#" class="btn btn-outline-accent btn-accent-arrow">Read More<i
-                                            class="icon icon-ns-arrow-right"></i></a>
-                                </div>
-                            </div><!--banner-content-->
-                            <img src="images/main-banner2.jpg" alt="banner" class="banner-image">
-                        </div><!--slider-item-->
-
+                            </div>
+                            <img :src="post.images[0].image" :alt="post.images[0].name" class="slider-img">
+                        </div>
                     </div>
-
                     <button class="next slick-arrow">
                         <i class="icon icon-arrow-right"></i>
                     </button>
@@ -58,14 +44,19 @@
         },
         data() {
             return {
-
+                allPosts: []
             }
         },
         methods: {
-            //
+            listPosts(){
+                axios.get(route('api.posts.top'))
+                    .then((response) => {
+                        this.allPosts = response.data.data;
+                    })
+            }
         },
         mounted() {
-            //
+            this.listPosts()
         }
     }
 </script>
