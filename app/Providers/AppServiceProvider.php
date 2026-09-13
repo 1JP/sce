@@ -48,7 +48,6 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('*', function($view) use ($maskService) {
             $user = auth()->user();
-            $roles = ['Admin', 'Membros', 'Root', 'Client'];
 
             $settings = Setting::select('name', 'body')->whereIn('group', [
                 'company',
@@ -79,7 +78,7 @@ class AppServiceProvider extends ServiceProvider
             }
 
             $view->with('user', $user);
-            $view->with('isRole', $user ? $user->hasAnyRole($roles) : false);
+            $view->with('isRole', $user?->isRoot() ?? false);
             $view->with('companyName', $name);
             $view->with('companyDescription', $description);
             $view->with('companyCNPJ', $cnpj);

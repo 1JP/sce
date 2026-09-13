@@ -49,7 +49,7 @@
         ></admin-navbar>
     
         <main class="main-content position-relative border-radius-lg ">
-            <admin-header>
+            <admin-header :is-role="{{ $isRole }}">
                 @yield('breadcrumb')
             </admin-header>
             <div class="container-fluid py-4">

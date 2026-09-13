@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use Illuminate\Auth\Access\Response;
 use App\Models\Setting;
 use App\Models\User;
 
@@ -29,6 +28,7 @@ class SettingPolicy
      */
     public function create(User $user): bool
     {
+        \Log::info('Policy create chamada', ['user' => $user->id]);
         return $user->hasRole(['Root']);
     }
 

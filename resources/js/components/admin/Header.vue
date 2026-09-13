@@ -20,7 +20,7 @@
                             </div>
                         </a>
                     </li>
-                    <li class="nav-item px-3 d-flex align-items-center">
+                    <li class="nav-item px-3 d-flex align-items-center" v-if="isRole">
                         <a :href="routeSetting" class="nav-link text-white p-0">
                             <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
                         </a>
@@ -33,6 +33,12 @@
 
 <script>
     export default {
+        props: {
+            isRole: {
+                type: Boolean,
+                default: false
+            },
+        },
         data(){
             return {
                 routeSetting: route('admin.configuracoes.create'),
