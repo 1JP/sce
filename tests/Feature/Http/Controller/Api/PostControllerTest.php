@@ -4,7 +4,9 @@ namespace Tests\Feature\Http\Controller\Api;
 
 use App\Models\Category;
 use App\Models\IndicativeRating;
+use App\Models\Link;
 use App\Models\Post;
+use App\Models\PostRating;
 use RahulHaque\Filepond\Facades\Filepond;
 use App\Models\User;
 use Database\Seeders\RolesSeeder;
@@ -152,5 +154,60 @@ class PostControllerTest extends TestCase
             $this->assertArrayHasKey('name', $responseData[0]);
             $this->assertArrayHasKey('description', $responseData[0]);
         }
+    }
+
+    public function test_top_posts_returns_the_ten_posts_ranked_by_note_and_link_count(): void
+    {
+        $posts = collect();
+
+        for ($i = 1; $i <= 12; $i++) {
+            $post = Post::factory()->create([
+                'active' => true,
+                'name' => 'Post Top ' . $i,
+            ]);
+
+            PostRating::create([
+                'post_id' => $post->id,
+                'user_id' => $this->user->id,
+                'rating' => 10 - $i,
+            ]);
+
+            for ($j = 0; $j < $i; $j++) {
+                Link::create([
+                    'post_id' => $post->id,
+                    'comment_id' => null,
+                    'user_id' => $this->user->id,
+                ]);
+            }
+
+            $posts->push($post);
+        }
+
+        $response = $this->getJson(route('api.posts.top'));
+
+        $response->assertStatus(200);
+
+        $responseData = $response->json('data');
+
+        $this->assertCount(10, $responseData);
+
+        $expectedIds = $posts
+            ->sort(function ($first, $second) {
+                $noteComparison = $second->note <=> $first->note;
+
+                if ($noteComparison !== 0) {
+                    return $noteComparison;
+                }
+
+                return $second->links()->count() <=> $first->links()->count();
+            })
+            ->values()
+            ->take(10)
+            ->pluck('id')
+            ->all();
+
+        $actualIds = collect($responseData)->pluck('id')->all();
+
+        $this->assertSame($expectedIds, $actualIds);
     }
 }
