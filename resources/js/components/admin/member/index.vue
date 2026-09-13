@@ -44,7 +44,7 @@
             </div>
         </template>
         <template v-slot:body>
-            <admin-table>
+            <admin-table :pagination="pagination" @page-change="listMembers">
                 <template v-slot:thead>
                     <admin-thead
                         v-for="tha, index in ths"
@@ -178,13 +178,20 @@
                 inputName: '',
                 inputEmail: '',
                 listSearch: {},
+                pagination: null,
             }
         },
         methods: {
-            listMembers(){
-                axios.get(route('api.admin.members.index'))
+            listMembers(page = 1){
+                if(Object.keys(this.listSearch).length > 0){
+                    this.listSearch.page = page
+                    this.search(this.listSearch)
+                    return
+                }
+                axios.get(route('api.admin.members.index'), { params: { page } })
                     .then((response) => {
                         this.members = response.data.data;
+                        this.pagination = response.data.meta
                     })
             },
             selectMember(member){
