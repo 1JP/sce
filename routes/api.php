@@ -53,6 +53,7 @@ Route::get('/deslinks/chartline', [DesLinkController::class, 'chartline'])->name
 
 Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(function () {
     Route::prefix('categories')->name('categories.')->group(function () {
+        Route::get('all', [CategoryController::class, 'all'])->name('all');
         Route::get('search', [CategoryController::class, 'search'])->name('search');
     });
     Route::apiResource('categories', CategoryController::class)->except(['index']);

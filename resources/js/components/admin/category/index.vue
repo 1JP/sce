@@ -47,7 +47,7 @@
             </div>
         </template>
         <template v-slot:body>
-            <admin-table>
+            <admin-table :pagination="pagination" @page-change="listCategories">
                 <template v-slot:thead>
                     <admin-thead
                         v-for="tha, index in ths"
@@ -188,6 +188,7 @@
                 selectedStatus: '',
                 inputCategory: '',
                 listSearch: {},
+                pagination: null
             }
         },
         methods: {
@@ -198,10 +199,16 @@
                 this.routeDelete = route('admin.categorias.destroy', this.category.id);
                 this.categoryTypeIds = this.category.category_types.map(ct => ct.id);
             },
-            listCategories(){
-                axios.get(route('api.categories.index'))
+            listCategories(page = 1){
+                if(Object.keys(this.listSearch).length > 0){
+                    this.listSearch.page = page
+                    this.search(this.listSearch)
+                    return
+                }
+                axios.get(route('api.admin.categories.all'), { params: { page } })
                     .then((response) => {
                         this.categories = response.data.data;
+                        this.pagination = response.data.meta
                     })
             },
             valueSelect(event){
@@ -285,6 +292,7 @@
                 axios.get(route('api.admin.categories.search'), {params})
                     .then((response) => {
                         this.categories = response.data.data;
+                        this.pagination = response.data.meta
                     })
             },
             clear(){

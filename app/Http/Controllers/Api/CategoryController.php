@@ -39,7 +39,7 @@ class CategoryController extends Controller
                 ->first();
             $query->whereIn('id', $type->categories()->pluck('id')->toArray());
         })
-        ->get();
+        ->paginate(10);
 
         return CategoryResource::collection($categories);
     }
@@ -58,5 +58,13 @@ class CategoryController extends Controller
             ->paginate($per_page);
 
         return PostResource::collection($posts);
+    }
+
+    public function all()
+    {
+        $categories = Category::orderBy('name', 'ASC')
+            ->paginate(10);
+
+        return CategoryResource::collection($categories);
     }
 }
