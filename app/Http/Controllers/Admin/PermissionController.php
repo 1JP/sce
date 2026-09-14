@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 
@@ -15,7 +14,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', Auth::user());
+        $this->authorize('viewAny', Role::class);
 
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Permissão'],
@@ -39,7 +38,7 @@ class PermissionController extends Controller
      */
     public function store(RoleRequest $request)
     {
-        $this->authorize('create', Auth::user());
+        $this->authorize('create', Role::class);
 
         try {
             Role::create($request->validated());
@@ -63,7 +62,7 @@ class PermissionController extends Controller
      */
     public function update(RoleRequest $request, Role $role)
     {
-        $this->authorize('update', Auth::user());
+        $this->authorize('update', $role);
 
         try {
             $role->update($request->validated());
@@ -79,7 +78,7 @@ class PermissionController extends Controller
      */
     public function destroy(Role $role)
     {
-        $this->authorize('delete', Auth::user());
+        $this->authorize('delete', $role);
 
         try {
             $role->delete();

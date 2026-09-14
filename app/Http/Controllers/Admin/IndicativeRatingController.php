@@ -15,9 +15,7 @@ class IndicativeRatingController extends Controller
      */
     public function index()
     {
-        if (Gate::denies('viewAny', Auth::user())) {
-            abort(403);
-        }
+        $this->authorize('viewAny', IndicativeRating::class);
 
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Indicação'],
@@ -41,9 +39,7 @@ class IndicativeRatingController extends Controller
      */
     public function store(IndicativeRequest $request)
     {
-        if (Gate::denies('create', Auth::user())) {
-            abort(403);
-        }
+        $this->authorize('create', IndicativeRating::class);
 
         try {
             IndicativeRating::create($request->validated());
@@ -75,9 +71,7 @@ class IndicativeRatingController extends Controller
      */
     public function update(IndicativeRequest $request, IndicativeRating $indicative)
     {
-        if (Gate::denies('update', Auth::user())) {
-            abort(403);
-        }
+        $this->authorize('update', $indicative);
 
         try {
             $indicative->update($request->validated());
@@ -94,10 +88,8 @@ class IndicativeRatingController extends Controller
      */
     public function destroy(IndicativeRating $indicative)
     {
-        if (Gate::denies('delete', Auth::user())) {
-            abort(403);
-        }
-
+        $this->authorize('delete', $indicative);
+        
         try {
             $indicative->delete();
 

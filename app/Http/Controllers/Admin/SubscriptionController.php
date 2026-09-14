@@ -17,7 +17,7 @@ class SubscriptionController extends Controller
     {
         $user = Auth::user();
 
-        $this->authorize('viewAny', $user);
+        $this->authorize('viewAny', Subscription::class);
         
         $subscription = $user->subscription;
 
