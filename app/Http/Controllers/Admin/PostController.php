@@ -47,6 +47,12 @@ class PostController extends Controller
     {
         $this->authorize('viewAny', Post::class);
 
+        $user = Auth::user();
+
+        if($user->hasRole(['Admin']) && !in_array($user->subscription?->status, ['ACTIVE', 'TRIAL'])){
+            abort(403);
+        }
+
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Nome'],
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2', 'name' => 'Classificação Indicativas'],

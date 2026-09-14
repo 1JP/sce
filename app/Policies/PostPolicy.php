@@ -26,12 +26,12 @@ class PostPolicy
         }
 
         if ($user->isAdmin()) {
-            return $user->id === $post->user_id;
+            return $user->id === $post->user_id && in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
         }
 
         if ($user->isMember()) {
             $administrator = $user->administrator()->first()->user;
-            return $administrator && $administrator->id === $post->user_id;
+            return $administrator && $administrator->id === $post->user_id && in_array($administrator->subscription?->status, ['ACTIVE', 'TRIAL']);
         }
 
         return false;
@@ -42,7 +42,7 @@ class PostPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['Admin', 'Root']);
+        return $user->hasRole(['Admin', 'Root']) && in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
     }
 
     /**
@@ -55,12 +55,12 @@ class PostPolicy
         }
 
         if ($user->isAdmin()) {
-            return $user->id === $post->user_id;
+            return $user->id === $post->user_id && in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
         }
 
         if ($user->isMember()) {
             $administrator = $user->administrator()->first();
-            return $administrator && $administrator->id === $post->user_id;
+            return $administrator && $administrator->id === $post->user_id && in_array($administrator->subscription?->status, ['ACTIVE', 'TRIAL']);
         }
 
         return false;
@@ -71,7 +71,13 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
-        return $user->hasRole(['Admin', 'Root']);
+        if ($user->isRoot()) {
+            return true;
+        }
+
+        if ($user->isAdmin()) {
+            return $user->id === $post->user_id && in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
+        }
     }
 
     /**
@@ -79,7 +85,13 @@ class PostPolicy
      */
     public function restore(User $user, Post $post): bool
     {
-        return $user->hasRole(['Admin', 'Root']);
+        if ($user->isRoot()) {
+            return true;
+        }
+
+        if ($user->isAdmin()) {
+            return $user->id === $post->user_id && in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
+        }
     }
 
     /**
@@ -87,6 +99,12 @@ class PostPolicy
      */
     public function forceDelete(User $user, Post $post): bool
     {
-        return $user->hasRole(['Admin', 'Root']);
+        if ($user->isRoot()) {
+            return true;
+        }
+
+        if ($user->isAdmin()) {
+            return $user->id === $post->user_id && in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
+        }
     }
 }
