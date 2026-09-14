@@ -200,7 +200,7 @@
         },
         data(){
             return {
-                token: '',
+                //
             }
         },
         methods: {

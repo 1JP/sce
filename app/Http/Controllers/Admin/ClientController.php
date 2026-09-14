@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ClientRequest;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class ClientController extends Controller
 {
@@ -58,15 +60,32 @@ class ClientController extends Controller
     {
         $this->authorize('update', $client);
 
-        return view('admin.client.edit');
+        return view('admin.client.edit', compact('client'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ClientRequest $request, Client $client)
     {
-        //
+        $this->authorize('update', $client);
+
+        try {
+            $validated = $request->validated();
+
+            $client->update(Arr::except($validated, ['username']));
+
+            $user = $client->user;
+            if($user->name != $validated['username']){
+                $user->update([
+                    'name' => $validated['username']
+                ]);
+            }
+
+            return redirect()->route('admin.clientes.edit', $client->id)->with('success', 'Cliente alterada com sucesso!');
+        }   catch (\Exception $e) {
+            return redirect()->route('admin.clientes.edit', $client->id)->with('danger', 'Não foi possível alterar a Cliente!');
+        }
     }
 
     /**
