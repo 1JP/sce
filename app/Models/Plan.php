@@ -29,6 +29,11 @@ class Plan extends Model
         return $query->where('active', true);
     }
 
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
     /**
      * Sets the `name` attribute and ensures it is not an integer.
      *
