@@ -14,7 +14,9 @@ class CategoryTypeController extends Controller
      */
     public function index()
     {
-        $types = CategoryType::orderBy('name')->get();
+        $this->authorize('viewAny', CategoryType::class);
+
+        $types = CategoryType::orderBy('name')->paginate(10);
 
         return CategoryTypeResource::collection($types);
     }
@@ -29,7 +31,7 @@ class CategoryTypeController extends Controller
         $types = CategoryType::when(isset($validated['search']['name']), function ($query) use ($validated) {
             $query->where('name', 'like', '%'.$validated['search']['name'].'%');
         })
-        ->get();
+        ->paginate(10);
 
         return CategoryTypeResource::collection($types);
     }

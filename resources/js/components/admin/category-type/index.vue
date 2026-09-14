@@ -31,7 +31,7 @@
             </div>
         </template>
         <template v-slot:body>
-            <admin-table>
+            <admin-table :pagination="pagination" @page-change="listCategories">
                 <template v-slot:thead>
                     <admin-thead
                         v-for="tha, index in ths"
@@ -147,6 +147,7 @@
                 classInputCheck: 'form-check-input',
                 inputCategory: '',
                 listSearch: {},
+                pagination: null
             }
         },
         methods: {
@@ -157,10 +158,16 @@
                 this.routeDelete = route('admin.tipos-de-categorias.destroy', this.category.id);
                 this.description = this.category.description;
             },
-            listCategories(){
-                axios.get(route('api.admin.categorie-types.index'))
+            listCategories(page = 1){
+                if(Object.keys(this.listSearch).length > 0){
+                    this.listSearch.page = page
+                    this.search(this.listSearch)
+                    return
+                }
+                axios.get(route('api.admin.categorie-types.index'), { params: { page } })
                     .then((response) => {
                         this.categories = response.data.data;
+                        this.pagination = response.data.meta
                     })
             },
             valueTextArea(event){

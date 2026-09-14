@@ -62,6 +62,8 @@ class CategoryController extends Controller
 
     public function all()
     {
+        $this->authorize('viewAny', Category::class);
+        
         $categories = Category::orderBy('name', 'ASC')
             ->paginate(10);
 
