@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Category;
 use App\Models\CategoryType;
+use App\Models\Client;
 use App\Models\IndicativeRating;
 use App\Models\Plan;
 use App\Models\PostImage;
@@ -44,6 +45,8 @@ class AppServiceProvider extends ServiceProvider
         Route::model('log', Activity::class);
         Route::model('role', Role::class);
         Route::model('permisso', Role::class);
+        Route::model('cliente', Client::class);
+
         $maskService = new MaskService();
 
         view()->composer('*', function($view) use ($maskService) {

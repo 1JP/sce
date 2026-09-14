@@ -57,6 +57,7 @@ app.component('admin-category-index', require('./components/admin/category/index
 app.component('admin-category-type-index', require('./components/admin/category-type/index.vue').default);
 app.component('admin-category-type-create', require('./components/admin/category-type/create.vue').default);
 app.component('admin-client-index', require('./components/admin/client/index.vue').default);
+app.component('admin-client-show', require('./components/admin/client/show.vue').default);
 app.component('admin-dashboard', require('./components/admin/dashboard/index.vue').default);
 app.component('admin-dashboard-root', require('./components/admin/dashboard/index-root.vue').default);
 app.component('admin-indicative-index', require('./components/admin/indicative-rating/index.vue').default);
