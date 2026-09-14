@@ -42,7 +42,11 @@ class PostPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['Admin', 'Root']) && in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
+        if ($user->isRoot()) {
+            return true;
+        }
+
+        return $user->isAdmin() && in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
     }
 
     /**

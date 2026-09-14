@@ -45,6 +45,7 @@ Route::get('/posts/top', [PostController::class, 'top'])->name('posts.top');
 Route::get('/all-plans', [PlanController::class, 'all'])->name('plans.all');
 Route::get('/posts/{post}/comments', [PostController::class, 'comments'])->name('posts.comments');
 Route::get('/categories/{category}/posts', [CategoryController::class, 'myPosts'])->name('categories.posts');
+Route::get('/categories/{category}/{categorie_type}/posts', [CategoryController::class, 'getCategoryTypeForPost'])->name('category-type-post');
 Route::get('/categories/posts/search', [SitePostController::class, 'search'])->name('site.posts.search');
 Route::get('links', [SettingController::class, 'links'])->name('settings.links');
 

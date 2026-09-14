@@ -34,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Route::model('categoria', Category::class);
         Route::model('tipos_de_categoria', CategoryType::class);
+        Route::model('categorie_type', CategoryType::class);
         Route::model('classificacao_indicativa', IndicativeRating::class);
         Route::model('plano', Plan::class);
         Route::model('post_image', PostImage::class);
@@ -58,7 +59,7 @@ class AppServiceProvider extends ServiceProvider
                 'site'
             ])->get();
             
-            $name = $settings->where('name', 'name')->first()?->body ?? 'Minha Empresa';
+            $name = $settings->where('name', 'name')->first()?->body ?? 'SCE';
             $description = $settings->where('name', 'description')->first()?->body ?? '';
             $cnpj = $settings->where('name', 'cnpj')->first()?->body ?? '00.000.000/0000-00';
             $cnpj = $maskService->applyMask($cnpj, '##.###.###/####-##');

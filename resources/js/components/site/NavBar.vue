@@ -53,7 +53,7 @@
                                 .map(type => ({
                                     id: type.id,
                                     name: type.name,
-                                    route: '#'
+                                    route: route('categorias.for-post', { category: category.id, tipos_de_categoria: type.id })
                                 }))
                         }));
                     })

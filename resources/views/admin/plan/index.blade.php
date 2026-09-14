@@ -18,7 +18,7 @@
 </div>
 
 <admin-plan-create
-    :title="'Cadastrar Categoria'"
+    :title="'Cadastrar Plano'"
     :name-id="'createPlanModal'"
 />
 

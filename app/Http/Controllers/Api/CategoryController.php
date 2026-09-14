@@ -60,6 +60,20 @@ class CategoryController extends Controller
         return PostResource::collection($posts);
     }
 
+    public function getCategoryTypeForPost(Category $category, CategoryType $type, PaginateRequest $request)
+    {
+        $validated = $request->validated();
+        $per_page = $validated['paginate']['per_page'] ?? 30;
+        $order_direction = $validated['search']['order_direction'] ?? 'asc';
+
+        $posts = $category->posts()->active()
+            ->where('category_type_id', $type->id)
+            ->orderBy('name', $order_direction)
+            ->paginate($per_page);
+
+        return PostResource::collection($posts);
+    }
+
     public function all()
     {
         $this->authorize('viewAny', Category::class);
