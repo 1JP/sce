@@ -113,7 +113,7 @@
                             <component-dropdown :name="'post-dropdown'">
                                 <component-dropdown-item name="Visualizar" :route="route('admin.posts.show', post.id)"></component-dropdown-item>
                                 <component-dropdown-item name="Editar" :route="route('admin.posts.edit', post.id)"></component-dropdown-item>
-                                <component-dropdown-item name="Excluir" target="#destoryPost" @click="selectPost(post)" v-if="created"></component-dropdown-item>
+                                <component-dropdown-item name="Excluir" target="#destroyPost" @click="selectPost(post)" v-if="created"></component-dropdown-item>
                                 <li><hr class="dropdown-divider"></li>
                                 <component-dropdown-item name="Relatório Geral" :route="route('admin.report.general', post.id)"></component-dropdown-item>
                                 <component-dropdown-item name="Relatório de Comentarios" :route="route('admin.report.comment', post.id)"></component-dropdown-item>
@@ -125,7 +125,7 @@
         </template>
     </component-card>
 
-    <model :title="'Excluir Post'" :name="'destoryPost'">
+    <model :title="'Excluir Post'" :name="'destroyPost'">
         <div class="py-3 text-center">
             <i class="ni ni-bell-55 ni-3x"></i>
             <h4 class="text-gradient text-danger mt-4">Deseja excluir esse post?</h4>

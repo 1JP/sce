@@ -5,11 +5,24 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientRequest;
 use App\Models\Client;
+use App\Services\PaymentApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 class ClientController extends Controller
 {
+    /**
+     * Class constructor to initialize the service for PaymentApi.
+     *
+     * @param PaymentApi $paymentApi The service used to interact with the payment API.
+     */
+    private $paymentApi;
+
+    public function __construct(PaymentApi $paymentApi)
+    {
+        $this->paymentApi = $paymentApi;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -91,8 +104,31 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Client $client)
     {
-        //
+        $this->authorize('delete', $client);
+
+        try {
+
+            $subscription = $client->user->subscription;
+            $pagSeguroSubscriptionCancel = $this->paymentApi->cancelSubscription($subscription->customer_id);
+
+            if (count((array) $pagSeguroSubscriptionCancel) > 1) {
+                return redirect()->route('admin.assinaturas.index')
+                    ->with('danger', 'Falha ao cancelar a assinatura atual.');
+            }
+
+            $status = $this->paymentApi->statusSubscription('CANCELED');
+
+            $subscription->update([
+                'status' => $status
+            ]);
+
+            $client->delete();
+
+            return redirect()->route('admin.clientes.index')->with('success', 'Cliente removida com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.clientes.index')->with('danger', 'Não foi possível removida a Cliente!');
+        }
     }
 }

@@ -17,7 +17,8 @@ class ClientController extends Controller
     {
         $this->authorize('viewAny', Client::class);
 
-        $clients = Client::orderBy('name')
+        $clients = Client::withTrashed()
+            ->orderBy('name')
             ->paginate(10);
         
         return ClientResource::collection($clients);
@@ -32,7 +33,8 @@ class ClientController extends Controller
         
         $validated = $request->validated();
 
-        $clients = Client::when(isset($validated['search']['name']), function ($query) use ($validated) {
+        $clients = Client::withTrashed()
+        ->when(isset($validated['search']['name']), function ($query) use ($validated) {
             $query->whereHas('users', function ($query) use ($validated) {
                 $query->where('name', 'like', '%' . $validated['search']['name'] . '%');
             });
@@ -42,7 +44,7 @@ class ClientController extends Controller
                     $query->where('status', $validated['search']['status']);
                 });
             });
-        })
+        })->orderBy('name')
         ->paginate(10);
 
         return ClientResource::collection($clients);

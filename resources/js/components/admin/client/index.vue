@@ -64,7 +64,7 @@
                             <component-dropdown :name="'dropdown-index-client'">
                                 <component-dropdown-item name="Visualizar" :route="route('admin.clientes.show', client.id)"></component-dropdown-item>
                                 <component-dropdown-item name="Editar" :route="route('admin.clientes.edit', client.id)"></component-dropdown-item>
-                                <component-dropdown-item name="Excluir" target="#destoryPost"></component-dropdown-item>
+                                <component-dropdown-item name="Excluir" target="#destroyClient" @click="selectClient(client)"></component-dropdown-item>
                             </component-dropdown>
                         </component-td>
                     </admin-tr>
@@ -72,6 +72,22 @@
             </admin-table>
         </template>
     </component-card>
+
+    <model :title="'Excluir Cliente'" :name="'destroyClient'">
+        <div class="py-3 text-center">
+            <i class="ni ni-bell-55 ni-3x"></i>
+            <h4 class="text-gradient text-danger mt-4">Deseja excluir esse cliente?</h4>
+            <p>Todos os comentarios, likes e deslikes relacionados a esse cliente será excluidos</p>
+        </div>
+        <form method="POST" :action="routeDelete" ref="formDelete">
+            <input type="hidden" name="_token" :value="token"/>
+            <input type="hidden" name="_method" value="DELETE" />
+        </form>
+        <template v-slot:footer>
+            <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn bg-gradient-danger" @click="destroy()">Excluir</button>
+        </template>
+    </model>
 </template>
 <script>
     import axios from 'axios';
@@ -95,7 +111,9 @@
                     'CANCELED', 'SUSPENDED'
                 ],
                 listSearch: {},
-                pagination: null
+                pagination: null,
+                routeDelete: '',
+                token: ''
             }
         },
         methods: {
@@ -171,10 +189,17 @@
                         this.clients = response.data.data;
                         this.pagination = response.data.meta
                     })
+            },
+            selectClient(client){
+                this.routeDelete = route('admin.clientes.destroy', client.id)
+            },
+            destroy(){
+                this.$refs.formDelete.submit();
             }
         },
         mounted() {
             this.listClients();
+            this.token = document.head.querySelector('meta[name="csrf-token"]')?.content;
         }
     }
 </script>
