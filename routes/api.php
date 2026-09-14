@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CategoryTypeController;
+use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DesLinkController;
@@ -62,6 +63,11 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
         Route::get('search', [CategoryTypeController::class, 'search'])->name('search');
     });
     Route::apiResource('categorie-types', CategoryTypeController::class);
+
+    Route::prefix('client')->name('client.')->group(function () {
+        Route::get('search', [ClientController::class, 'search'])->name('search');
+    });
+    Route::apiResource('client', ClientController::class);
 
     Route::prefix('indicative-rating')->name('indicative-rating.')->group(function () {
         Route::get('search', [IndicativeRatingController::class, 'search'])->name('search');

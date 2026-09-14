@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use Illuminate\Auth\Access\Response;
 use App\Models\Client;
 use App\Models\User;
 
@@ -13,7 +12,7 @@ class ClientPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['Root', 'Admin']);
+        return $user->hasRole(['Root']);
     }
 
     /**
@@ -21,7 +20,7 @@ class ClientPolicy
      */
     public function view(User $user, Client $client): bool
     {
-        return $user->hasRole(['Root', 'Admin']) && $user->id == $client->user_id;
+        return $user->hasRole(['Root']);
     }
 
     /**
@@ -37,7 +36,7 @@ class ClientPolicy
      */
     public function update(User $user, Client $client): bool
     {
-        return $user->hasRole(['Root', 'Admin']) || $user->id == $client->user_id;
+        return $user->hasRole(['Root']);
     }
 
     /**
@@ -45,7 +44,7 @@ class ClientPolicy
      */
     public function delete(User $user, Client $client): bool
     {
-        return $user->hasRole(['Root']) || $user->id == $client->user_id;
+        return $user->hasRole(['Root']);
     }
 
     /**
@@ -53,7 +52,7 @@ class ClientPolicy
      */
     public function restore(User $user, Client $client): bool
     {
-        return $user->hasRole(['Root']) || $user->id == $client->user_id;
+        return $user->hasRole(['Root']);
     }
 
     /**
@@ -61,6 +60,6 @@ class ClientPolicy
      */
     public function forceDelete(User $user, Client $client): bool
     {
-        return $user->hasRole(['Root']) || $user->id == $client->user_id;
+        return $user->hasRole(['Root']);
     }
 }
