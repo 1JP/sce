@@ -126,6 +126,9 @@ class ClientController extends Controller
 
             $client->delete();
 
+            $client->user->posts->update([
+                'active' => 1
+            ]);
             return redirect()->route('admin.clientes.index')->with('success', 'Cliente removida com sucesso!');
         } catch (\Exception $e) {
             return redirect()->route('admin.clientes.index')->with('danger', 'Não foi possível removida a Cliente!');

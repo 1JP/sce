@@ -37,7 +37,14 @@
             listCategories(){
                 axios.get(route('api.categories.index'))
                     .then((response) => {
-                        this.categories = response.data.data.map(category => ({
+                        let respon = response.data.data
+                            .map(res => ({
+                                ...res,
+                                posts: res.posts.filter(post => post.active == 1)
+                            }))
+                            .filter(res => res.posts.length > 0)
+
+                        this.categories = respon.map(category => ({
                             id: category.id, 
                             name: category.name,
                             route: route('categorias.show', category.id),

@@ -17,7 +17,7 @@ class IndicateClassificationsSeeder extends Seeder
         $indicate_classifications = IndicativeClassificationsEnum::all();
 
         foreach ($indicate_classifications as $classification) {
-            IndicativeRating::create($classification);
+            IndicativeRating::updateOrCreate($classification, $classification);
         }
     }
 }

@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Member;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -22,7 +20,10 @@ class UserSeeder extends Seeder
         DB::table('users')->sharedLock()->truncate();
         DB::table('model_has_roles')->sharedLock()->truncate();
 
-        User::factory()->create([
+        User::updateOrCreate([
+            'name' => 'Root SCE',
+            'email' => 'rootsce@gmail.com'
+        ],[
             'name' => 'Root SCE',
             'email' => 'rootsce@gmail.com',
             'password' => bcrypt('NR^A2zRgtmyG^f#!cj@Z'),
@@ -42,7 +43,10 @@ class UserSeeder extends Seeder
             'created_at' => now(),
         ])->assignRole('Root');
 
-        User::factory()->create([
+        User::updateOrCreate([
+            'name' => 'Usuario SCE',
+            'email' => 'usuario@gmail.com',
+        ],[
             'name' => 'Usuario SCE',
             'email' => 'usuario@gmail.com',
             'password' => bcrypt('@Tt!&TSt^6F%#Py5kh70'),

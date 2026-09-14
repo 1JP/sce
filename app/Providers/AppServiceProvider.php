@@ -75,18 +75,19 @@ class AppServiceProvider extends ServiceProvider
             $state = $settings->where('name', 'state')->first()?->body ?? '';
 
             $streets = collect([$steet, $number, $neighborhood, $city, $cep, $state])->filter()->implode(', ');
-            $isSubscription = $user->isRoot() ? true : false;
-
-            if($user->isAdmin()){
-                $isSubscription = in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
-            }
-            
-            if($user->isMember()){
-                $administrator = $user->administrator()->first()?->user;
-                $isSubscription = in_array($administrator->subscription?->status, ['ACTIVE', 'TRIAL']);
-            }
+            $isSubscription = false;
 
             if ($user) {
+                $isSubscription = $user->isRoot() ? true : false;
+
+                if($user->isAdmin()){
+                    $isSubscription = in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
+                }
+                
+                if($user->isMember()){
+                    $administrator = $user->administrator()->first()?->user;
+                    $isSubscription = in_array($administrator->subscription?->status, ['ACTIVE', 'TRIAL']);
+                }
                 $user->load('roles');
             }
 

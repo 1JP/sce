@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->foreignId('category_type_id')->after('category_id')->default(1)->constrained('category_types');
+            $table->foreignId('category_type_id')->after('category_id')->constrained('category_types');
         });
     }
 
