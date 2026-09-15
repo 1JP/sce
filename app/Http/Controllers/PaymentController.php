@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateRequest;
 use App\Http\Requests\PaymentRequest;
+use App\Mail\CreateSubscription;
 use App\Models\Plan;
 use App\Models\Subscription;
 use App\Services\BodyPaymentApiService;
 use App\Services\PaymentApi;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentController extends Controller
 {
@@ -93,7 +95,7 @@ class PaymentController extends Controller
             
             $status = $this->paymentApi->statusSubscription($pagSeguroSubscription->status);
 
-            Subscription::create([
+            $subscription = Subscription::create([
                 'plan_id' => $validated['plan_id'],
                 'user_id' => Auth::user()->id,
                 'status' => $status,
@@ -101,6 +103,11 @@ class PaymentController extends Controller
             ]);
             
             $user->assignRole('Admin');
+
+            Mail::to($user->email)
+                ->send(new CreateSubscription($user->email, $subscription->plan->name, $subscription->plan->value, 
+                    $subscription->plan->number_film, $subscription->plan->number_serie, $subscription->plan->number_book)
+                );
 
             return redirect()->route('home')
                 ->with('success', 'Assinatura criada com sucesso!');

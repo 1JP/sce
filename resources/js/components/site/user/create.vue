@@ -406,7 +406,7 @@
                 if(this.isUpdate){
                     const params = new URLSearchParams(this.routeForm)
                     const url = Object.keys(Object.fromEntries(params.entries()))[0]
-                    let id = url.substring(url.lastIndexOf('?') + 1)
+                    let id = url.substring(url.lastIndexOf('/') + 1)
                     axios.get(route('api.users.show', id))
                         .then((response) => {
                             this.birth_date = response.data.data.birth_date;
