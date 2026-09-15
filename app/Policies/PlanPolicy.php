@@ -13,7 +13,7 @@ class PlanPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['Root']);
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class PlanPolicy
      */
     public function view(User $user, Plan $plan): bool
     {
-        return $user->hasRole(['Root']);
+        return $user->hasRole(['Root', 'Admin']);
     }
 
     /**

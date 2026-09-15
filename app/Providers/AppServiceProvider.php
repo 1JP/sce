@@ -92,8 +92,11 @@ class AppServiceProvider extends ServiceProvider
                 $user->load('roles');
             }
 
+            $isDashboard = $user?->isAdminOrRoot() || $user?->isMember();
+
             $view->with('user', $user);
             $view->with('isRole', $user?->isRoot() ?? false);
+            $view->with('isDashboard', $isDashboard);
             $view->with('isSubscription', $isSubscription);
             $view->with('companyName', $name);
             $view->with('companyDescription', $description);
