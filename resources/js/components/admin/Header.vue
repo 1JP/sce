@@ -12,11 +12,11 @@
                         </a>
                     </li>
                     <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-                        <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
+                        <a href="#" class="nav-link text-white p-0" id="iconNavbarSidenav" @click="toggleSidenav">
                             <div class="sidenav-toggler-inner">
-                            <i class="sidenav-toggler-line bg-white"></i>
-                            <i class="sidenav-toggler-line bg-white"></i>
-                            <i class="sidenav-toggler-line bg-white"></i>
+                                <i class="sidenav-toggler-line bg-white"></i>
+                                <i class="sidenav-toggler-line bg-white"></i>
+                                <i class="sidenav-toggler-line bg-white"></i>
                             </div>
                         </a>
                     </li>
@@ -43,6 +43,21 @@
             return {
                 routeSetting: route('admin.configuracoes.create'),
                 routeLogout: route('auth.logout')
+            }
+        },
+        methods: {
+            toggleSidenav(event) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+
+                const body = document.body;
+                const sidenav = document.getElementById('sidenav-main');
+                const isPinned = body.classList.toggle('g-sidenav-pinned');
+
+                if (sidenav) {
+                    sidenav.classList.toggle('bg-white', isPinned);
+                    sidenav.classList.remove('bg-transparent');
+                }
             }
         }
     }
