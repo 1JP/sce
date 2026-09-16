@@ -155,21 +155,15 @@ class PaymentController extends Controller
         $this->authorize('delete', $subscription);
         
         try {
-            $pagSeguroSubscriptionCancel = $this->paymentApi->cancelSubscription($subscription->customer_id);
-            
-            if (count((array) $pagSeguroSubscriptionCancel) > 1) {
-                return redirect()->route('admin.assinaturas.index')
-                    ->with('danger', 'Falha ao cancelar a assinatura atual.');
+            $result = $this->subscriptionService->destroy($subscription);
+
+            if($result->error){
+                return redirect()->route($result->route)
+                    ->with($result->status, $result->message);
             }
 
-            $status = $this->paymentApi->statusSubscription('CANCELED');
-
-            $subscription->update([
-                'status' => $status
-            ]);
-
-            return redirect()->route('admin.assinaturas.index')
-                ->with('success', 'Assinatura excluida com sucesso!');
+            return redirect()->route($result->route)
+                    ->with($result->status, $result->message);
         }catch (\Exception $e) {
             return redirect()->route('admin.assinaturas.index')
                 ->with('danger', 'Falha ao cancelar a assinatura atual.');

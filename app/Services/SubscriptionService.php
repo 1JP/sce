@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Mail\CancelSubscription;
 use App\Mail\CreateSubscription;
 use App\Mail\UpdatePlanSubscription;
 use App\Mail\UpdateSubscription;
@@ -62,6 +63,37 @@ class SubscriptionService
         return (object)[
             'error' => 0,
             'message' => 'Assinatura alterada com sucesso!',
+            'route' => 'admin.assinaturas.index',
+            'status' => 'success'
+        ];
+    }
+
+    public function destroy(Subscription $subscription)
+    {
+        $pagSeguroSubscriptionCancel = $this->paymentApi->cancelSubscription($subscription->customer_id);
+        if (count((array) $pagSeguroSubscriptionCancel) > 1) {
+            dd($pagSeguroSubscriptionCancel);
+            $error = [
+                'error' => 1,
+                'message' => 'Falha ao cancelar a assinatura atual.',
+                'route' => 'admin.assinaturas.index',
+                'status' => 'danger'
+            ];
+
+            return (object)($error);
+        }
+
+        $status = $this->paymentApi->statusSubscription('CANCELED');
+
+        $subscription->update([
+            'status' => $status
+        ]);
+
+        $this->sendCancelSubscription($subscription->user, $subscription);
+
+        return (object)[
+            'error' => 0,
+            'message' => 'Assinatura excluida com sucesso!',
             'route' => 'admin.assinaturas.index',
             'status' => 'success'
         ];
@@ -184,6 +216,23 @@ class SubscriptionService
                 $subscription->plan->number_book
             ));
         } catch (\Exception $e) {
+            report($e);
+        }
+    }
+
+    protected function sendCancelSubscription(User $user, Subscription $subscription): void
+    {
+        try {
+            Mail::to($user->email)->send(new CancelSubscription(
+                $user->email,
+                $subscription->plan->name,
+                $subscription->plan->value,
+                $subscription->plan->number_film,
+                $subscription->plan->number_serie,
+                $subscription->plan->number_book
+            ));
+        } catch (\Exception $e) {
+            dd($e);
             report($e);
         }
     }
