@@ -274,7 +274,6 @@ class SubscriptionService
                 $subscription->plan->number_book
             ));
         } catch (\Exception $e) {
-            dd($e);
             report($e);
         }
     }

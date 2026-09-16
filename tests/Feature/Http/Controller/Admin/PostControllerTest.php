@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controller\Admin;
 
 use App\Models\Category;
+use App\Models\CategoryType;
 use App\Models\IndicativeRating;
 use App\Models\Post;
 use RahulHaque\Filepond\Facades\Filepond;
@@ -45,7 +46,8 @@ class PostControllerTest extends TestCase
 
         $category = Category::factory()->create();
         $indicative_rating = IndicativeRating::factory()->create();
-
+        $category_type = CategoryType::factory()->create();
+        
         Mockery::mock('alias:' . Filepond::class)
             ->shouldReceive('field')
             ->andReturnSelf()
@@ -59,6 +61,7 @@ class PostControllerTest extends TestCase
             'description' => fake()->text(),
             'category_id' => $category->id,
             'indicative_rating_id' => $indicative_rating->id,
+            'category_type_id' => $category_type->id,
             'images' => [
                 'fake-temp-id-123'
             ],
@@ -98,10 +101,12 @@ class PostControllerTest extends TestCase
             'user_id' => $this->user->id,
             'category_id' => Category::factory()->create(['name' => 'Teste'])->id,
             'indicative_rating_id' => IndicativeRating::factory()->create(['name' => 'Teste'])->id,
+            'category_type_id' => CategoryType::factory()->create(['name' => 'Teste '])->id
         ]);
 
         $category = Category::factory()->create();
         $indicative_rating = IndicativeRating::factory()->create();
+        $category_type = CategoryType::factory()->create();
 
         Mockery::mock('alias:' . Filepond::class)
             ->shouldReceive('field')
@@ -116,6 +121,7 @@ class PostControllerTest extends TestCase
             'description' => fake()->text(),
             'category_id' => $category->id,
             'indicative_rating_id' => $indicative_rating->id,
+            'category_type_id' => $category_type->id,
             'images' => [
                 'fake-temp-id-123'
             ],
@@ -126,6 +132,7 @@ class PostControllerTest extends TestCase
             'user_id' => $this->user->id,
             'category_id' => $category->id,
             'indicative_rating_id' => $indicative_rating->id,
+            'category_type_id' => $category_type->id,
         ]);
         
         $post = Post::first();

@@ -50,7 +50,7 @@ class IndicativeRatingControllerTest extends TestCase
         $description = 'Test description';
 
         $this->patch(route('admin.classificacao-indicativas.update', $indicative->id), [
-            'name' => $indicative->indicative,
+            'name' => $indicative->name,
             'description' => $description,
         ]);
 

@@ -19,8 +19,6 @@ class RatingController extends Controller
      */
     public function store(RatingRequest $request)
     {
-        $this->authorize('create', Auth::user());
-
         try {
             $validated = $request->validated();
 
