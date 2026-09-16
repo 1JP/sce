@@ -143,7 +143,6 @@ class PaymentController extends Controller
             return redirect()->route($result->route)
                     ->with($result->status, $result->message);
         } catch (\Exception $e) {
-            dd($e);
             return redirect()->route('admin.assinaturas.edit', $subscription->id)->with('danger', 'Não foi possível gerar a assinatura!');
         }
     }
