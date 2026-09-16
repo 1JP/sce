@@ -10,6 +10,7 @@ use App\Models\Plan;
 use App\Models\Subscription;
 use App\Services\BodyPaymentApiService;
 use App\Services\PaymentApi;
+use App\Services\SubscriptionService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -30,6 +31,8 @@ class PaymentController extends Controller
      */
     private $paymentApi;
 
+    private $subscriptionService;
+
     /**
      * Constructor method to inject the BodyPaymentApiService dependency.
      * This allows the class to interact with the BodyPaymentApiService for handling payment-related logic.
@@ -40,6 +43,7 @@ class PaymentController extends Controller
     {
         $this->bodyPaymentApi = $bodyPaymentApi;
         $this->paymentApi = $paymentApi;
+        $this->subscriptionService = new SubscriptionService($this->paymentApi, $this->bodyPaymentApi);
     }
 
     /**
@@ -127,41 +131,19 @@ class PaymentController extends Controller
 
         try {
             $validated = $request->validated();
-            $plan = Plan::find($validated['plan_id']);
             $user = Auth::user();
-
-            $getPlan = $this->paymentApi->getPlan($plan->customer_id);
-            if ($getPlan->status != 'ACTIVE') {
-                return redirect()->route('admin.assinaturas.edit', $subscription->id)
-                    ->with('info', 'O plano escolhido não esta ativo');
-            }
-
-            $pagSeguroSubscriptionCancel = $this->paymentApi->cancelSubscription($subscription->customer_id);
             
-            if (count((array) $pagSeguroSubscriptionCancel) > 1) {
-                return redirect()->route('admin.assinaturas.edit', $subscription->id)
-                    ->with('danger', 'Falha ao cancelar a assinatura atual. A criação de uma nova assinatura com os dados atualizados não foi realizada.');
+            $result = $this->subscriptionService->update($validated, $subscription, $user);
+
+            if($result->error){
+                return redirect()->route($result->route, $result->subscription_id)
+                    ->with($result->status, $result->message);
             }
 
-            $validated['customer_id'] = $user->client->customer_id;
-            $bodySubscription = $this->bodyPaymentApi->bodyCreateSubscription($validated);
-            $pagSeguroSubscription = $this->paymentApi->createSubscription($bodySubscription);
-            if (!isset($pagSeguroSubscription->id)) {
-                return redirect()->route('admin.assinaturas.edit', $subscription->id)
-                    ->with('danger', 'Não foi possível gerar a assinatura!');
-            }
-            
-            $status = $this->paymentApi->statusSubscription($pagSeguroSubscription->status);
-
-            $subscription->update([
-                'plan_id' => $validated['plan_id'],
-                'status' => $status,
-                'customer_id' => $pagSeguroSubscription->id
-            ]);
-
-            return redirect()->route('admin.assinaturas.index')
-                ->with('success', 'Assinatura alterada com sucesso!');
+            return redirect()->route($result->route)
+                    ->with($result->status, $result->message);
         } catch (\Exception $e) {
+            dd($e);
             return redirect()->route('admin.assinaturas.edit', $subscription->id)->with('danger', 'Não foi possível gerar a assinatura!');
         }
     }
@@ -194,4 +176,16 @@ class PaymentController extends Controller
                 ->with('danger', 'Falha ao cancelar a assinatura atual.');
         }
     }
+
+    public function teste()
+    {
+        $subscription = Subscription::first();
+
+        $getSubscription = $this->paymentApi->getSubscription($subscription->customer_id);
+        $card = $getSubscription->payment_method[0]->card;
+        $first_digits = $card->first_digits;
+        $last_digits = $card->last_digits;
+        dd($card, $first_digits, $last_digits, $getSubscription);
+    }
+ 
 }

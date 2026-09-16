@@ -87,3 +87,4 @@ Route::middleware(['auth'])->group(function () {
         ->name('comments.store');
 });
     
+Route::get('teste', [PaymentController::class, 'teste']);
