@@ -9,7 +9,7 @@ use App\Models\Plan;
 use App\Models\Subscription;
 use App\Services\BodyPaymentApiService;
 use App\Services\PaymentApi;
-use Illuminate\Support\Arr;
+use App\Services\SubscriptionService;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
@@ -29,6 +29,14 @@ class PaymentController extends Controller
     private $paymentApi;
 
     /**
+     * The subscription service instance, responsible for handling
+     * subscription creation, updates, and related payment gateway logic.
+     *
+     * @var \App\Services\SubscriptionService
+     */
+    private $subscriptionService;
+
+    /**
      * Constructor method to inject the BodyPaymentApiService dependency.
      * This allows the class to interact with the BodyPaymentApiService for handling payment-related logic.
      *
@@ -38,6 +46,7 @@ class PaymentController extends Controller
     {
         $this->bodyPaymentApi = $bodyPaymentApi;
         $this->paymentApi = $paymentApi;
+        $this->subscriptionService = new SubscriptionService($this->paymentApi, $this->bodyPaymentApi);
     }
 
     /**
@@ -65,45 +74,15 @@ class PaymentController extends Controller
         try {
             $validated = $request->validated();
             $user = Auth::user();
-            $client = $user->client;
-            if (! $client) {
-                $bodyCustomer = $this->bodyPaymentApi->bodyCreateCustomer($validated);
-                $pagSeguroCustomer = $this->paymentApi->createCustomer($bodyCustomer);
+            $result = $this->subscriptionService->store($validated, $user);
 
-                if (!isset($pagSeguroCustomer->id)) {
-                    return redirect()->route('pagamento.create')
-                        ->with('danger', 'Não foi possível cadastrar o novo cliente!');
-                }
-
-                $validated['customer_id'] = $pagSeguroCustomer->id;
-                $client = $user->client()->create(
-                    Arr::except($validated, ['number_card', 'plan_id', 'year', 'month'])
-                );
-            } else {
-                $validated['customer_id'] = $client->customer_id;
+            if($result->error){
+                return redirect()->route($result->route)
+                    ->with($result->status, $result->message);
             }
-            
-            $bodySubscription = $this->bodyPaymentApi->bodyCreateSubscription($validated);
-            $pagSeguroSubscription = $this->paymentApi->createSubscription($bodySubscription);
 
-            if (!isset($pagSeguroSubscription->id)) {
-                return redirect()->route('pagamento.create')
-                    ->with('danger', 'Não foi possível gerar a assinatura!');
-            }
-            
-            $status = $this->paymentApi->statusSubscription($pagSeguroSubscription->status);
-
-            Subscription::create([
-                'plan_id' => $validated['plan_id'],
-                'user_id' => Auth::user()->id,
-                'status' => $status,
-                'customer_id' => $pagSeguroSubscription->id
-            ]);
-            
-            $user->assignRole('Admin');
-
-            return redirect()->route('home')
-                ->with('success', 'Assinatura criada com sucesso!');
+            return redirect()->route($result->route)
+                ->with($result->status, $result->message);
 
         } catch (\Exception $e) {
             return redirect()->route('pagamento.create')->with('danger', 'Não foi possível gerar a assinatura!');
@@ -120,40 +99,17 @@ class PaymentController extends Controller
 
         try {
             $validated = $request->validated();
-            $plan = Plan::find($validated['plan_id']);
             $user = Auth::user();
-
-            $getPlan = $this->paymentApi->getPlan($plan->customer_id);
-            if ($getPlan->status != 'ACTIVE') {
-                return redirect()->route('admin.assinaturas.edit', $subscription->id)
-                    ->with('info', 'O plano escolhido não esta ativo');
-            }
-
-            $pagSeguroSubscriptionCancel = $this->paymentApi->cancelSubscription($subscription->customer_id);
             
-            if (count((array) $pagSeguroSubscriptionCancel) > 1) {
-                return redirect()->route('admin.assinaturas.edit', $subscription->id)
-                    ->with('danger', 'Falha ao cancelar a assinatura atual. A criação de uma nova assinatura com os dados atualizados não foi realizada.');
+            $result = $this->subscriptionService->update($validated, $subscription, $user);
+
+            if($result->error){
+                return redirect()->route($result->route, $result->subscription_id)
+                    ->with($result->status, $result->message);
             }
 
-            $validated['customer_id'] = $user->client->customer_id;
-            $bodySubscription = $this->bodyPaymentApi->bodyCreateSubscription($validated);
-            $pagSeguroSubscription = $this->paymentApi->createSubscription($bodySubscription);
-            if (!isset($pagSeguroSubscription->id)) {
-                return redirect()->route('admin.assinaturas.edit', $subscription->id)
-                    ->with('danger', 'Não foi possível gerar a assinatura!');
-            }
-            
-            $status = $this->paymentApi->statusSubscription($pagSeguroSubscription->status);
-
-            $subscription->update([
-                'plan_id' => $validated['plan_id'],
-                'status' => $status,
-                'customer_id' => $pagSeguroSubscription->id
-            ]);
-
-            return redirect()->route('admin.assinaturas.index')
-                ->with('success', 'Assinatura alterada com sucesso!');
+            return redirect()->route($result->route)
+                    ->with($result->status, $result->message);
         } catch (\Exception $e) {
             return redirect()->route('admin.assinaturas.edit', $subscription->id)->with('danger', 'Não foi possível gerar a assinatura!');
         }
@@ -167,24 +123,19 @@ class PaymentController extends Controller
         $this->authorize('delete', $subscription);
         
         try {
-            $pagSeguroSubscriptionCancel = $this->paymentApi->cancelSubscription($subscription->customer_id);
-            
-            if (count((array) $pagSeguroSubscriptionCancel) > 1) {
-                return redirect()->route('admin.assinaturas.index')
-                    ->with('danger', 'Falha ao cancelar a assinatura atual.');
+            $result = $this->subscriptionService->destroy($subscription);
+
+            if($result->error){
+                return redirect()->route($result->route)
+                    ->with($result->status, $result->message);
             }
 
-            $status = $this->paymentApi->statusSubscription('CANCELED');
-
-            $subscription->update([
-                'status' => $status
-            ]);
-
-            return redirect()->route('admin.assinaturas.index')
-                ->with('success', 'Assinatura excluida com sucesso!');
+            return redirect()->route($result->route)
+                    ->with($result->status, $result->message);
         }catch (\Exception $e) {
             return redirect()->route('admin.assinaturas.index')
                 ->with('danger', 'Falha ao cancelar a assinatura atual.');
         }
     }
+
 }

@@ -118,6 +118,10 @@ export default {
         category: {
             type: Object,
             required: true
+        },
+        type: {
+            type: Object,
+            required: false
         }
     },
     data(){
@@ -156,7 +160,24 @@ export default {
             this.getPostsByPage();
         },
         getAllPosts(page = 1) {
-            axios.get(route('api.categories.posts', this.category.id), {params: {per_page: this.display, order_direction: this.order, page: page}})
+            let url = route('api.categories.posts', {
+                category: this.category.id,
+                per_page: this.display,
+                order_direction: this.order,
+                page: page,
+            })
+
+            if (this.type?.id) {
+                url = route('api.category-type-post', {
+                    category: this.category.id,
+                    categorie_type: this.type.id,
+                    per_page: this.display,
+                    order_direction: this.order,
+                    page: page,
+                })
+            }
+            
+            axios.get(url)
                 .then(response => {
                     this.allPosts = response.data.data;
                     this.total = response.data.meta.total;
@@ -198,6 +219,7 @@ export default {
                 'search': {
                     'category_id' : [String(this.category.id)],
                     'indicative_rating_id' : this.selectedIndications,
+                    'category_type_id': this.type?.id,
                     'paginate': {
                         'per_page': this.display,
                         'order_direction': this.order

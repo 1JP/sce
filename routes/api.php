@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CategoryTypeController;
+use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DesLinkController;
@@ -37,12 +38,14 @@ use Illuminate\Support\Facades\Hash;
 */
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/all-category-type', [CategoryTypeController::class, 'all'])->name('category-type.all');
 Route::get('/indicative-rating', [IndicativeRatingController::class, 'index'])->name('indicative-rating.index');
 Route::get('/all-posts', [PostController::class, 'all'])->name('posts.all');
 Route::get('/posts/top', [PostController::class, 'top'])->name('posts.top');
 Route::get('/all-plans', [PlanController::class, 'all'])->name('plans.all');
 Route::get('/posts/{post}/comments', [PostController::class, 'comments'])->name('posts.comments');
 Route::get('/categories/{category}/posts', [CategoryController::class, 'myPosts'])->name('categories.posts');
+Route::get('/categories/{category}/{categorie_type}/posts', [CategoryController::class, 'getCategoryTypeForPost'])->name('category-type-post');
 Route::get('/categories/posts/search', [SitePostController::class, 'search'])->name('site.posts.search');
 Route::get('links', [SettingController::class, 'links'])->name('settings.links');
 
@@ -52,6 +55,7 @@ Route::get('/deslinks/chartline', [DesLinkController::class, 'chartline'])->name
 
 Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(function () {
     Route::prefix('categories')->name('categories.')->group(function () {
+        Route::get('all', [CategoryController::class, 'all'])->name('all');
         Route::get('search', [CategoryController::class, 'search'])->name('search');
     });
     Route::apiResource('categories', CategoryController::class)->except(['index']);
@@ -60,6 +64,11 @@ Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(functi
         Route::get('search', [CategoryTypeController::class, 'search'])->name('search');
     });
     Route::apiResource('categorie-types', CategoryTypeController::class);
+
+    Route::prefix('client')->name('client.')->group(function () {
+        Route::get('search', [ClientController::class, 'search'])->name('search');
+    });
+    Route::apiResource('client', ClientController::class);
 
     Route::prefix('indicative-rating')->name('indicative-rating.')->group(function () {
         Route::get('search', [IndicativeRatingController::class, 'search'])->name('search');

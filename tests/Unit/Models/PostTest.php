@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Category;
+use App\Models\CategoryType;
 use App\Models\IndicativeRating;
 use App\Models\Post;
 use App\Models\User;
@@ -23,6 +24,9 @@ class PostTest extends TestCase
     /** @var User */
     protected $user;
 
+    /** @var CategoryType */
+    protected $category_type;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -30,6 +34,7 @@ class PostTest extends TestCase
         $this->user = User::factory()->create();
         $this->indicate = IndicativeRating::factory()->create();
         $this->category = Category::factory()->create();
+        $this->category_type = CategoryType::factory()->create();
     }
 
     /**
@@ -39,11 +44,12 @@ class PostTest extends TestCase
     {
         $name = 'Test post';
         $description = fake()->text();
-        $note = 9.0;
+        $note = 0.0;
 
         $post = Post::factory()->create([
             'indicative_rating_id' => $this->indicate->id,
             'category_id' => $this->category->id,
+            'category_type_id' =>$this->category_type->id,
             'user_id' => $this->user->id,
             'name' => $name,
             'description' => $description,
@@ -52,6 +58,7 @@ class PostTest extends TestCase
 
         $this->assertEquals($post->indicative_rating_id, $this->indicate->id);
         $this->assertEquals($post->category_id, $this->category->id);
+        $this->assertEquals($post->category_type_id, $this->category_type->id);
         $this->assertEquals($post->user_id, $this->user->id);
         $this->assertEquals($post->name, $name);
         $this->assertEquals($post->description, $description);
@@ -65,13 +72,14 @@ class PostTest extends TestCase
     {
         $name = 'Test update post';
         $description = fake()->text();
-        $note = 10.0;
+        $note = 0.0;
 
         $post = Post::factory()->create();
 
         $post->update([
             'indicative_rating_id' => $this->indicate->id,
             'category_id' => $this->category->id,
+            'category_type_id' =>$this->category_type->id,
             'user_id' => $this->user->id,
             'name' => $name,
             'description' => $description,

@@ -16,7 +16,7 @@ class CategoryTypeSeeder extends Seeder
         $types = CategoryTypeEnum::all();
 
         foreach ($types as $type) {
-            CategoryType::create($type);
+            CategoryType::updateOrCreate($type,$type);
         }
     }
 }

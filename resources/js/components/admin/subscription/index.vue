@@ -61,7 +61,7 @@
                                             <h6 class="text-center mb-0">{{ plan.name }}</h6>
                                             <span class="text-xs">{{ plan.description }}</span>
                                             <hr class="horizontal dark my-3">
-                                            <h5 class="mb-0 text-success" v-if="plan.active">Ativo</h5>
+                                            <h5 class="mb-0 text-success" v-if="subscription.status == 'ACTIVE' || subscription.status == 'TRIAL'">Ativo</h5>
                                             <h5 class="mb-0 text-danger" v-else>Desativado</h5>
                                         </template>
                                     </component-card>

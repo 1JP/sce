@@ -42,6 +42,11 @@ class Category extends Model
         return $query->where('active', true);
     }
 
+    /**
+     * Get the posts belonging to this category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function posts()
     {
         return $this->hasMany(Post::class);

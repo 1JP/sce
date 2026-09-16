@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\PostResource;
+use App\Models\CategoryType;
 use App\Models\Post;
 
 class SitePostController extends Controller
@@ -40,7 +41,12 @@ class SitePostController extends Controller
             $query->whereIn('category_id', $validated['search']['category_id']);
         })->when(isset($validated['search']['indicative_rating_id']), function ($query) use ($validated){
             $query->whereIn('indicative_rating_id', $validated['search']['indicative_rating_id']);
-        })->orderBy('name', $order_direction)
+        })->when(isset($validated['search']['category_type_id']), function ($query) use ($validated) {
+            $type = CategoryType::where('id', '=', $validated['search']['category_type_id'])
+                ->first();
+            $query->whereIn('category_type_id', $type->categories()->pluck('id')->toArray());
+        })
+        ->orderBy('name', $order_direction)
         ->paginate($per_page);
 
        return PostResource::collection($posts);

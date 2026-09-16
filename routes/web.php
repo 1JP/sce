@@ -65,6 +65,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
 Route::get("/", [HomeController::class, 'index'])->name('home');
 Route::resource('/posts', SitePostController::class);
+Route::prefix('categorias')->name('categorias.')->group(function () {
+    Route::get('/{category}/tipo/{tipos_de_categoria}', [SiteCategoryController::class, 'getCategoryTypeForPost'])->name('for-post');
+});
 Route::resource('/categorias', SiteCategoryController::class);
 
 Route::prefix('usuarios')->name('usuarios.')->group(function () {
@@ -84,3 +87,4 @@ Route::middleware(['auth'])->group(function () {
         ->name('comments.store');
 });
     
+Route::get('teste', [PaymentController::class, 'teste']);

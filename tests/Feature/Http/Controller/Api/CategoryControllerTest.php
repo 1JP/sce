@@ -63,7 +63,7 @@ class CategoryControllerTest extends TestCase
             ]
         ]);
 
-        $this->assertCount(1, $searchCategoryType->json());
+        $this->assertCount(3, $searchCategoryType->json());
 
     }
 }

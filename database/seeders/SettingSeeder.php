@@ -13,19 +13,33 @@ class SettingSeeder extends Seeder
      */
     public function run(): void
     {
-        Setting::create([
+        Setting::updateOrCreate([
+            'name' => 'sandbox-payment',
+            'body' => 1,
+            'group' => 'api-payment'
+        ],
+        [
             'name' => 'sandbox-payment',
             'body' => 1,
             'group' => 'api-payment'
         ]);
 
-        Setting::create([
+        Setting::updateOrCreate([
+            'name' => 'url-sanbox-payment',
+            'body' => 'https://sandbox.api.assinaturas.pagseguro.com/',
+            'group' => 'api-payment'
+        ],
+        [
             'name' => 'url-sanbox-payment',
             'body' => 'https://sandbox.api.assinaturas.pagseguro.com/',
             'group' => 'api-payment'
         ]);
 
-        Setting::create([
+        Setting::updateOrCreate([
+            'name' => 'url-prod-payment',
+            'body' => 'https://api.assinaturas.pagseguro.com/',
+            'group' => 'api-payment'
+        ],[
             'name' => 'url-prod-payment',
             'body' => 'https://api.assinaturas.pagseguro.com/',
             'group' => 'api-payment'
@@ -35,24 +49,20 @@ class SettingSeeder extends Seeder
             'name' => 'token-payment',
             'body' => '',
             'group' => 'api-payment'
+        ],[
+            'name' => 'token-payment',
+            'body' => '',
+            'group' => 'api-payment'
         ]);
 
         Setting::create([
             'name' => 'public-key-payment',
             'body' => '',
             'group' => 'api-payment'
-        ]);
-
-        Setting::create([
-            'name' => 'huggingface-token',
+        ],[
+            'name' => 'public-key-payment',
             'body' => '',
-            'group' => 'huggingface'
-        ]);
-
-        Setting::create([
-            'name' => 'huggingface-model',
-            'body' => 'cardiffnlp/twitter-xlm-roberta-base-sentiment',
-            'group' => 'huggingface'
+            'group' => 'api-payment'
         ]);
 
     }

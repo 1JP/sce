@@ -145,13 +145,12 @@ class SiteUserControllerTest extends TestCase
             'complement' => 'Apto 101',
         ];
 
-        $mock = Mockery::mock('alias:App\Models\User');
-        $mock->shouldReceive('create')
+        Hash::shouldReceive('make')
             ->once()
             ->andThrow(new \Exception('Simulated exception'));
 
         $response = $this->post(route('usuarios.store'), $requestData);
-        
+
         $response->assertRedirect(route('usuarios.create', $token->token));
         $response->assertSessionHas('danger', 'Não foi possível fazer o cadastro!');
     }

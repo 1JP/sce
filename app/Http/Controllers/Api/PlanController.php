@@ -15,9 +15,9 @@ class PlanController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', Auth::user());
+        $this->authorize('viewAny', Plan::class);
 
-        $plans = Plan::all();
+        $plans = Plan::active()->orderBy('name')->paginate(10);
 
         return PlanResource::collection($plans);
     }
@@ -27,7 +27,7 @@ class PlanController extends Controller
      */
     public function show(Plan $plan)
     {
-        $this->authorize('view', Auth::user());
+        $this->authorize('view', $plan);
 
         return PlanResource::make($plan);
     }
@@ -45,7 +45,7 @@ class PlanController extends Controller
             $query->where('name', 'like', '%'.$validated['search']['name'].'%');
         })->when(isset($validated['search']['status']), function ($query) use ($validated){
             $query->where('active', '=', $validated['search']['status']);
-        })->get();
+        })->paginate(10);
 
        return PlanResource::collection($plans);
     }

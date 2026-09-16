@@ -49,6 +49,10 @@
     </div>
 </div>
 
-<site-category-show :category='@json($category)'></site-category-show>
+<site-category-show 
+    :category='@json($category)'
+    :type='@json($type ?? [])'
+>
+</site-category-show>
 
 @endsection

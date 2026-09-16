@@ -8,7 +8,7 @@
         <template v-slot:header>
             <div class="row">
                 <div class="col-lg-4">
-                    <h6>Editar Posts</h6>
+                    <h6>Cadastrar Posts</h6>
                 </div>
                 <div class="col-lg-8 d-flex justify-content-end">
                     <a :href="route('admin.posts.index')" class="btn bg-gradient-primary">
@@ -64,14 +64,14 @@
                 <p class="text-left text-muted small pt-3"><i>Tamanho recomendado: 1024px</i></p>
                 <hr>
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         <div class="row">
                             <div class="col-lg-12 d-inline-flex justify-content-between align-items-center">
                                 <h5><i class="fa fa-fw fa-list mr-2 text-secondary"></i>Classificação Indicativa</h5>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-5">
                                 <div class="form-group d-flex">
                                     <component-select
                                         :is-required="true"
@@ -86,14 +86,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         <div class="row">
                             <div class="col-lg-12 d-inline-flex justify-content-between align-items-center">
                                 <h5><i class="fa fa-fw fa-list mr-2 text-secondary"></i>Categorias</h5>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-5">
                                 <div class="form-group d-flex">
                                     <component-select
                                         :is-required="true"
@@ -103,6 +103,28 @@
                                         :value-select="category_id"
                                         :class-item="classCategory"
                                         @update:valueSelect="selectedCategory($event)"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-12 d-inline-flex justify-content-between align-items-center">
+                                <h5><i class="fa fa-fw fa-list mr-2 text-secondary"></i>Tipos de Categorias </h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <div class="form-group d-flex">
+                                    <component-select
+                                        :is-required="true"
+                                        :placeholder="'Tipos de Categorias'"
+                                        :name-id="'category_type_id'"
+                                        :options='types'
+                                        :value-select="category_type_id"
+                                        :class-item="classTypeCategory"
+                                        @update:valueSelect="selectedTypeCategory($event)"
                                     />
                                 </div>
                             </div>
@@ -128,14 +150,17 @@
             return {
                 indications: [],
                 categories: [],
+                types: [],
                 classInput: '',
                 classDescription: '',
                 classIndicative: '',
                 classCategory: '',
+                classTypeCategory: '',
                 name: '',
                 description: '',
                 indicative_rating_id: '',
                 category_id: '',
+                category_type_id: '',
                 token: '',
             }
         },
@@ -154,9 +179,13 @@
             },
             selectedCategory(event){
                 this.category_id = event;
+                this.types = this.categories.filter(category => category.id === event)[0].category_types
             },
             selectedIndicative(event){
                 this.indicative_rating_id = event;
+            },
+            selectedTypeCategory(event){
+                this.category_type_id = event;
             },
             valueInput(event){
                 this.name = event.target.value;
@@ -167,12 +196,13 @@
             save(){
                 if(this.name == '' || this.description == '' 
                     || this.indicative_rating_id == '' || this.category_id == ''
+                    || this.category_type_id == ''
                 ){
                     this.classInput = this.name == '' ? 'is-invalid' : 'is-valid'
                     this.classDescription = this.description == '' ? 'is-invalid' : 'is-valid'
                     this.classIndicative = this.indicative_rating_id == '' ? 'is-invalid' : 'is-valid'
                     this.classCategory = this.category_id == '' ? 'is-invalid' : 'is-valid'
-
+                    this.classTypeCategory = this.category_type_id == '' ? 'is-invalid' : 'is-valid'
                     return;
                 }
 
@@ -180,6 +210,8 @@
                 this.classDescription = 'is-valid'
                 this.classIndicative = 'is-valid'
                 this.classCategory = 'is-valid'
+                this.classTypeCategory = 'is-valid'
+                
                 this.$refs.form.submit();
             },
         },

@@ -48,8 +48,8 @@ class PostController extends Controller
 
         $posts = match (true) {
             $user->hasRole('Membros') => $user->administrator[0]->user?->posts ?? collect(),
-            $user->hasRole('Admin') => $user->posts,
-            $user->hasRole('Root') => Post::orderBy('name')->get()
+            $user->hasRole('Admin') => $user->posts()->orderBy('name')->paginate(10),
+            $user->hasRole('Root') => Post::orderBy('name')->paginate(10)
         };
 
         return PostResource::collection($posts);
@@ -92,7 +92,9 @@ class PostController extends Controller
             $query->where('category_id', '=', $validated['search']['category_id']);
         })->when(isset($validated['search']['indicative_rating_id']), function ($query) use ($validated){
             $query->where('indicative_rating_id', '=', $validated['search']['indicative_rating_id']);
-        })->orderBy('name', 'ASC')->get();
+        })->when(isset($validated['search']['category_type_id']), function ($query) use ($validated){
+            $query->where('category_type_id', '=', $validated['search']['category_type_id']);
+        })->orderBy('name')->paginate(10);
 
        return PostResource::collection($posts);
     }

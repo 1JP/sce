@@ -24,7 +24,7 @@ class PlanResource extends JsonResource
             'value' => str_replace(['', '.'], ['.', ','], $this->value), 
             'customer_id' => $this->customer_id, 
             'active' => $this->active,
-            'count_assinatura' => 0
+            'count_assinatura' => $this->subscriptions->count()
         ];
     }
 }

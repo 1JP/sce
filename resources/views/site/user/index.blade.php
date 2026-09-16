@@ -5,7 +5,7 @@
 <div class="py-5">
     <div class="container">
         <site-index-user
-            :is-role="{{ $isRole }}"
+            :is-role="{{ $isRole || $isDashboard }}"
             :user='@json(Auth::user())'
         />
     </div>

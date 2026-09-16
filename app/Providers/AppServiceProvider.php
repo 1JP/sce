@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Category;
 use App\Models\CategoryType;
+use App\Models\Client;
 use App\Models\IndicativeRating;
 use App\Models\Plan;
 use App\Models\PostImage;
@@ -33,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Route::model('categoria', Category::class);
         Route::model('tipos_de_categoria', CategoryType::class);
+        Route::model('categorie_type', CategoryType::class);
         Route::model('classificacao_indicativa', IndicativeRating::class);
         Route::model('plano', Plan::class);
         Route::model('post_image', PostImage::class);
@@ -44,11 +46,12 @@ class AppServiceProvider extends ServiceProvider
         Route::model('log', Activity::class);
         Route::model('role', Role::class);
         Route::model('permisso', Role::class);
+        Route::model('cliente', Client::class);
+
         $maskService = new MaskService();
 
         view()->composer('*', function($view) use ($maskService) {
             $user = auth()->user();
-            $roles = ['Admin', 'Membros', 'Root', 'Client'];
 
             $settings = Setting::select('name', 'body')->whereIn('group', [
                 'company',
@@ -56,7 +59,7 @@ class AppServiceProvider extends ServiceProvider
                 'site'
             ])->get();
             
-            $name = $settings->where('name', 'name')->first()?->body ?? 'Minha Empresa';
+            $name = $settings->where('name', 'name')->first()?->body ?? 'SCE';
             $description = $settings->where('name', 'description')->first()?->body ?? '';
             $cnpj = $settings->where('name', 'cnpj')->first()?->body ?? '00.000.000/0000-00';
             $cnpj = $maskService->applyMask($cnpj, '##.###.###/####-##');
@@ -73,13 +76,28 @@ class AppServiceProvider extends ServiceProvider
             $state = $settings->where('name', 'state')->first()?->body ?? '';
 
             $streets = collect([$steet, $number, $neighborhood, $city, $cep, $state])->filter()->implode(', ');
-            
+            $isSubscription = false;
+
             if ($user) {
+                $isSubscription = $user->isRoot() ? true : false;
+
+                if($user->isAdmin()){
+                    $isSubscription = in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
+                }
+                
+                if($user->isMember()){
+                    $administrator = $user->administrator()->first()?->user;
+                    $isSubscription = in_array($administrator->subscription?->status, ['ACTIVE', 'TRIAL']);
+                }
                 $user->load('roles');
             }
 
+            $isDashboard = $user?->isAdminOrRoot() || $user?->isMember();
+
             $view->with('user', $user);
-            $view->with('isRole', $user ? $user->hasAnyRole($roles) : false);
+            $view->with('isRole', $user?->isRoot() ?? false);
+            $view->with('isDashboard', $isDashboard);
+            $view->with('isSubscription', $isSubscription);
             $view->with('companyName', $name);
             $view->with('companyDescription', $description);
             $view->with('companyCNPJ', $cnpj);

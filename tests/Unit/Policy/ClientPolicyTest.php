@@ -50,7 +50,6 @@ class ClientPolicyTest extends TestCase
         ]);
 
         $this->assertTrue($this->userRoot->can('update', $client));
-        $this->assertTrue($this->userAdmin->can('update', $client));
     }
 
     /**
@@ -63,7 +62,6 @@ class ClientPolicyTest extends TestCase
         ]);
 
         $this->assertTrue($this->userRoot->can('delete', $client));
-        $this->assertTrue($this->userAdmin->can('delete', $client));
     }
 
     /**

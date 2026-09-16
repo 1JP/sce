@@ -59,21 +59,41 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Get the posts created by this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function posts()
     {
         return $this->hasMany(Post::class);
     }
 
+    /**
+     * Get the client profile associated with this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function client()
     {
         return $this->hasOne(Client::class);
     }
 
+    /**
+     * Get the subscription associated with this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function subscription()
     {
         return $this->hasOne(Subscription::class);
     }
 
+    /**
+     * Get the client this user administers, via the "members" pivot table.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function administrator()
     {
         return $this->belongsToMany(Client::class, 'members', 'user_id', 'client_id')
@@ -81,36 +101,71 @@ class User extends Authenticatable
             ->limit(1);
     }
 
+    /**
+     * Determine if the user has the "Root" role.
+     *
+     * @return bool
+     */
     public function isRoot(): bool
     {
         return $this->hasRole('Root');
     }
 
+    /**
+     * Determine if the user has the "Admin" role.
+     *
+     * @return bool
+     */
     public function isAdmin(): bool
     {
         return $this->hasRole('Admin');
     }
 
+    /**
+     * Determine if the user has the "Membros" role.
+     *
+     * @return bool
+     */
     public function isMember(): bool
     {
         return $this->hasRole('Membros');
     }
 
+    /**
+     * Determine if the user has the "Admin" or "Root" role.
+     *
+     * @return bool
+     */
     public function isAdminOrRoot(): bool
     {
         return $this->hasRole(['Admin', 'Root']);
     }
 
+    /**
+     * Get the likes (upvotes) made by this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function links()
     {
         return $this->hasMany(Link::class);
     }
 
+    /**
+     * Get the comments made by this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
 
+    /**
+     * Get the dislikes (downvotes) made by this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function deslinks()
     {
         return $this->hasMany(Deslink::class);

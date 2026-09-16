@@ -34,7 +34,7 @@
     </div>
 
     <model :title="'Deseja ser um cliente?'" :name="'new-client'">
-        Deseja ser um cliente para o público comentar sobre o seu livro, filme, série, anime até mesmo seu mangá?
+        Deseja ser um cliente para o público comentar sobre o(s) seu(s) livro(s), filme(s), série(s), anime(s) até mesmo seu(s) mangá(s)?
         So clicar <b>Sim</b>
         <template v-slot:footer>
             <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</a>
@@ -71,7 +71,7 @@
                     },
                     {
                         'label': 'Área administrativa',
-                        'view': !this.isRole,
+                        'view': this.isRole,
                         'selected': false,
                         'route': route('admin.dashboard'),
                         'modal': false,
@@ -79,7 +79,7 @@
                     },
                     {
                         'label': 'Seja ser um cliente?',
-                        'view': this.isRole,
+                        'view': !this.isRole,
                         'selected': false,
                         'route': '#',
                         'modal': true,

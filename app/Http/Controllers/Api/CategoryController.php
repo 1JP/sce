@@ -39,7 +39,7 @@ class CategoryController extends Controller
                 ->first();
             $query->whereIn('id', $type->categories()->pluck('id')->toArray());
         })
-        ->get();
+        ->paginate(10);
 
         return CategoryResource::collection($categories);
     }
@@ -58,5 +58,42 @@ class CategoryController extends Controller
             ->paginate($per_page);
 
         return PostResource::collection($posts);
+    }
+
+    /**
+     * Get paginated posts for a given category and category type.
+     *
+     * @param  \App\Models\Category      $category  The category to filter posts by.
+     * @param  \App\Models\CategoryType  $type      The category type to filter posts by.
+     * @param  \App\Http\Requests\PaginateRequest  $request  Validated pagination and ordering params.
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function getCategoryTypeForPost(Category $category, CategoryType $type, PaginateRequest $request)
+    {
+        $validated = $request->validated();
+        $per_page = $validated['paginate']['per_page'] ?? 30;
+        $order_direction = $validated['search']['order_direction'] ?? 'asc';
+
+        $posts = $category->posts()->active()
+            ->where('category_type_id', $type->id)
+            ->orderBy('name', $order_direction)
+            ->paginate($per_page);
+
+        return PostResource::collection($posts);
+    }
+
+    /**
+     * List all categories, ordered alphabetically by name.
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function all()
+    {
+        $this->authorize('viewAny', Category::class);
+        
+        $categories = Category::orderBy('name', 'ASC')
+            ->paginate(10);
+
+        return CategoryResource::collection($categories);
     }
 }

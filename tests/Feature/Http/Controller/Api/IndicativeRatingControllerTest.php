@@ -29,7 +29,7 @@ class IndicativeRatingControllerTest extends TestCase
     public function test_search_indicative_rating(): void
     {
         $indicative = IndicativeRating::factory()->count(3)->create();
-        $name = $indicative[0]->indicative;
+        $name = $indicative[0]->name;
 
         $searchName = $this->get(route('api.admin.indicative-rating.search'), [
             'search' => [
@@ -39,7 +39,7 @@ class IndicativeRatingControllerTest extends TestCase
 
         $searchName->assertOk();
         $searchName->assertJsonFragment([
-            'indicative' => $name,
+            'name' => $name,
         ]);
     }
 }

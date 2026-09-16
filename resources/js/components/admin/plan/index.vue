@@ -42,7 +42,7 @@
             </div>
         </template>
         <template v-slot:body>
-            <admin-table>
+            <admin-table :pagination="pagination" @page-change="listPlans">
                 <template v-slot:thead>
                     <admin-thead
                         v-for="tha, index in ths"
@@ -305,6 +305,7 @@
                 selectedStatus: '',
                 inputPlan: '',
                 listSearch: {},
+                pagination: null
             }
         },
         methods: {
@@ -338,10 +339,16 @@
                 }
                 this.valuePlan = this.maskMount(event.target.value);
             },
-            listPlans(){
-                axios.get(route('api.admin.plans.index'))
+            listPlans(page = 1){
+                if(Object.keys(this.listSearch).length > 0){
+                    this.listSearch.page = page
+                    this.search(this.listSearch)
+                    return
+                }
+                axios.get(route('api.admin.plans.index'), { params: { page } })
                     .then((response) => {
                         this.plans = response.data.data;
+                        this.pagination = response.data.meta
                     })
             },
             selectPlan(plan){
@@ -432,6 +439,7 @@
                 axios.get(route('api.admin.plans.search'), {params})
                     .then((response) => {
                         this.plans = response.data.data;
+                        this.pagination = response.data.meta
                     })
             },
             clear(){

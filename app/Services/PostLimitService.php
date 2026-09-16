@@ -33,6 +33,10 @@ class PostLimitService
         if (!$limitField) {
             return false;
         }
+        
+        if ($user->isRoot()){
+            return false;
+        }
 
         $count = $user->posts()->where('category_id', $category->id)->count();
         $limit = $user->subscription->plan->{$limitField};

@@ -68,7 +68,7 @@
                     </div>
                 </template>
                 <template v-slot:body>
-                    <admin-table>
+                    <admin-table :pagination="pagination" @page-change="listPosts">
                         <template v-slot:tbody>
                             <tr v-for="post in posts" :key="post.id">
                                 <td class="w-30">
@@ -156,13 +156,15 @@
                     backgroundColor: 'rgba(255, 87, 51, 0.2)',
                     tension: 0.4,
                 },
+                pagination: null,
             }
         },
         methods: {
-            listPosts(){
-                axios.get(route('api.admin.posts.index'))
+            listPosts(page = 1){
+                axios.get(route('api.admin.posts.index'), { params: { page } })
                     .then((response) => {
                         this.posts = response.data.data;
+                        this.pagination = response.data.meta
                     })
             },
             normalizeLinkDeslinkDatasets() {

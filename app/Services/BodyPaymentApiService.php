@@ -150,4 +150,17 @@ class BodyPaymentApiService
 
         return $body;
     }
+
+    public function bodyUpdateSubscription(array $data)
+    {
+        $plan = Plan::find($data['plan_id']);
+
+        $body = [
+            "plan" => [
+                "id" => $plan->customer_id
+            ]
+        ];
+
+        return $body;
+    }
 }

@@ -22,6 +22,7 @@ class Post extends Model
         'user_id',
         'category_id',
         'indicative_rating_id',
+        'category_type_id'
     ];
 
     /**
@@ -35,41 +36,91 @@ class Post extends Model
         return $query->where('active', true);
     }
 
+    /**
+     * Get the images associated with this post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function images()
     {
         return $this->hasMany(PostImage::class);
     }
 
+    /**
+     * Get the user that created this post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get the category this post belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
+    /**
+     * Get the category type this post belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category_type()
+    {
+        return $this->belongsTo(CategoryType::class);
+    }
+
+    /**
+     * Get the indicative rating (age classification) of this post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function indicative_rating()
     {
         return $this->belongsTo(IndicativeRating::class);
     }
 
+    /**
+     * Get the comments associated with this post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
-    
+
+    /**
+     * Get the likes (upvotes) associated with this post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function links()
     {
         return $this->hasMany(Link::class);
     }
 
+    /**
+     * Get the dislikes (downvotes) associated with this post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function deslinks()
     {
         return $this->hasMany(Deslink::class);
     }
 
+    /**
+     * Get the ratings associated with this post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function postRatings()
     {
         return $this->hasMany(PostRating::class);

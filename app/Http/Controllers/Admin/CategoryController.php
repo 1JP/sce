@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Models\CategoryType;
-use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -15,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', Auth::user());
+        $this->authorize('viewAny', Category::class);
 
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Categorias'],
@@ -26,9 +25,8 @@ class CategoryController extends Controller
         ];
 
         $types = CategoryType::all();
-        $categories = Category::all();
 
-        return view('admin.category.index', compact('ths', 'types', 'categories'));
+        return view('admin.category.index', compact('ths', 'types'));
     }
 
     /**
@@ -44,7 +42,7 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        $this->authorize('create', Auth::user());
+        $this->authorize('create', Category::class);
 
         try {
             $validated = $request->validated();

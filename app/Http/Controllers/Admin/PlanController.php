@@ -7,7 +7,6 @@ use App\Http\Requests\PlanRequest;
 use App\Models\Plan;
 use App\Services\BodyPaymentApiService;
 use App\Services\PaymentApi;
-use Illuminate\Support\Facades\Auth;
 
 class PlanController extends Controller
 {
@@ -43,7 +42,7 @@ class PlanController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', Auth::user());
+        $this->authorize('viewAny', Plan::class);
 
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Plano'],
@@ -72,7 +71,7 @@ class PlanController extends Controller
      */
     public function store(PlanRequest $request)
     {
-        $this->authorize('create', Auth::user());
+        $this->authorize('create', Plan::class);
 
         try {
             $validated = $request->validated();

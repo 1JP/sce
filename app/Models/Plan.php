@@ -30,6 +30,16 @@ class Plan extends Model
     }
 
     /**
+     * Get the subscriptions belonging to this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    /**
      * Sets the `name` attribute and ensures it is not an integer.
      *
      * @param mixed $value The name value to be set

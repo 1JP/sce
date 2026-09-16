@@ -1,5 +1,5 @@
 <template>
-    <section id="popular-books" class="bookshelf ">
+    <section id="popular-books" class="bookshelf " v-if="categories.length > 0">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -62,7 +62,13 @@ import { all } from 'axios';
             getCategories() {
                 axios.get(route('api.categories.index'))
                     .then(response => {
-                        this.categories = response.data.data;
+                        let respon = response.data.data
+                            .map(res => ({
+                                ...res,
+                                posts: res.posts.filter(post => post.active == 1)
+                            }))
+                            .filter(res => res.posts.length > 0)
+                        this.categories = respon;
                     })
                     .catch(error => {
                         console.error('Error fetching categories:', error);

@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryTypeRequest;
-use App\Http\Resources\CategoryTypeResource;
 use App\Models\CategoryType;
-use Illuminate\Http\Request;
 
 class CategoryTypeController extends Controller
 {
@@ -15,6 +13,8 @@ class CategoryTypeController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', CategoryType::class);
+
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Categoria'],
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2', 'name' => 'Descrição'],
@@ -37,6 +37,8 @@ class CategoryTypeController extends Controller
      */
     public function store(CategoryTypeRequest $request)
     {
+        $this->authorize('create', CategoryType::class);
+
         try {
             CategoryType::create($request->validated());
 
@@ -67,7 +69,7 @@ class CategoryTypeController extends Controller
      */
     public function update(CategoryTypeRequest $request, CategoryType $type)
     {
-
+        $this->authorize('update', $type);
         try {
             $type->update($request->validated());
 
@@ -83,6 +85,8 @@ class CategoryTypeController extends Controller
      */
     public function destroy(CategoryType $type)
     {
+        $this->authorize('delete', $type);
+        
         try {
             $type->categories()->detach();
             $type->delete();

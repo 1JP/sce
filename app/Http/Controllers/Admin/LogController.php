@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Spatie\Activitylog\Models\Activity;
-use Illuminate\Support\Facades\Auth;
 
 class LogController extends Controller
 {
@@ -13,7 +12,7 @@ class LogController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', Auth::user());
+        $this->authorize('viewAny', Activity::class);
 
         $ths = [
             ['class' => 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7', 'name' => 'Usuário'],
@@ -31,7 +30,7 @@ class LogController extends Controller
      */
     public function show(Activity $activity)
     {
-        $this->authorize('view', Auth::user());
+        $this->authorize('view', $activity);
 
         $causer_name = 'Sistema';
         if (!empty($activity->causer_type)) {

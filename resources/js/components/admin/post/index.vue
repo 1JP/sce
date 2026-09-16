@@ -39,26 +39,34 @@
                 </div>
                 <div class="col-lg-1 col-lg-2">
                     <admin-filter-select
+                        :name="'Tipo de Categoria'"
+                        :options="types"
+                        :value-select="selectedCategoryType"
+                        @onChanged="filterCategoryType($event)"
+                    ></admin-filter-select>
+                </div>
+                <div class="col-lg-1 col-lg-2">
+                    <admin-filter-select
                         :name="'Status'"
                         :options="['Ativo', 'Desativado']"
                         :value-select="selectedStatus"
                         @onChanged="filterSelectStatus($event)"
                     ></admin-filter-select>
                 </div>
-                <div class="col-lg-1 col-lg-2" v-if="Object.keys(listSearch).length > 0">
-                    <button type="button" class="btn bg-gradient-primary" @click="clear()">
-                        Limpar filtros
-                    </button>
-                </div>
-                <div class="col-lg-1 col-lg-1" v-if="created">
+                <div class="col-lg-1 col" v-if="created">
                     <a :href="route('admin.posts.create')" class="btn bg-gradient-primary">
                         Cadastrar
                     </a>
                 </div>
+                <div class="col-lg-1 col" v-if="Object.keys(listSearch).length > 0">
+                    <button type="button" class="btn bg-gradient-primary" @click="clear()">
+                        Limpar
+                    </button>
+                </div>
             </div>
         </template>
         <template v-slot:body>
-            <admin-table>
+            <admin-table :pagination="pagination" @page-change="listPosts">
                 <template v-slot:thead>
                     <admin-thead
                         v-for="tha, index in ths"
@@ -84,13 +92,16 @@
                             <h6 class="mb-0 text-sm">{{ post.category.name }}</h6>
                         </component-td>
                         <component-td>
+                            <h6 class="mb-0 text-sm">{{ post.category_type.name }}</h6>
+                        </component-td>
+                        <component-td>
                             <span class="me-2 text-xs font-weight-bold">{{ post.note }}</span>
                         </component-td>
                         <component-td>
                             <div class="d-flex align-items-center justify-content-center">
-                                <span class="me-2 text-xs font-weight-bold">0%</span>
+                                <span class="me-2 text-xs font-weight-bold">{{ acceptance(post.likes_percentage, post.dislikes_percentage) }}%</span>
                                 <div>
-                                    <component-progress :number="0"/>
+                                    <component-progress :number="acceptance(post.likes_percentage, post.dislikes_percentage)"/>
                                 </div>
                             </div>
                         </component-td>
@@ -102,7 +113,7 @@
                             <component-dropdown :name="'post-dropdown'">
                                 <component-dropdown-item name="Visualizar" :route="route('admin.posts.show', post.id)"></component-dropdown-item>
                                 <component-dropdown-item name="Editar" :route="route('admin.posts.edit', post.id)"></component-dropdown-item>
-                                <component-dropdown-item name="Excluir" target="#destoryPost" @click="selectPost(post)" v-if="created"></component-dropdown-item>
+                                <component-dropdown-item name="Excluir" target="#destroyPost" @click="selectPost(post)" v-if="created"></component-dropdown-item>
                                 <li><hr class="dropdown-divider"></li>
                                 <component-dropdown-item name="Relatório Geral" :route="route('admin.report.general', post.id)"></component-dropdown-item>
                                 <component-dropdown-item name="Relatório de Comentarios" :route="route('admin.report.comment', post.id)"></component-dropdown-item>
@@ -114,7 +125,7 @@
         </template>
     </component-card>
 
-    <model :title="'Excluir Post'" :name="'destoryPost'">
+    <model :title="'Excluir Post'" :name="'destroyPost'">
         <div class="py-3 text-center">
             <i class="ni ni-bell-55 ni-3x"></i>
             <h4 class="text-gradient text-danger mt-4">Deseja excluir esse post?</h4>
@@ -150,16 +161,20 @@
                 token: '',
                 category_id: '',
                 indicative_rating_id: '',
+                category_type_id: '',
                 routeDelete: '',
                 posts: [],
                 post: {},
                 indications: [],
                 categories: [],
+                types: [],
                 selectedStatus: '',
                 selectedIndicativeRating: '',
                 selectedCategory: '',
+                selectedCategoryType: '',
                 inputPost: '',
                 listSearch: {},
+                pagination: null,
             }
         },
         methods: {
@@ -169,16 +184,28 @@
                         this.categories = response.data.data;
                     })
             },
+            listCategoriesType(){
+                axios.get(route('api.category-type.all'))
+                    .then((response) => {
+                        this.types = response.data.data;
+                    })
+            },
             listIndications(){
                 axios.get(route('api.indicative-rating.index'))
                     .then((response) => {
                         this.indications = response.data.data;
                     })
             },
-            listPosts(){
-                axios.get(route('api.admin.posts.index'))
+            listPosts(page = 1){
+                if(Object.keys(this.listSearch).length > 0){
+                    this.listSearch.page = page
+                    this.search(this.listSearch)
+                    return
+                }
+                axios.get(route('api.admin.posts.index'), { params: { page } })
                     .then((response) => {
                         this.posts = response.data.data;
+                        this.pagination = response.data.meta
                     })
             },
             selectPost(post){
@@ -223,6 +250,26 @@
                 if(Object.keys(this.listSearch).length > 0){
                     params.search = Object.assign({}, params.search, this.listSearch.search);
                     params.search.category_id = this.selectedCategory
+                }
+                
+                this.listSearch = params;
+                this.search(params);
+            },
+            filterCategoryType(event){
+                this.selectedCategoryType = event.target.value;
+                if(this.selectedCategoryType == ''){
+                    this.listPosts();
+                    return;
+                }
+                let params = {
+                    'search': {
+                        'category_type_id' : this.selectedCategoryType
+                    }
+                };
+                
+                if(Object.keys(this.listSearch).length > 0){
+                    params.search = Object.assign({}, params.search, this.listSearch.search);
+                    params.search.category_type_id = this.selectedCategoryType
                 }
                 
                 this.listSearch = params;
@@ -278,21 +325,29 @@
                 axios.get(route('api.admin.posts.search'), {params})
                     .then((response) => {
                         this.posts = response.data.data;
+                        this.pagination = response.data.meta
                     })
             },
             clear(){
                 this.selectedIndicativeRating = '';
                 this.selectedStatus = '';
                 this.selectedCategory = '';
+                this.selectedCategoryType = '';
                 this.inputPost = '';
                 this.listSearch = {}
                 this.listPosts();
-            }
+            },
+            acceptance(like, deslink){
+                if (deslink > like)
+                    return deslink;
+                return like
+            },
         },
         mounted() {
             this.listCategories();
             this.listIndications();
             this.listPosts();
+            this.listCategoriesType();
             this.token = document.head.querySelector('meta[name="csrf-token"]')?.content;
         }
     }

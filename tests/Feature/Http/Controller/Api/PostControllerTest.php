@@ -40,9 +40,9 @@ class PostControllerTest extends TestCase
      */
     public function test_index_returns_posts_ordered(): void
     {
-        $postB = Post::factory()->create(['name' => 'Bravo']);
-        $postA = Post::factory()->create(['name' => 'Alpha']);
-        $postC = Post::factory()->create(['name' => 'Charlie']);
+        Post::factory()->create(['name' => 'Charlie']);
+        Post::factory()->create(['name' => 'Alpha']);
+        Post::factory()->create(['name' => 'Bravo']);
 
         $response = $this->getJson(route('api.admin.posts.index'));
 
