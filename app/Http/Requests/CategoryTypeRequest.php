@@ -11,7 +11,7 @@ class CategoryTypeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->hasAnyRole(['Admin', 'Root']);
+        return auth()->check() && auth()->user()->hasAnyRole(['Root']);
     }
 
     /**

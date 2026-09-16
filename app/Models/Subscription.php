@@ -26,11 +26,21 @@ class Subscription extends Model
      */
     protected $guarded = [];
 
+    /**
+     * Get the plan associated with this subscription.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function plan()
     {
         return $this->belongsTo(Plan::class);
     }
-    
+
+    /**
+     * Get the user that owns this subscription.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);

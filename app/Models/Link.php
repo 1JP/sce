@@ -16,11 +16,21 @@ class Link extends Model
      */
     protected $guarded = [];
 
+    /**
+     * Get the post that owns this record.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function post()
     {
         return $this->belongsTo(Post::class, 'post_id');
     }
 
+    /**
+     * Get the parent comment (if this is a reply).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function comment()
     {
         return $this->belongsTo(Comment::class, 'comment_id');

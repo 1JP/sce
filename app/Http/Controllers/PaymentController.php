@@ -28,6 +28,12 @@ class PaymentController extends Controller
      */
     private $paymentApi;
 
+    /**
+     * The subscription service instance, responsible for handling
+     * subscription creation, updates, and related payment gateway logic.
+     *
+     * @var \App\Services\SubscriptionService
+     */
     private $subscriptionService;
 
     /**

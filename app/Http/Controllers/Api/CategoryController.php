@@ -60,6 +60,14 @@ class CategoryController extends Controller
         return PostResource::collection($posts);
     }
 
+    /**
+     * Get paginated posts for a given category and category type.
+     *
+     * @param  \App\Models\Category      $category  The category to filter posts by.
+     * @param  \App\Models\CategoryType  $type      The category type to filter posts by.
+     * @param  \App\Http\Requests\PaginateRequest  $request  Validated pagination and ordering params.
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function getCategoryTypeForPost(Category $category, CategoryType $type, PaginateRequest $request)
     {
         $validated = $request->validated();
@@ -74,6 +82,11 @@ class CategoryController extends Controller
         return PostResource::collection($posts);
     }
 
+    /**
+     * List all categories, ordered alphabetically by name.
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function all()
     {
         $this->authorize('viewAny', Category::class);

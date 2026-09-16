@@ -29,6 +29,11 @@ class Plan extends Model
         return $query->where('active', true);
     }
 
+    /**
+     * Get the subscriptions belonging to this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);

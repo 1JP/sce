@@ -22,6 +22,11 @@ class Client extends Model
         return $this->belongsToMany(User::class, 'members');
     }
     
+    /**
+     * Get the user that owns this record.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
