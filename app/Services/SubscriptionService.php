@@ -19,6 +19,49 @@ class SubscriptionService
     public function __construct(protected $paymentApi,protected $bodyPaymentApi
     ) {}
     
+    public function store(array $validated, User $user)
+    {
+        $client = $user->client;
+
+        if (! $client) {
+            $pagSeguroCustomer = $this->createGatewaySubscription($validated);
+
+            if($pagSeguroCustomer->error){
+                return $pagSeguroCustomer;
+            }
+
+            $validated['customer_id'] = $pagSeguroCustomer->id;
+            $client = $user->client()->create(
+                Arr::except($validated, ['number_card', 'plan_id', 'year', 'month'])
+            );
+        }else {
+            $validated['customer_id'] = $client->customer_id;
+        }
+
+        $created = $this->createGatewaySubscription($validated);
+        if($created->error){
+            return $created;
+        }
+
+        $subscription = Subscription::create([
+            'plan_id' => $validated['plan_id'],
+            'user_id' => $user->id,
+            'status' => $this->paymentApi->statusSubscription($created->status),
+            'customer_id' => $created->id
+        ]);
+        
+        $user->assignRole('Admin');
+
+        $this->sendCreationEmail($user, $subscription);
+
+        return (object)[
+            'error' => 0,
+            'message' => 'Assinatura criada com sucesso!',
+            'route' => 'home',
+            'status' => 'success'
+        ];
+    }
+
     public function update(array $validated, Subscription $subscription, User $user)
     {
         $plan = Plan::findOrFail($validated['plan_id']);
@@ -72,7 +115,6 @@ class SubscriptionService
     {
         $pagSeguroSubscriptionCancel = $this->paymentApi->cancelSubscription($subscription->customer_id);
         if (count((array) $pagSeguroSubscriptionCancel) > 1) {
-            dd($pagSeguroSubscriptionCancel);
             $error = [
                 'error' => 1,
                 'message' => 'Falha ao cancelar a assinatura atual.',
@@ -125,7 +167,7 @@ class SubscriptionService
             $error = [
                 'error' => 1,
                 'message' => 'Não foi possível gerar a assinatura!',
-                'route' => 'admin.assinaturas.edit',
+                'route' => $validated['subscription_id'] ? 'admin.assinaturas.edit': 'pagamento.create',
                 'subscription_id' => $validated['subscription_id'] ?? null,
                 'status' => 'danger'
             ];
@@ -233,6 +275,22 @@ class SubscriptionService
             ));
         } catch (\Exception $e) {
             dd($e);
+            report($e);
+        }
+    }
+
+    protected function sendCreationEmail(User $user, Subscription $subscription): void
+    {
+        try {
+            Mail::to($user->email)->send(new CreateSubscription(
+                $user->email,
+                $subscription->plan->name,
+                $subscription->plan->value,
+                $subscription->plan->number_film,
+                $subscription->plan->number_serie,
+                $subscription->plan->number_book
+            ));
+        } catch (\Exception $e) {
             report($e);
         }
     }
