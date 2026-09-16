@@ -7,7 +7,6 @@ use App\Http\Requests\PlanRequest;
 use App\Models\Plan;
 use App\Services\BodyPaymentApiService;
 use App\Services\PaymentApi;
-use Illuminate\Support\Facades\Auth;
 
 class PlanController extends Controller
 {

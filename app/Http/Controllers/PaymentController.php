@@ -132,15 +132,4 @@ class PaymentController extends Controller
         }
     }
 
-    public function teste()
-    {
-        $subscription = Subscription::first();
-
-        $getSubscription = $this->paymentApi->getSubscription($subscription->customer_id);
-        $card = $getSubscription->payment_method[0]->card;
-        $first_digits = $card->first_digits;
-        $last_digits = $card->last_digits;
-        dd($card, $first_digits, $last_digits, $getSubscription);
-    }
- 
 }

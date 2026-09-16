@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Spatie\Activitylog\Models\Activity;
-use Illuminate\Support\Facades\Auth;
 
 class LogController extends Controller
 {
