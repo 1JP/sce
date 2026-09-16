@@ -111,11 +111,12 @@ class ClientTest extends TestCase
 
         $this->assertDatabaseHas('clients', [
             'id' => $client->id,
+            'deleted_at' => null
         ]);
 
         $client->delete();
 
-        $this->assertDatabaseMissing('clients', [
+        $this->assertSoftDeleted('clients', [
             'id' => $client->id,
         ]);
     }

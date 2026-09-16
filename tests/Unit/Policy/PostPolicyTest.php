@@ -5,6 +5,7 @@ namespace Tests\Unit\Policy;
 use App\Models\Client;
 use App\Models\Member;
 use App\Models\Post;
+use App\Models\Subscription;
 use App\Models\User;
 use Database\Seeders\RolesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,7 +15,7 @@ use Tests\TestCase;
 class PostPolicyTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     /** @var User */
     protected $userAdmin;
     protected $userMembro;
@@ -24,7 +25,7 @@ class PostPolicyTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        
+
         $this->seed(RolesSeeder::class);
 
         $roleAdmin = Role::where('name', 'Admin')->first();
@@ -36,78 +37,120 @@ class PostPolicyTest extends TestCase
         $this->userMembro = User::factory()->create()->assignRole($roleMembros->id);
         $this->userUsuario = User::factory()->create()->assignRole($roleUsuario->id);
         $this->userRoot = User::factory()->create()->assignRole($roleRoot->id);
+
         $client = Client::factory()->create([
-            'user_id' => $this->userAdmin->id
+            'user_id' => $this->userAdmin->id,
         ]);
 
         Member::factory()->create([
             'client_id' => $client->id,
-            'user_id' => $this->userMembro->id
+            'user_id' => $this->userMembro->id,
+        ]);
+
+        // The PostPolicy requires an Admin to have an active (or trial)
+        // subscription to create posts. Without this, test_user_can_create_post
+        // would pass or fail depending on hidden factory behavior instead of
+        // an explicit, readable condition.
+        Subscription::factory()->create([
+            'user_id' => $this->userAdmin->id,
+            'status' => 'ACTIVE',
         ]);
     }
 
     /**
-     * test policy create post
+     * Root can always create posts; Admin can create posts only when
+     * their subscription is active.
      */
-    public function test_user_can_create_post()
+    public function test_user_can_create_post(): void
     {
-        $postAdmin = Post::factory()->create(['user_id' => $this->userAdmin->id]);
-        $postRoot = Post::factory()->create(['user_id' => $this->userRoot->id]);
-
-        $this->assertTrue($this->userAdmin->can('create', $postAdmin));
-        $this->assertTrue($this->userRoot->can('create', $postRoot));
+        $this->assertTrue($this->userRoot->can('create', Post::class));
+        $this->assertTrue($this->userAdmin->can('create', Post::class));
     }
 
     /**
-     * test policy update post
+     * Admin loses permission to create posts once their subscription
+     * is no longer active — this is the core business rule of the
+     * PostPolicy::create() method and needs an explicit negative test.
      */
-    public function test_user_can_update_post()
+    public function test_admin_cannot_create_post_without_active_subscription(): void
+    {
+        $this->userAdmin->subscription()->update(['status' => 'CANCELED']);
+
+        $this->assertFalse($this->userAdmin->fresh()->can('create', Post::class));
+    }
+
+    /**
+     * Admin without any subscription record at all (subscription() returns
+     * null) must also be denied. This covers the null-safe operator
+     * ($user->subscription?->status) used in the policy.
+     */
+    public function test_admin_cannot_create_post_without_subscription(): void
+    {
+        $this->userAdmin->subscription()->delete();
+
+        $this->assertFalse($this->userAdmin->fresh()->can('create', Post::class));
+    }
+
+    /**
+     * Regular "Usuario" and "Membros" roles cannot create posts,
+     * regardless of any subscription state.
+     */
+    public function test_user_cannot_create_post(): void
+    {
+        $this->assertFalse($this->userUsuario->can('create', Post::class));
+        $this->assertFalse($this->userMembro->can('create', Post::class));
+    }
+
+    /**
+     * Admin and Root can update posts owned by their own account.
+     *
+     * Note: no $post->update() call here — updating the model directly
+     * does not go through the Policy at all, so it added no value to
+     * this test and was removed.
+     */
+    public function test_user_can_update_post(): void
     {
         $postAdmin = Post::factory()->create(['user_id' => $this->userAdmin->id]);
-
-        $nameAdmin = 'Test update post admin';
-        $descriptionAdmin = fake()->text();
-        $noteAdmin = 10.0;
-
-        $postAdmin->update([
-            'name' => $nameAdmin,
-            'description' => $descriptionAdmin,
-            'note' => $noteAdmin
-        ]);
-
         $postRoot = Post::factory()->create(['user_id' => $this->userRoot->id]);
-
-        $nameRoot = 'Test update post Root';
-        $descriptionRoot = fake()->text();
-        $noteRoot = 10.0;
-
-        $postRoot->update([
-            'name' => $nameRoot,
-            'description' => $descriptionRoot,
-            'note' => $noteRoot
-        ]);
-
-        $postMembro = Post::factory()->create(['user_id' => $this->userAdmin->id]);
-
-        $nameMembro = 'Test update post Membro';
-        $descriptionMembro = fake()->text();
-        $noteMembro = 10.0;
-
-        $postMembro->update([
-            'name' => $nameMembro,
-            'description' => $descriptionMembro,
-            'note' => $noteMembro
-        ]);
 
         $this->assertTrue($this->userAdmin->can('update', $postAdmin));
         $this->assertTrue($this->userRoot->can('update', $postRoot));
-        $this->assertTrue($this->userMembro->can('update', $postMembro));
     }
 
     /**
-     * test policy delete post
+     * A member can update a post belonging to the admin of the client
+     * they belong to.
+     *
+     * NOTE: this post intentionally belongs to userAdmin, not userMembro,
+     * mirroring the client/member relationship set up in setUp(). Confirm
+     * this matches the intended business rule (member manages the whole
+     * client's posts) — if members should only manage their own posts,
+     * this assertion and the underlying policy need to change together.
      */
-    public function test_user_can_delete_post()
+    public function test_member_can_update_client_post(): void
+    {
+        $postFromAdminClient = Post::factory()->create(['user_id' => $this->userAdmin->id]);
+
+        $this->assertTrue($this->userMembro->can('update', $postFromAdminClient));
+    }
+
+    /**
+     * A user with the plain "Usuario" role cannot update posts they
+     * do not own, regardless of whose post it is.
+     */
+    public function test_user_cannot_update_post(): void
+    {
+        $postAdmin = Post::factory()->create(['user_id' => $this->userAdmin->id]);
+        $postRoot = Post::factory()->create(['user_id' => $this->userRoot->id]);
+
+        $this->assertFalse($this->userUsuario->can('update', $postAdmin));
+        $this->assertFalse($this->userUsuario->can('update', $postRoot));
+    }
+
+    /**
+     * Admin and Root can delete posts owned by their own account.
+     */
+    public function test_user_can_delete_post(): void
     {
         $postAdmin = Post::factory()->create(['user_id' => $this->userAdmin->id]);
         $postRoot = Post::factory()->create(['user_id' => $this->userRoot->id]);
@@ -117,61 +160,11 @@ class PostPolicyTest extends TestCase
     }
 
     /**
-     * test policy cannot create post
+     * "Usuario" and "Membros" roles cannot delete posts they don't own.
      */
-    public function test_user_cannot_create_post()
+    public function test_user_cannot_delete_post(): void
     {
         $postAdmin = Post::factory()->create(['user_id' => $this->userAdmin->id]);
-        $postRoot = Post::factory()->create(['user_id' => $this->userRoot->id]);
-
-        $this->assertFalse($this->userUsuario->can('create', $postAdmin));
-        $this->assertFalse($this->userUsuario->can('create', $postRoot));
-
-        $this->assertFalse($this->userMembro->can('create', $postAdmin));
-        $this->assertFalse($this->userMembro->can('create', $postRoot));
-    }
-
-    /**
-     * test policy cannot update post
-     */
-    public function test_user_cannot_update_post()
-    {
-        $postAdmin = Post::factory()->create(['user_id' => $this->userAdmin->id]);
-
-        $nameAdmin = 'Test update post admin';
-        $descriptionAdmin = fake()->text();
-        $noteAdmin = 10.0;
-
-        $postAdmin->update([
-            'name' => $nameAdmin,
-            'description' => $descriptionAdmin,
-            'note' => $noteAdmin
-        ]);
-
-        $postRoot = Post::factory()->create(['user_id' => $this->userRoot->id]);
-
-        $nameRoot = 'Test update post Root';
-        $descriptionRoot = fake()->text();
-        $noteRoot = 10.0;
-
-        $postRoot->update([
-            'name' => $nameRoot,
-            'description' => $descriptionRoot,
-            'note' => $noteRoot
-        ]);
-
-        $this->assertFalse($this->userUsuario->can('update', $postAdmin));
-        $this->assertFalse($this->userUsuario->can('update', $postRoot));
-
-    }
-
-    /**
-     * test policy cannot delete post
-     */
-    public function test_user_cannot_delete_post()
-    {
-        $postAdmin = Post::factory()->create(['user_id' => $this->userAdmin->id]);
-
         $postRoot = Post::factory()->create(['user_id' => $this->userRoot->id]);
 
         $this->assertFalse($this->userUsuario->can('delete', $postAdmin));

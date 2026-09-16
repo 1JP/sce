@@ -63,9 +63,20 @@ class PostPolicy
         }
 
         if ($user->isMember()) {
-            $administrator = $user->administrator()->first();
-            return $administrator && $administrator->id === $post->user_id && in_array($administrator->subscription?->status, ['ACTIVE', 'TRIAL']);
+            $client = $user->administrator()->first();
+
+            if (!$client) {
+                return false;
+            }
+
+            $adminUser = $client->user; // supondo que Client tenha belongsTo(User::class)
+
+            return $adminUser
+                && $adminUser->id === $post->user_id
+                && in_array($adminUser->subscription?->status, ['ACTIVE', 'TRIAL']);
         }
+
+        return false;
 
         return false;
     }
@@ -82,6 +93,8 @@ class PostPolicy
         if ($user->isAdmin()) {
             return $user->id === $post->user_id && in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
         }
+
+        return false;
     }
 
     /**
