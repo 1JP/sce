@@ -32,7 +32,7 @@ class SubscriptionService
 
             $validated['customer_id'] = $pagSeguroCustomer->id;
             $client = $user->client()->create(
-                Arr::except($validated, ['number_card', 'plan_id', 'year', 'month'])
+                Arr::except($validated, ['number_card', 'plan_id', 'year', 'month', 'cvv'])
             );
         }else {
             $validated['customer_id'] = $client->customer_id;
