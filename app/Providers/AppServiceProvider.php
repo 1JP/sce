@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\Permission\Models\Role;
 use \App\Services\MaskService;
+use Illuminate\Routing\UrlGenerator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,8 +31,12 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(UrlGenerator $url): void
     {
+        if (env('APP_ENV') === 'production') {
+            $url->forceScheme('https');
+        }
+
         Route::model('categoria', Category::class);
         Route::model('tipos_de_categoria', CategoryType::class);
         Route::model('categorie_type', CategoryType::class);
