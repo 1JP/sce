@@ -229,7 +229,7 @@
                                     @input="inputUrlProdPayment($event)"
                                 />
                             </div>
-                            <div class="form-group col-md-6"> 
+                            <div class="form-group col-md-3"> 
                                 <label for="form19">URL sandbox*</label>
                                 <component-input
                                     :required="true"
@@ -241,7 +241,44 @@
                                     @input="inputUrlSanboxPayment($event)"
                                 />
                             </div>
-
+                            <div class="form-group col-md-3">
+                                <div class="row">
+                                    <div class="form-check col-md-6">
+                                        <component-input
+                                            :required="true"
+                                            :input-type="'radio'"
+                                            :placeholder="'Status'"
+                                            :name-id="'payments[sandbox_payment]'"
+                                            :value="payments.sandbox_payment"
+                                            :checked="payments.sandbox_payment == 1"
+                                            :class-input="'form-check-input'"
+                                            @input="inputSandboxPayment($event)"
+                                        >
+                                            <label class="form-check-label" for="status">
+                                                Sand box
+                                            </label>
+                                        </component-input>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <div class="form-check">
+                                            <component-input
+                                                :required="true"
+                                                :input-type="'radio'"
+                                                :placeholder="'Status'"
+                                                :name-id="'payments[sandbox_payment]'"
+                                                :value="payments.sandbox_payment"
+                                                :checked="payments.sandbox_payment == 0"
+                                                :class-input="'form-check-input'"
+                                                @input="inputSandboxPaymentProd($event)"
+                                            >
+                                                <label class="form-check-label" for="status">
+                                                    Produção
+                                                </label>
+                                            </component-input>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
                             <div class="form-group col-md-12"> 
                                 <label for="form19">Token*</label>
                                 <component-input
@@ -290,7 +327,8 @@
                     url_sanbox_payment: '',
                     url_prod_payment: '',
                     token_payment: '',
-                    public_key_payment: ''
+                    public_key_payment: '',
+                    sandbox_payment: '',
                 },
                 company: {
                     name: '',
@@ -317,6 +355,7 @@
                 classPaymentsUrlProdPayment: '',
                 classPaymentsTokenPayment: '',
                 classPaymentsPublicKeyPayment: '',
+                classPaymentsSandBox: '',
                 classCompanyName: '',
                 classCompanyCnpj: '',
                 classCompanyEmail: '',
@@ -343,6 +382,7 @@
                         this.payments.url_prod_payment = response.data.data.find(setting => setting.name === 'url_prod_payment')?.body || '';
                         this.payments.token_payment = response.data.data.find(setting => setting.name === 'token_payment')?.body || '';
                         this.payments.public_key_payment = response.data.data.find(setting => setting.name === 'public_key_payment')?.body || '';
+                        this.payments.sandbox_payment = response.data.data.find(setting => setting.name === 'sandbox_payment')?.body || '';
                         this.company.name = response.data.data.find(setting => setting.name === 'name')?.body || '';
                         this.company.cnpj = response.data.data.find(setting => setting.name === 'cnpj')?.body || '';
                         this.company.email = response.data.data.find(setting => setting.name === 'email')?.body || '';
@@ -418,7 +458,7 @@
                 this.address.state = event.target.value;
             },
             textAreaDescription(event){
-                this.description = event.target.value;
+                this.site.description = event.target.value;
             },
             inputCompanyName(event){
                 this.company.name = event.target.value;
@@ -441,6 +481,12 @@
             inputCompanyInstagram(event){
                 this.company.instagram = event.target.value;
             },
+            inputSandboxPayment(event){
+                this.payments.sandbox_payment = '1';
+            },
+            inputSandboxPaymentProd(event){
+                this.payments.sandbox_payment = '0';
+            },
             inputUrlSanboxPayment(event){
                 this.payments.url_sanbox_payment = event.target.value;
             },
@@ -459,8 +505,9 @@
                     || this.company.name == '' || this.company.cnpj == '' || this.company.email == ''
                     || this.address.cep == '' || this.address.street == '' || this.address.number == '' 
                     || this.address.neighborhood == '' || this.address.city == '' || this.address.state == ''
-                    || this.description == ''
+                    || this.site.description == '' || this.payments.sandbox_payment == ''
                 ){
+                    console.log(this.payments.sandbox_payment);
                     this.classPaymentsPublicKeyPayment = this.payments.public_key_payment == '' ? 'is-invalid' : 'is-valid'
                     this.classPaymentsTokenPayment = this.payments.token_payment == '' ? 'is-invalid' : 'is-valid'
                     this.classPaymentsUrlSanboxPayment = this.payments.url_sanbox_payment == '' ? 'is-invalid' : 'is-valid'
@@ -474,7 +521,8 @@
                     this.classAddressNeighborhood = this.address.neighborhood == '' ? 'is-invalid' : 'is-valid'
                     this.classAddressCity = this.address.city == '' ? 'is-invalid' : 'is-valid'
                     this.classAddressState = this.address.state == '' ? 'is-invalid' : 'is-valid'
-                    this.classDescription = this.description == '' ? 'is-invalid' : 'is-valid'
+                    this.classDescription = this.site.description == '' ? 'is-invalid' : 'is-valid'
+                    this.classPaymentsSandBox = this.payments.sandbox_payment == '' ? 'is-invalid' : 'is-valid'
 
                     return;
                 }
@@ -497,6 +545,7 @@
                 this.classAddressCity = 'is-valid'
                 this.classAddressState = 'is-valid'
                 this.classDescription = 'is-valid'
+                this.classPaymentsSandBox = 'is-valid'
 
                 this.$refs.form.submit();
             }

@@ -27,6 +27,7 @@ class SettingRequest extends FormRequest
             'payments.url_prod_payment' => ['required', 'url'],
             'payments.token_payment' => ['required', 'string'],
             'payments.public_key_payment' => ['required', 'string'],
+            'payments.sandbox_payment' => ['required', 'string'],
 
             // COMPANY
             'company.name' => ['required', 'string', 'max:255'],
