@@ -5,14 +5,14 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "laravel/framework": "^11.9",
+        "php": "^8.3",
+        "laravel/framework": "^13.0",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.9",
+        "laravel/tinker": "^3.0",
         "laravel/ui": "^4.6",
-        "rahulhaque/laravel-filepond": "11.0",
-        "spatie/laravel-activitylog": "^4.9",
-        "spatie/laravel-permission": "^6.9",
+        "rahulhaque/laravel-filepond": "^13.0",
+        "spatie/laravel-activitylog": "^4.10",
+        "spatie/laravel-permission": "^6.21",
         "tightenco/ziggy": "^2.4"
     },
     "require-dev": {
