@@ -42,7 +42,7 @@
     <script src="{{ asset('admin/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('admin/js/plugins/smooth-scrollbar.min.js') }}"></script>
     <script src="{{ asset('admin/js/plugins/chartjs.min.js') }}"></script>
-    <script src="{{ mix('/js/app.js') }}" type="text/javascript"></script>
+    @vite(['resources/js/app.js'])
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {

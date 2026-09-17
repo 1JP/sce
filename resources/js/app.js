@@ -10,7 +10,93 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 
 import axios from 'axios';
-import { Ziggy } from './ziggy'
+import { Ziggy } from './ziggy';
+
+import adminNavbar from './components/admin/NavBar.vue';
+import adminNav from './components/admin/Nav.vue';
+import adminFooter from './components/admin/Footer.vue';
+import adminHeader from './components/admin/Header.vue';
+import adminCardInfo from './components/admin/CardInfo.vue';
+import adminChartLine from './components/admin/chart/chart-line.vue';
+import adminChartLineGrandient from './components/admin/chart/chart-line-chart-gradient.vue';
+import adminListGroupItem from './components/admin/ListGroupItem.vue';
+import adminTable from './components/table/Table.vue';
+import adminFilterSelect from './components/filter/SelectFilter.vue';
+import adminFilterInput from './components/filter/InputFilter.vue';
+import adminThead from './components/table/Thead.vue';
+import adminTr from './components/table/Tr.vue';
+import adminSubscriptionInfo from './components/admin/SubscriptionInfo.vue';
+import adminReportNav from './components/admin/report/components/Nav.vue';
+import adminReportFooter from './components/admin/report/components/Footer.vue';
+import adminReportGeneral from './components/admin/report/general.vue';
+import adminReportComment from './components/admin/report/comment.vue';
+import adminCategoryCreate from './components/admin/category/create.vue';
+import adminCategoryIndex from './components/admin/category/index.vue';
+import adminCategoryTypeIndex from './components/admin/category-type/index.vue';
+import adminCategoryTypeCreate from './components/admin/category-type/create.vue';
+import adminClientIndex from './components/admin/client/index.vue';
+import adminClientShow from './components/admin/client/show.vue';
+import adminClientEdit from './components/admin/client/edit.vue';
+import adminDashboard from './components/admin/dashboard/index.vue';
+import adminDashboardRoot from './components/admin/dashboard/index-root.vue';
+import adminIndicativeIndex from './components/admin/indicative-rating/index.vue';
+import adminIndicativeCreate from './components/admin/indicative-rating/create.vue';
+import adminPlanIndex from './components/admin/plan/index.vue';
+import adminPlanCreate from './components/admin/plan/create.vue';
+import adminPostIndex from './components/admin/post/index.vue';
+import adminPostCreate from './components/admin/post/create.vue';
+import adminPostShow from './components/admin/post/show.vue';
+import adminPostEdit from './components/admin/post/edit.vue';
+import adminMemberIndex from './components/admin/member/index.vue';
+import adminMemberCreate from './components/admin/member/create.vue';
+import adminMemberActive from './components/admin/member/active.vue';
+import adminSubscriptionIndex from './components/admin/subscription/index.vue';
+import adminSettingsCreate from './components/admin/setting/create.vue';
+import adminLogIndex from './components/admin/log/index.vue';
+import adminLogShow from './components/admin/log/show.vue';
+import adminPermissionIndex from './components/admin/permission/index.vue';
+import adminPermissionCreate from './components/admin/permission/create.vue';
+import adminProfileCreate from './components/admin/profile/create.vue';
+import componentTd from './components/table/Td.vue';
+import componentSpanStatus from './components/SpanStatus.vue';
+import componentDropdown from './components/Dropdown.vue';
+import componentDropdownItem from './components/Dropdown-item.vue';
+import componentCard from './components/Card.vue';
+import componentAccordion from './components/Accordion.vue';
+import componentAccordionItem from './components/Accordion-item.vue';
+import componentInput from './components/Input.vue';
+import componentSelect from './components/Select.vue';
+import componentTextArea from './components/TextArea.vue';
+import listGroup from './components/ListGroup.vue';
+import listGroupItem from './components/ListGroup-item.vue';
+import fixedBottom from './components/FixedBottom.vue';
+import breadcrumb from './components/Breadcrumb.vue';
+import model from './components/Model.vue';
+import componentProgress from './components/Progress.vue';
+import componentPaginate from './components/Paginate.vue';
+import siteHeader from './components/site/Header.vue';
+import siteFooter from './components/site/Footer.vue';
+import siteSocialLinks from './components/site/SocialLinks.vue';
+import siteNavBar from './components/site/NavBar.vue';
+import siteNav from './components/site/Nav.vue';
+import sitePost from './components/site/Post.vue';
+import sitePlan from './components/site/Plan.vue';
+import siteCarousel from './components/site/Carousel.vue';
+import siteComment from './components/site/post/comment/Comment.vue';
+import siteCreateComment from './components/site/post/comment/CreateComment.vue';
+import siteChildrenComment from './components/site/post/comment/ChildrenComment.vue';
+import siteCreateUser from './components/site/user/create.vue';
+import siteMyAccount from './components/site/user/my-account.vue';
+import siteIndexUser from './components/site/user/index.vue';
+import siteHome from './components/site/home/index.vue';
+import sitePostShow from './components/site/post/show.vue';
+import siteCommentDestroy from './components/site/post/comment/delete.vue';
+import siteCategoryIndex from './components/site/category/index.vue';
+import siteCategoryShow from './components/site/category/show.vue';
+import siteSearch from './components/site/search/index.vue';
+import createPayment from './components/payment/create.vue';
+import summaryPayment from './components/payment/summary.vue';
+import fileUpload from './components/FilePond.vue';
 
 // Recupera o token CSRF do meta tag
 const csrfToken = document.head.querySelector('meta[name="csrf-token"]')?.content;
@@ -19,126 +105,110 @@ const csrfToken = document.head.querySelector('meta[name="csrf-token"]')?.conten
 if (csrfToken) {
     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
 }
+
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
  * registering components with the application instance so they are ready
  * to use in your application's views. An example is included for you.
  */
 
-const app = createApp();
+const app = createApp({});
 const pinia = createPinia();
 app.use(pinia);
 
-app.config.globalProperties.route = route
-app.provide('ziggy', Ziggy)
+app.config.globalProperties.route = route;
+app.provide('ziggy', Ziggy);
 
-app.component('admin-navbar', require('./components/admin/NavBar.vue').default);
-app.component('admin-nav', require('./components/admin/Nav.vue').default);
-app.component('admin-footer', require('./components/admin/Footer.vue').default);
-app.component('admin-header', require('./components/admin/Header.vue').default);
-app.component('admin-card-info', require('./components/admin/CardInfo.vue').default);
-app.component('admin-chart-line', require('./components/admin/chart/chart-line.vue').default);
-app.component('admin-chart-line-grandient', require('./components/admin/chart/chart-line-chart-gradient.vue').default);
-app.component('admin-list-group-item', require('./components/admin/ListGroupItem.vue').default);
-app.component('admin-table', require('./components/table/Table.vue').default);
-app.component('admin-filter-select', require('./components/filter/SelectFilter.vue').default);
-app.component('admin-filter-input', require('./components/filter/InputFilter.vue').default);
-app.component('admin-thead', require('./components/table/Thead.vue').default);
-app.component('admin-tr', require('./components/table/Tr.vue').default);
-app.component('admin-subscription-info', require('./components/admin/SubscriptionInfo.vue').default);
-app.component('admin-report-nav', require('./components/admin/report/components/Nav.vue').default);
-app.component('admin-report-footer', require('./components/admin/report/components/Footer.vue').default);
-
-app.component('admin-report-general', require('./components/admin/report/general.vue').default);
-app.component('admin-report-comment', require('./components/admin/report/comment.vue').default);
-
-app.component('admin-category-create', require('./components/admin/category/create.vue').default);
-app.component('admin-category-index', require('./components/admin/category/index.vue').default);
-app.component('admin-category-type-index', require('./components/admin/category-type/index.vue').default);
-app.component('admin-category-type-create', require('./components/admin/category-type/create.vue').default);
-app.component('admin-client-index', require('./components/admin/client/index.vue').default);
-app.component('admin-client-show', require('./components/admin/client/show.vue').default);
-app.component('admin-client-edit', require('./components/admin/client/edit.vue').default);
-app.component('admin-dashboard', require('./components/admin/dashboard/index.vue').default);
-app.component('admin-dashboard-root', require('./components/admin/dashboard/index-root.vue').default);
-app.component('admin-indicative-index', require('./components/admin/indicative-rating/index.vue').default);
-app.component('admin-indicative-create', require('./components/admin/indicative-rating/create.vue').default);
-app.component('admin-plan-index', require('./components/admin/plan/index.vue').default);
-app.component('admin-plan-create', require('./components/admin/plan/create.vue').default);
-app.component('admin-post-index', require('./components/admin/post/index.vue').default);
-app.component('admin-post-create', require('./components/admin/post/create.vue').default);
-app.component('admin-post-show', require('./components/admin/post/show.vue').default);
-app.component('admin-post-edit', require('./components/admin/post/edit.vue').default);
-app.component('admin-member-index', require('./components/admin/member/index.vue').default);
-app.component('admin-member-create', require('./components/admin/member/create.vue').default);
-app.component('admin-member-active', require('./components/admin/member/active.vue').default);
-app.component('admin-subscription-index', require('./components/admin/subscription/index.vue').default);
-app.component('admin-settings-create', require('./components/admin/setting/create.vue').default);
-app.component('admin-log-index', require('./components/admin/log/index.vue').default);
-app.component('admin-log-show', require('./components/admin/log/show.vue').default);
-app.component('admin-permission-index', require('./components/admin/permission/index.vue').default);
-app.component('admin-permission-create', require('./components/admin/permission/create.vue').default);
-app.component('admin-profile-create', require('./components/admin/profile/create.vue').default);
-
-app.component('component-td', require('./components/table/Td.vue').default);
-app.component('component-span-status', require('./components/SpanStatus.vue').default);
-app.component('component-dropdown', require('./components/Dropdown.vue').default);
-app.component('component-dropdown-item', require('./components/Dropdown-item.vue').default);
-app.component('component-card', require('./components/Card.vue').default);
-app.component('component-accordion', require('./components/Accordion.vue').default);
-app.component('component-accordion-item', require('./components/Accordion-item.vue').default);
-app.component('component-input', require('./components/Input.vue').default);
-app.component('component-select', require('./components/Select.vue').default);
-app.component('component-text-area', require('./components/TextArea.vue').default);
-app.component('list-group', require('./components/ListGroup.vue').default);
-app.component('list-group-item', require('./components/ListGroup-item.vue').default);
-app.component('fixed-bottom', require('./components/FixedBottom.vue').default);
-app.component('breadcrumb', require('./components/Breadcrumb.vue').default);
-app.component('model', require('./components/Model.vue').default);
-app.component('component-progress', require('./components/Progress.vue').default);
-app.component('component-paginate', require('./components/Paginate.vue').default);
-
-app.component('site-header', require('./components/site/Header.vue').default);
-app.component('site-footer', require('./components/site/Footer.vue').default);
-app.component('site-social-links', require('./components/site/SocialLinks.vue').default);
-app.component('site-nav-bar', require('./components/site/NavBar.vue').default);
-app.component('site-nav', require('./components/site/Nav.vue').default);
-app.component('site-post', require('./components/site/Post.vue').default);
-app.component('site-plan', require('./components/site/Plan.vue').default);
-app.component('site-carousel', require('./components/site/Carousel.vue').default);
-app.component('site-comment', require('./components/site/post/comment/Comment.vue').default);
-app.component('site-create-comment', require('./components/site/post/comment/CreateComment.vue').default);
-app.component('site-children-comment', require('./components/site/post/comment/ChildrenComment.vue').default);
-app.component('site-create-user', require('./components/site/user/create.vue').default);
-app.component('site-my-account', require('./components/site/user/my-account.vue').default)
-app.component('site-index-user', require('./components/site/user/index.vue').default);
-app.component('site-home', require('./components/site/home/index.vue').default);
-app.component('site-post-show', require('./components/site/post/show.vue').default);
-app.component('site-comment-destroy', require('./components/site/post/comment/delete.vue').default);
-app.component('site-category-index', require('./components/site/category/index.vue').default);
-app.component('site-category-show', require('./components/site/category/show.vue').default);
-app.component('site-search', require('./components/site/search/index.vue').default);
-
-app.component('create-payment', require('./components/payment/create.vue').default)
-app.component('summary-payment', require('./components/payment/summary.vue').default)
-app.component('list-group', require('./components/ListGroup.vue').default);
-app.component('list-group-item', require('./components/ListGroup-item.vue').default);
-app.component('fixed-bottom', require('./components/FixedBottom.vue').default);
-app.component('breadcrumb', require('./components/Breadcrumb.vue').default);
-app.component('model', require('./components/Model.vue').default);
-app.component('file-upload', require('./components/FilePond.vue').default);
-
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
-
-// Object.entries(import.meta.glob('./**/*.vue', { eager: true })).forEach(([path, definition]) => {
-//     app.component(path.split('/').pop().replace(/\.\w+$/, ''), definition.default);
-// });
+app.component('admin-navbar', adminNavbar);
+app.component('admin-nav', adminNav);
+app.component('admin-footer', adminFooter);
+app.component('admin-header', adminHeader);
+app.component('admin-card-info', adminCardInfo);
+app.component('admin-chart-line', adminChartLine);
+app.component('admin-chart-line-grandient', adminChartLineGrandient);
+app.component('admin-list-group-item', adminListGroupItem);
+app.component('admin-table', adminTable);
+app.component('admin-filter-select', adminFilterSelect);
+app.component('admin-filter-input', adminFilterInput);
+app.component('admin-thead', adminThead);
+app.component('admin-tr', adminTr);
+app.component('admin-subscription-info', adminSubscriptionInfo);
+app.component('admin-report-nav', adminReportNav);
+app.component('admin-report-footer', adminReportFooter);
+app.component('admin-report-general', adminReportGeneral);
+app.component('admin-report-comment', adminReportComment);
+app.component('admin-category-create', adminCategoryCreate);
+app.component('admin-category-index', adminCategoryIndex);
+app.component('admin-category-type-index', adminCategoryTypeIndex);
+app.component('admin-category-type-create', adminCategoryTypeCreate);
+app.component('admin-client-index', adminClientIndex);
+app.component('admin-client-show', adminClientShow);
+app.component('admin-client-edit', adminClientEdit);
+app.component('admin-dashboard', adminDashboard);
+app.component('admin-dashboard-root', adminDashboardRoot);
+app.component('admin-indicative-index', adminIndicativeIndex);
+app.component('admin-indicative-create', adminIndicativeCreate);
+app.component('admin-plan-index', adminPlanIndex);
+app.component('admin-plan-create', adminPlanCreate);
+app.component('admin-post-index', adminPostIndex);
+app.component('admin-post-create', adminPostCreate);
+app.component('admin-post-show', adminPostShow);
+app.component('admin-post-edit', adminPostEdit);
+app.component('admin-member-index', adminMemberIndex);
+app.component('admin-member-create', adminMemberCreate);
+app.component('admin-member-active', adminMemberActive);
+app.component('admin-subscription-index', adminSubscriptionIndex);
+app.component('admin-settings-create', adminSettingsCreate);
+app.component('admin-log-index', adminLogIndex);
+app.component('admin-log-show', adminLogShow);
+app.component('admin-permission-index', adminPermissionIndex);
+app.component('admin-permission-create', adminPermissionCreate);
+app.component('admin-profile-create', adminProfileCreate);
+app.component('component-td', componentTd);
+app.component('component-span-status', componentSpanStatus);
+app.component('component-dropdown', componentDropdown);
+app.component('component-dropdown-item', componentDropdownItem);
+app.component('component-card', componentCard);
+app.component('component-accordion', componentAccordion);
+app.component('component-accordion-item', componentAccordionItem);
+app.component('component-input', componentInput);
+app.component('component-select', componentSelect);
+app.component('component-text-area', componentTextArea);
+app.component('list-group', listGroup);
+app.component('list-group-item', listGroupItem);
+app.component('fixed-bottom', fixedBottom);
+app.component('breadcrumb', breadcrumb);
+app.component('model', model);
+app.component('component-progress', componentProgress);
+app.component('component-paginate', componentPaginate);
+app.component('site-header', siteHeader);
+app.component('site-footer', siteFooter);
+app.component('site-social-links', siteSocialLinks);
+app.component('site-nav-bar', siteNavBar);
+app.component('site-nav', siteNav);
+app.component('site-post', sitePost);
+app.component('site-plan', sitePlan);
+app.component('site-carousel', siteCarousel);
+app.component('site-comment', siteComment);
+app.component('site-create-comment', siteCreateComment);
+app.component('site-children-comment', siteChildrenComment);
+app.component('site-create-user', siteCreateUser);
+app.component('site-my-account', siteMyAccount);
+app.component('site-index-user', siteIndexUser);
+app.component('site-home', siteHome);
+app.component('site-post-show', sitePostShow);
+app.component('site-comment-destroy', siteCommentDestroy);
+app.component('site-category-index', siteCategoryIndex);
+app.component('site-category-show', siteCategoryShow);
+app.component('site-search', siteSearch);
+app.component('create-payment', createPayment);
+app.component('summary-payment', summaryPayment);
+app.component('list-group', listGroup);
+app.component('list-group-item', listGroupItem);
+app.component('fixed-bottom', fixedBottom);
+app.component('breadcrumb', breadcrumb);
+app.component('model', model);
+app.component('file-upload', fileUpload);
 
 /**
  * Finally, we will attach the application instance to a HTML element with
