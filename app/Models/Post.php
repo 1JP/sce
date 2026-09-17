@@ -1,0 +1,223 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+
+class Post extends Model
+{
+    use HasFactory, AppLogModel, SoftDeletes;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'description',
+        'user_id',
+        'category_id',
+        'indicative_rating_id',
+        'category_type_id'
+    ];
+
+    /**
+     * Scope a query to only include active students.
+     *
+     * @param  Builder  $query The query builder to be filtered
+     * @return Builder The query builder filtered by active students
+     */
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('active', true);
+    }
+
+    /**
+     * Get the images associated with this post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function images()
+    {
+        return $this->hasMany(PostImage::class);
+    }
+
+    /**
+     * Get the user that created this post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the category this post belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Get the category type this post belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category_type()
+    {
+        return $this->belongsTo(CategoryType::class);
+    }
+
+    /**
+     * Get the indicative rating (age classification) of this post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function indicative_rating()
+    {
+        return $this->belongsTo(IndicativeRating::class);
+    }
+
+    /**
+     * Get the comments associated with this post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Get the likes (upvotes) associated with this post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function links()
+    {
+        return $this->hasMany(Link::class);
+    }
+
+    /**
+     * Get the dislikes (downvotes) associated with this post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function deslinks()
+    {
+        return $this->hasMany(Deslink::class);
+    }
+
+    /**
+     * Get the ratings associated with this post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function postRatings()
+    {
+        return $this->hasMany(PostRating::class);
+    }
+    
+    /**
+     * Sets the `name` attribute, formatting the user's name so that each word 
+     * starts with an uppercase letter, while the remaining letters are lowercase.
+     *
+     * @param string $value The name value provided to the model
+     */
+    public function setNameAttribute($value)
+    {
+        if (is_int($value)) {
+            throw new \InvalidArgumentException('O nome não pode ser um número inteiro.');
+        }
+
+        if (strlen($value) > 100) {
+            throw new \InvalidArgumentException('O nome não pode ter mais que 100 caracteres.');
+        }
+
+        $this->attributes['name'] = $value;
+    }
+
+    /**
+     * Get the average note for the post.
+     */
+    public function getNoteAttribute()
+    {
+        $ratings = $this->postRatings()->pluck('rating');
+        if ($ratings->isEmpty()) {
+            return 0.0;
+        }
+
+        $average = $ratings->avg();
+        $count = $ratings->count();
+
+        $m = 10;
+        $C = 7.0;
+
+        $weightedAverage = ($count / ($count + $m)) * $average + ($m / ($count + $m)) * $C;
+
+        return round($weightedAverage, 1);
+    }
+
+    /**
+     * Get the percentage of likes for the post.
+     */
+    public function likes_percentage()
+    {
+        $totalReactions = $this->links->count() + $this->deslinks->count();
+        return $totalReactions
+            ? round(($this->links->count() / $totalReactions) * 100)
+            : 0;
+    }
+
+    /**
+     * Get the percentage of dislikes for the post.
+     */
+    public function dislikes_percentage()
+    {
+        $totalReactions = $this->links->count() + $this->deslinks->count();
+        return $totalReactions
+            ? round(($this->deslinks->count() / $totalReactions) * 100)
+            : 0;
+    }
+
+    /**
+     * Get the percentage of positive comments for the post.
+     */
+    public function positive_comments_percentage()
+    {
+        $totalReactions = $this->links->count() + $this->deslinks->count() + $this->comments->count();
+        return $totalReactions
+            ? round(($this->comments->where('sentiment', 'positive')->count() / $totalReactions) * 100)
+            : 0;
+    }
+
+    /**
+     * Get the percentage of negative comments for the post.
+     */
+    public function negative_comments_percentage()
+    {
+        $totalReactions = $this->links->count() + $this->deslinks->count() + $this->comments->count();
+        return $totalReactions
+            ? round(($this->comments->where('sentiment', 'negative')->count() / $totalReactions) * 100)
+            : 0;
+    }
+
+    /**
+     * Get the percentage of neutral comments for the post.
+     */
+    public function neutral_comments_percentage()
+    {
+        $totalReactions = $this->links->count() + $this->deslinks->count() + $this->comments->count();
+        return $totalReactions
+            ? round(($this->comments->where('sentiment', 'neutral')->count() / $totalReactions) * 100)
+            : 0;
+    }
+}

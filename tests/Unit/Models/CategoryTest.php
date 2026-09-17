@@ -1,0 +1,136 @@
+<?php
+
+namespace Tests\Unit\Models;
+
+use App\Models\Category;
+use Database\Seeders\CategoryTypeSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use InvalidArgumentException;
+use Tests\TestCase;
+
+class CategoryTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        
+        $this->seed(CategoryTypeSeeder::class);
+    }
+
+    /**
+     * test create category
+     */
+    public function test_create_category(): void
+    {
+        $category = Category::factory()->create([
+            'name' => 'Livro',
+            'active' => true,
+        ]);
+
+        $this->assertEquals($category->name, 'Livro');
+        $this->assertTrue($category->active);
+    }
+
+    /** 
+     * test update category 
+     */
+    public function test_update_category(): void
+    {
+        $category = Category::factory()->create([
+            'name' => 'Livro'
+        ]);
+
+        $category->update([
+            'name' => 'Super-man o retorno',
+            'active' => true,
+        ]);
+
+        $this->assertEquals($category->name, 'Super-man o retorno');
+        $this->assertTrue($category->active);
+
+        $category->update([
+            'name' => 'Super-man o retorno',
+            'active' => false,
+        ]);
+
+        $this->assertEquals($category->name, 'Super-man o retorno');
+        $this->assertFalse($category->active);
+    }
+
+    /** 
+     * test delete category 
+     */
+    public function test_delete_category():void
+    {
+        $category = Category::factory()->create();
+
+        $this->assertDatabaseHas('categories', [
+            'id' => $category->id,
+        ]);
+
+        $category->delete();
+
+        $this->assertDatabaseMissing('categories', [
+            'id' => $category->id,
+        ]);
+    }
+
+    /**
+     * test function categories active true 
+     * 
+     */
+    public function test_function_categories_active_true(): void
+    {
+        Category::factory()
+            ->count(5)
+            ->state(['active' => true])
+            ->create();
+        
+        $categoriesActives = Category::active()->count();
+        
+        $this->assertEquals($categoriesActives, 5);
+    }
+
+    /** 
+     * test not create category all wrong data
+     */
+    public function test_not_create_all_wrong_data_user(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        Category::factory()->create([
+            'name' => fake()->randomDigit(),
+            'active' => fake()->boolean(),
+        ]);
+    }
+
+    /** 
+     * test not create category name integer
+     */
+    public function test_not_create_name_integer_category()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        Category::create([
+            'name' => fake()->randomDigit(),
+            'active' => fake()->boolean(),
+        ]);
+    }
+
+    /**
+     * test not create category with max 45 
+     */
+    public function test_not_create_name_with_max_45_characters_category()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $longString = "Esta é uma string que contém mais de 45 caracteres, para testar a validação e outras funções.";
+
+        Category::create([
+            'name' => $longString,
+            'active' => fake()->boolean(),
+        ]);
+    }
+}

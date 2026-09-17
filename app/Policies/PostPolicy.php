@@ -1,0 +1,127 @@
+<?php
+
+namespace App\Policies;
+
+use Illuminate\Auth\Access\Response;
+use App\Models\Post;
+use App\Models\User;
+
+class PostPolicy
+{
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return true;
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Post $post): bool
+    {
+        if ($user->isRoot()) {
+            return true;
+        }
+
+        if ($user->isAdmin()) {
+            return $user->id === $post->user_id && in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
+        }
+
+        if ($user->isMember()) {
+            $administrator = $user->administrator()->first()->user;
+            return $administrator && $administrator->id === $post->user_id && in_array($administrator->subscription?->status, ['ACTIVE', 'TRIAL']);
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
+    {
+        if ($user->isRoot()) {
+            return true;
+        }
+
+        return $user->isAdmin() && in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
+    }
+
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Post $post): bool
+    {
+        if ($user->isRoot()) {
+            return true;
+        }
+
+        if ($user->isAdmin()) {
+            return $user->id === $post->user_id && in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
+        }
+
+        if ($user->isMember()) {
+            $client = $user->administrator()->first();
+
+            if (!$client) {
+                return false;
+            }
+
+            $adminUser = $client->user; // supondo que Client tenha belongsTo(User::class)
+
+            return $adminUser
+                && $adminUser->id === $post->user_id
+                && in_array($adminUser->subscription?->status, ['ACTIVE', 'TRIAL']);
+        }
+
+        return false;
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Post $post): bool
+    {
+        if ($user->isRoot()) {
+            return true;
+        }
+
+        if ($user->isAdmin()) {
+            return $user->id === $post->user_id && in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can restore the model.
+     */
+    public function restore(User $user, Post $post): bool
+    {
+        if ($user->isRoot()) {
+            return true;
+        }
+
+        if ($user->isAdmin()) {
+            return $user->id === $post->user_id && in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
+        }
+    }
+
+    /**
+     * Determine whether the user can permanently delete the model.
+     */
+    public function forceDelete(User $user, Post $post): bool
+    {
+        if ($user->isRoot()) {
+            return true;
+        }
+
+        if ($user->isAdmin()) {
+            return $user->id === $post->user_id && in_array($user->subscription?->status, ['ACTIVE', 'TRIAL']);
+        }
+    }
+}
