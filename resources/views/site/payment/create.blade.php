@@ -7,6 +7,7 @@
         <div class="col-lg-6 col-10 py-2 py-lg-0 order-2 order-md-1">
           <create-payment
             :plan="{{ isset($plan) ? $plan : 'null' }}"
+            :icon-card="'bi bi-credit-card'"
           />
         </div>
         <div class="col-lg-4 col-10 order-1 order-md-2">

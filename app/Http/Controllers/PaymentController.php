@@ -54,6 +54,10 @@ class PaymentController extends Controller
      */
     public function create(CreateRequest $request)
     {
+        if(Auth::check() && Auth::user()->hasAnyRole(['Admin', 'Root'])){
+            return redirect()->route('home');
+        }
+
         $validated = $request->validated();
         $plan = null;
         if (isset($validated['plan_id'])) {
