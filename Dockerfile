@@ -11,34 +11,44 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# ---------- Stage 2: PHP + Nginx runtime ----------
-FROM richarvey/nginx-php-fpm:3.1.6
+# ---------- Stage 2: install PHP dependencies (Composer) ----------
+FROM composer:2 AS vendor
 
-# Copy the whole Laravel app
+WORKDIR /app
+
+COPY composer.json composer.lock* ./
+COPY database ./database
+
+RUN composer install \
+    --no-dev \
+    --no-scripts \
+    --no-autoloader \
+    --ignore-platform-reqs \
+    --prefer-dist \
+    --no-interaction
+
 COPY . .
 
-# Ensure deploy scripts are executable (Windows/git often strips this bit)
-RUN chmod +x scripts/*.sh || true
+RUN composer dump-autoload --optimize --no-dev
 
-# Bring in the built frontend assets from stage 1
+# ---------- Stage 3: PHP + Nginx runtime ----------
+FROM richarvey/nginx-php-fpm:3.1.6
+
+COPY . .
+
+COPY --from=vendor /app/vendor ./vendor
 COPY --from=frontend /app/public/build ./public/build
 
-# Image config (richarvey/nginx-php-fpm specific env vars)
-ENV SKIP_COMPOSER=0
+RUN chmod +x scripts/*.sh || true
+
+ENV SKIP_COMPOSER=1
 ENV WEBROOT=/var/www/html/public
 ENV PHP_ERRORS_STDERR=1
 ENV RUN_SCRIPTS=1
 ENV REAL_IP_HEADER=1
-
-# Laravel config
 ENV APP_ENV=production
 ENV APP_DEBUG=false
 ENV LOG_CHANNEL=stderr
-
-# Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER=1
-
-# Run migrations automatically on each deploy (safe with --force in production)
-ENV RUN_SCRIPTS=1
 
 CMD ["/start.sh"]
