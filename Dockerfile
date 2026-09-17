@@ -17,6 +17,9 @@ FROM richarvey/nginx-php-fpm:3.1.6
 # Copy the whole Laravel app
 COPY . .
 
+# Ensure deploy scripts are executable (Windows/git often strips this bit)
+RUN chmod +x scripts/*.sh || true
+
 # Bring in the built frontend assets from stage 1
 COPY --from=frontend /app/public/build ./public/build
 
