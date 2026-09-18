@@ -8,6 +8,8 @@
     :max-file-size="'3MB'"
     :max-files="10"
     image-preview-max-height="150"
+    image-resize-targetWidth="220"
+    image-resize-target-height="318"
     :accepted-file-types="['image/jpeg', 'image/png']"
     :credits="false"
     label-idle='
