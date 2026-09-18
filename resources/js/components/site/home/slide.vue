@@ -53,10 +53,31 @@
                     .then((response) => {
                         this.allPosts = response.data.data;
                     })
+            },
+            initSlider() {
+                if (window.jQuery && window.jQuery.fn.slick) {
+                    const $slider = window.jQuery('.main-slider');
+                    if ($slider.hasClass('slick-initialized')) {
+                        $slider.slick('unslick');
+                    }
+                    $slider.slick({
+                        autoplay: false,
+                        autoplaySpeed: 4000,
+                        fade: true,
+                        dots: true,
+                        prevArrow: window.jQuery('.prev'),
+                        nextArrow: window.jQuery('.next'),
+                    });
+                }
             }
         },
         mounted() {
             this.listPosts()
+        },
+        beforeUnmount() {
+            if (window.jQuery && window.jQuery('.main-slider').hasClass('slick-initialized')) {
+                window.jQuery('.main-slider').slick('unslick');
+            }
         }
     }
 </script>
