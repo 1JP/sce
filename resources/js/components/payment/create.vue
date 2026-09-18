@@ -24,7 +24,11 @@
                 <h3 class="mb-4 pb-4">Pagamento</h3>
                 <div class="row">
                     <div class="form-group col-lg-6"> 
-                        <label class="text-body-tertiary">Número do cartão *</label> 
+                        <label class="text-body-tertiary">Número do cartão *
+                            <a href="#" class="user-account for-buy" data-bs-toggle="modal" data-bs-target="#detals">
+                                <i :class="iconCard"></i>
+                            </a>
+                        </label>
                         <component-input
                             :required="true"
                             :input-type="'text'"
@@ -229,6 +233,49 @@
             </template>
         </component-card>
     </form>
+
+    <model :title="'Detalhes da cobrança'" :name="'detals'" :class-header="'bg-primary rounded-0'">
+        <div class="py-3 text-center">
+            <i class="ni ni-bell-55 ni-3x"></i>
+            <h4 class="text-gradient text-danger mt-4">Cartão de credito</h4>
+            <p>Estamos utilizando o ambiente Sandbox para testes. Selecione um dos cartões de teste abaixo para realizar o pagamento.</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <strong>Cartão</strong>
+                <p class="mb-0">4539620659922097</p>
+            </div>
+
+            <div class="col-lg-4">
+                <strong>Data de Expiração</strong>
+                <p class="mb-0">12/2030</p>
+            </div>
+
+            <div class="col-lg-4">
+                <strong>Cód de Segurança</strong>
+                <p class="mb-0">123</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <strong>Cartão</strong>
+                <p class="mb-0">5240082975622454</p>
+            </div>
+
+            <div class="col-lg-4">
+                <strong>Data de Expiração</strong>
+                <p class="mb-0">12/2030</p>
+            </div>
+
+            <div class="col-lg-4">
+                <strong>Cód. de Segurança</strong>
+                <p class="mb-0">123</p>
+            </div>
+        </div>
+        <template v-slot:footer>
+            <button type="button" class="btn btn-outline-dark btn-block" data-bs-dismiss="modal">Close</button>
+        </template>
+    </model>
 </template>
   
 <script>
@@ -244,6 +291,11 @@
             plan: {
                 type: Object,
                 required: false,
+            },
+            iconCard: {
+                type: String,
+                required: false,
+                default: 'ni ni-credit-card'
             }
         },
         data() {

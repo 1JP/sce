@@ -31,24 +31,57 @@ COPY . .
 
 RUN composer dump-autoload --optimize --no-dev
 
-# ---------- Stage 3: PHP + Nginx runtime ----------
-FROM richarvey/nginx-php-fpm:3.1.6
+# ---------- Stage 3: PHP 8.4 + Nginx runtime ----------
+FROM php:8.4-fpm-alpine
 
+# System packages: nginx, supervisor, and libs needed to build PHP extensions
+RUN apk add --no-cache \
+    nginx \
+    supervisor \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
+    libzip-dev \
+    icu-dev \
+    oniguruma-dev
+
+# PHP extensions Laravel typically needs
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
+        pdo_mysql \
+        mbstring \
+        exif \
+        pcntl \
+        bcmath \
+        gd \
+        zip \
+        intl
+
+WORKDIR /var/www/html
+
+# App code
 COPY . .
 
+# Installed PHP deps from stage 2
 COPY --from=vendor /app/vendor ./vendor
+
+# Built frontend assets from stage 1
 COPY --from=frontend /app/public/build ./public/build
 
-RUN chmod +x scripts/*.sh || true
+# Nginx + Supervisor config
+COPY docker/nginx.conf /etc/nginx/http.d/default.conf
+COPY docker/supervisord.conf /etc/supervisor/supervisord.conf
+COPY docker/entrypoint.sh /entrypoint.sh
 
-ENV SKIP_COMPOSER=1
-ENV WEBROOT=/var/www/html/public
-ENV PHP_ERRORS_STDERR=1
-ENV RUN_SCRIPTS=1
-ENV REAL_IP_HEADER=1
+RUN chmod +x /entrypoint.sh scripts/*.sh 2>/dev/null || true
+
+# Laravel storage/cache dirs must be writable
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
 ENV APP_ENV=production
 ENV APP_DEBUG=false
 ENV LOG_CHANNEL=stderr
-ENV COMPOSER_ALLOW_SUPERUSER=1
 
-CMD ["/start.sh"]
+EXPOSE 80
+
+CMD ["/entrypoint.sh"]

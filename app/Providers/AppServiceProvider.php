@@ -33,10 +33,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(UrlGenerator $url): void
     {
-        if (env('APP_ENV') === 'production') {
-            $url->forceScheme('https');
-        }
-
         Route::model('categoria', Category::class);
         Route::model('tipos_de_categoria', CategoryType::class);
         Route::model('categorie_type', CategoryType::class);

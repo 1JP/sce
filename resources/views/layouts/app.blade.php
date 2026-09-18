@@ -29,7 +29,9 @@
             <site-header 
                 :name="'{{ $user->name ?? '' }}'"
                 :is-role="{{ $isRole }}"
-                :logo="'{{ asset('site/img/logo-sce.jpeg') }}'" >
+                :logo="'{{ asset('site/img/logo-sce.jpeg') }}'"
+                :route-script="'{{ asset('js/script.js') }}'" 
+            >
             </site-header>
             <div class="py-5">
                 <div class="container">

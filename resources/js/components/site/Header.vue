@@ -82,16 +82,6 @@
 
 <script>
     export default {
-        data(){
-            return {
-                links : [],
-                routeHome: route('home'),
-				routeLogout: route('auth.logout'),
-				routeScript: 'http://127.0.0.1:8000/js/script.js',
-				search: '',
-				token: ''
-            }
-        },
 		props: {
             name: {
                 type: String,
@@ -105,6 +95,19 @@
                 type: Boolean,
                 default: false
             },
+			routeScript: {
+                type: String,
+                default: '',
+            },
+        },
+        data(){
+            return {
+                links : [],
+                routeHome: route('home'),
+				routeLogout: route('auth.logout'),
+				search: '',
+				token: ''
+            }
         },
 		methods: {
 			loadScript() {
