@@ -16,8 +16,12 @@ docker run -d \
   --name sce-app \
   --env-file .env \
   -p 80:80 \
+  -v /home/ec2-user/storage-app-public:/var/www/html/storage/app/public \
   --restart unless-stopped \
   sce-app
+
+echo "==> Limpando imagens antigas não utilizadas..."
+docker image prune -f
 
 echo "==> Feito! Verificando status..."
 docker ps

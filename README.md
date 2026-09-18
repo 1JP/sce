@@ -1,70 +1,71 @@
 # SCE
 
-SCE is a Laravel-based content management and membership platform for publishing posts, managing categories, users, subscriptions, comments, and reports. The project includes a public frontend, an admin dashboard, and a REST API for internal or external integrations.
+Content and Member Management System, built with Laravel to manage editorial content, users, plans, subscriptions, clients, and performance reporting.
 
 ## Overview
 
-This application was built with:
+SCE is a web platform for publishing content on a public portal, with an administrative area for managing categories, posts, permissions, plans, members, and system metrics. The application combines Laravel for business logic and Vite/Vue for the user interface, along with REST endpoints for internal consumption and integrations.
 
-- Laravel 13
+### Main technologies
+
 - PHP 8.3+
+- Laravel 13
 - Vue 3 + Vite
 - Bootstrap 5
 - Sanctum for API authentication
-- Spatie permission and activity log packages
-- MySQL/PostgreSQL-compatible database support through Laravel
+- Spatie Permission
+- Spatie Activity Log
+- Laravel-compatible database (MySQL/PostgreSQL)
 
-## Features
+## Key features
 
-- Public site with homepage, categories, and post listing
-- Post management with categories and rating/classification metadata
-- User registration and account management
-- Member access flow and first-time activation
+- Public portal with homepage, categories, and content listing
+- Post management, ratings, and categories
+- User and member registration and administration
+- First-access flow and account activation
+- Client, plan, and subscription management
 - Admin dashboard with statistics and reports
-- Subscription and plan management
-- Client and member administration
-- Permission and role system
-- Comments, ratings, and moderation support
-- Activity logging and audit trails
-- API endpoints for categories, posts, plans, clients, links, and dashboard data
+- Role-based permission control
+- Comments, ratings, and engagement tracking
+- Activity logging and system auditing
+- REST API for data access and integrations
 
-## Project Structure
+## Project structure
 
 ```text
-app/
-  Http/Controllers/      # HTTP and API controllers
-  Models/                # Eloquent models
-  Providers/             # App service providers
-config/                  # Framework configuration
-database/
+app/                  # Application logic, models, controllers, providers
+config/               # Laravel configuration
+bootstrap/            # Application bootstrap
+Database/
   factories/
   migrations/
   seeders/
-public/                  # Publicly served files
+public/               # Public assets and frontend build output
 resources/
-  js/                    # Vue front-end assets
-  css/                   # Styles and compiled assets
-  views/                 # Blade templates
+  css/
+  js/
+  views/              # Blade templates
 routes/
-  api.php                # API routes
-  web.php                # Web routes
+  api.php             # API routes
+  web.php             # Web application routes
+html-sce/             # Legacy static HTML frontend
 storage/
   app/
   framework/
   logs/
-tests/                  # PHPUnit tests
+tests/                # Automated tests
 ```
 
 ## Requirements
 
-Before running the project, ensure you have installed:
+Before starting, make sure you have:
 
 - PHP 8.3 or higher
 - Composer
 - Node.js 18+ and npm
-- A local database, if the app is configured to use one
+- A local or configured database for the environment
 
-## Local Setup
+## Local setup
 
 1. Clone the repository:
 
@@ -79,7 +80,7 @@ cd sce
 composer install
 ```
 
-3. Install JavaScript dependencies:
+3. Install frontend dependencies:
 
 ```bash
 npm install
@@ -97,82 +98,91 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-6. Configure the database in `.env` if needed for your environment.
+6. Configure the database and environment variables in `.env`.
 
-7. Run the migrations:
+7. Run database migrations:
 
 ```bash
 php artisan migrate
 ```
 
-8. Start the application:
+8. Optionally, link storage:
+
+```bash
+php artisan storage:link
+```
+
+9. Start the application:
 
 ```bash
 php artisan serve
 ```
 
-9. In another terminal, run the frontend assets:
+10. In a second terminal, run the frontend in development mode:
 
 ```bash
 npm run dev
 ```
 
-The app is typically available at:
+The app is usually available at:
 
 - http://localhost:8000
 
-## Build for Production
+## Admin access
+
+The administration area is available after authentication and is generally reached through:
+
+- /login
+- /admin/dashboard
+
+Administrative modules include categories, posts, plans, clients, members, permissions, logs, and settings.
+
+## Production build
 
 ```bash
 npm run build
 php artisan optimize
 ```
 
-## Admin Access
-
-Once the application is set up, log in through the admin area and use the configured user roles and permissions system to manage:
-
-- Categories
-- Posts
-- Plans and subscriptions
-- Clients and members
-- Permissions and users
-- Settings and reporting
-
 ## API
 
-The project exposes REST-like endpoints under the `api` route prefix. Examples include:
+The application exposes REST endpoints under the `/api` prefix. Examples include:
 
 - `/api/categories`
+- `/api/all-category-type`
 - `/api/all-posts`
 - `/api/posts/top`
-- `/api/plans`
+- `/api/all-plans`
+- `/api/links`
 - `/api/comments`
 - `/api/ratings`
 
-Authentication for protected API routes uses Laravel Sanctum.
+Protected routes use Laravel Sanctum authentication.
 
 ## Testing
 
-Run the test suite with:
+To run the test suite:
 
 ```bash
 php artisan test
 ```
 
-## Useful Commands
+## Useful commands
 
 ```bash
 php artisan migrate:fresh --seed
-php artisan make:controller NameController
 php artisan route:list
+php artisan make:controller NameController
+php artisan make:model NameModel
 php artisan storage:link
 ```
+
+## Notes
+
+- The project contains a main Laravel application and a set of static pages in `html-sce/`.
+- The active business logic and primary navigation are concentrated in `app/`, `routes/`, and `resources/`.
+- The system was designed as a content portal with administrative management and subscription/cadastro modules.
 
 ## License
 
 This project is distributed under the MIT license.
-
-## Notes
-
-This repository contains both a full Laravel application and a custom front-end with static HTML assets under the `html-sce/` directory. The active app logic is primarily handled by the Laravel application in the `app/`, `routes/`, and `resources/` folders.
