@@ -51,10 +51,10 @@
             listPosts(){
                 axios.get(route('api.posts.top'))
                     .then((response) => {
+                        this.allPosts = response.data.data;
                         this.$nextTick(() => {
                             this.initSlider();
                         });
-                        this.allPosts = response.data.data;
                     })
             },
             initSlider() {
