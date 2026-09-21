@@ -37,6 +37,7 @@ class SettingRequest extends FormRequest
             'company.twitter' => ['nullable', 'url'],
             'company.youtube' => ['nullable', 'url'],
             'company.instagram' => ['nullable', 'url'],
+            'company.phone' => ['nullable', 'string'],
 
             // ADDRESS
             'address.cep' => ['required', 'string', 'max:9'],
@@ -57,7 +58,8 @@ class SettingRequest extends FormRequest
         if ($this->company && isset($this->company['cnpj'])) {
             $this->merge([
                 'company' => array_merge($this->company, [
-                    'cnpj' => preg_replace('/\D/', '', $this->company['cnpj'])
+                    'cnpj' => preg_replace('/\D/', '', $this->company['cnpj']),
+                    'phone' => preg_replace('/\D/', '', $this->company['phone']),
                 ])
             ]);
         }

@@ -67,7 +67,7 @@ class AppServiceProvider extends ServiceProvider
             $email = $settings->where('name', 'email')->first()?->body ?? '';
             $logo = asset('site/img/logo-sce.jpeg');
             $scripts = asset('js/script.js');
-            $phone = $settings->where('name', 'phone')->first()?->body ?? '31999999999';
+            $phone = $settings->where('name', 'phone')->first()?->body ?? '';
             $phone = $maskService->applyMask($phone, '(##) #####-####');
             $cep = $settings->where('name', 'cep')->first()?->body ?? '00000-000';
             $steet = $settings->where('name', 'street')->first()?->body ?? '';
