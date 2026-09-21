@@ -78,7 +78,7 @@
                         'name': ''
                     },
                     {
-                        'label': 'Seja ser um cliente?',
+                        'label': 'Quer ser um cliente?',
                         'view': !this.isRole,
                         'selected': false,
                         'route': '#',
