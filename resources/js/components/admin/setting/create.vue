@@ -210,6 +210,19 @@
                                     @input="inputCompanyInstagram($event)"
                                 /> 
                             </div>
+                            <div class="form-group col-md-6"> 
+                                <label for="form19">Telefone</label> 
+                                <component-input
+                                    :input-type="'text'"
+                                    :placeholder="'(31) 99999-9999'"
+                                    :name-id="'company[phone]'"
+                                    pattern="[0-9]*"
+                                    :max-length="'15'" 
+                                    :value="company.phone"
+                                    :class-input="classPhone"
+                                    @input="inputPhone($event)"
+                                /> 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -337,7 +350,8 @@
                     facebook: '',
                     twitter: '',
                     youtube: '',
-                    instagram: ''
+                    instagram: '',
+                    phone: '',
                 },
                 address: {
                     cep: '',
@@ -363,6 +377,7 @@
                 classCompanyTwitter: '',
                 classCompanyYoutube: '',
                 classCompanyInstagram: '',
+                classPhone: '',
                 classAddressCep: '',
                 classAddressStreet: '',
                 classAddressNumber: '',
@@ -384,12 +399,15 @@
                         this.payments.public_key_payment = response.data.data.find(setting => setting.name === 'public_key_payment')?.body || '';
                         this.payments.sandbox_payment = response.data.data.find(setting => setting.name === 'sandbox_payment')?.body || '';
                         this.company.name = response.data.data.find(setting => setting.name === 'name')?.body || '';
-                        this.company.cnpj = response.data.data.find(setting => setting.name === 'cnpj')?.body || '';
+                        let companyCnpj = response.data.data.find(setting => setting.name === 'cnpj')?.body || '';
+                        this.company.cnpj = this.maskCnpj(companyCnpj);
                         this.company.email = response.data.data.find(setting => setting.name === 'email')?.body || '';
                         this.company.facebook = response.data.data.find(setting => setting.name === 'facebook')?.body || '';
                         this.company.twitter = response.data.data.find(setting => setting.name === 'twitter')?.body || '';
                         this.company.youtube = response.data.data.find(setting => setting.name === 'youtube')?.body || '';
                         this.company.instagram = response.data.data.find(setting => setting.name === 'instagram')?.body || '';
+                        let companyPhone = response.data.data.find(setting => setting.name === 'phone')?.body || '';
+                        this.company.phone = this.maskPhoneNumber(companyPhone);
                         this.address.cep = response.data.data.find(setting => setting.name === 'cep')?.body || '';
                         this.address.street = response.data.data.find(setting => setting.name === 'street')?.body || '';
                         this.address.number = response.data.data.find(setting => setting.name === 'number')?.body || '';
@@ -415,6 +433,16 @@
                     .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
                     .replace(/\.(\d{3})(\d)/, '.$1/$2')
                     .replace(/(\d{4})(\d)/, '$1-$2');
+
+                return string;
+            },
+            maskPhoneNumber(string){
+                string = string.replace(/\D/g, '');
+                if (string.length === 11) {
+                    string = string.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+                } else {
+                    string = string.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');
+                }
 
                 return string;
             },
@@ -481,6 +509,13 @@
             inputCompanyInstagram(event){
                 this.company.instagram = event.target.value;
             },
+            inputPhone(event){
+                if(/^[a-zA-Z]$/.test(event.target.value)){
+                    this.phone = null;
+                    return;
+                }
+                this.company.phone = this.maskPhoneNumber(event.target.value);
+            },
             inputSandboxPayment(event){
                 this.payments.sandbox_payment = '1';
             },
@@ -505,7 +540,7 @@
                     || this.company.name == '' || this.company.cnpj == '' || this.company.email == ''
                     || this.address.cep == '' || this.address.street == '' || this.address.number == '' 
                     || this.address.neighborhood == '' || this.address.city == '' || this.address.state == ''
-                    || this.site.description == '' || this.payments.sandbox_payment == ''
+                    || this.site.description == '' || this.payments.sandbox_payment == '' || this.company.phone == ''
                 ){
                     console.log(this.payments.sandbox_payment);
                     this.classPaymentsPublicKeyPayment = this.payments.public_key_payment == '' ? 'is-invalid' : 'is-valid'
@@ -515,6 +550,7 @@
                     this.classCompanyName = this.company.name == '' ? 'is-invalid' : 'is-valid'
                     this.classCompanyCnpj = this.company.cnpj == '' ? 'is-invalid' : 'is-valid'
                     this.classCompanyEmail = this.company.email == '' ? 'is-invalid' : 'is-valid'
+                    this.classPhone = this.company.phone == '' ? 'is-invalid' : 'is-valid'
                     this.classAddressCep = this.address.cep == '' ? 'is-invalid' : 'is-valid'
                     this.classAddressStreet = this.address.street == '' ? 'is-invalid' : 'is-valid'
                     this.classAddressNumber = this.address.number == '' ? 'is-invalid' : 'is-valid'
@@ -546,6 +582,7 @@
                 this.classAddressState = 'is-valid'
                 this.classDescription = 'is-valid'
                 this.classPaymentsSandBox = 'is-valid'
+                this.classPhone = 'is-valid'
 
                 this.$refs.form.submit();
             }

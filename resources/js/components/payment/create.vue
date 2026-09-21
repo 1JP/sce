@@ -25,8 +25,9 @@
                 <div class="row">
                     <div class="form-group col-lg-6"> 
                         <label class="text-body-tertiary">Número do cartão *
-                            <a href="#" class="user-account for-buy" data-bs-toggle="modal" data-bs-target="#detals">
+                            <a href="#" class="user-account for-buy" data-bs-toggle="modal" data-bs-target="#detals" ref="linkModal">
                                 <i :class="iconCard"></i>
+                                <span class="ms-1">Clique aqui</span>
                             </a>
                         </label>
                         <component-input
@@ -531,6 +532,9 @@
                 this.createPayment(this.plan);
             }
             this.plan_id = this.plan ? this.plan.id : '';
+            this.$nextTick(() => {
+                this.$refs.linkModal?.click();
+            });
         }
     }
 </script>
